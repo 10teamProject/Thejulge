@@ -1,10 +1,8 @@
 ---
-name: Pull Request
-about: PR 템플릿
-title: "[#이슈번호] 제목"
+제목: "[#이슈번호] 내용"
 labels: ''
-assignees: ''
-
+assignees: '본인'
+=> 확인하시고 지워주세요
 ---
 
 ## #️⃣연관된 이슈
