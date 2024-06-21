@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import styles from './ListPage.module.css';
+import styles from './ListPage.module.scss';
+import NoticeCard from '@/components/listPage/NoticeCard';
 
 const ListPage = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -21,6 +22,7 @@ const ListPage = () => {
       <div className={styles.customContainer}>
         <div className={styles.customSection}>
           <h2 className={styles.title}>맞춤 공고</h2>
+          <NoticeCard />
         </div>
       </div>
       <div className={styles.container}>
