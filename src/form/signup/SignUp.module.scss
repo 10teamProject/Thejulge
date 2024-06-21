@@ -18,45 +18,6 @@
   flex-direction: column;
 }
 
-.inputGroup {
-  margin-bottom: 15px;
-}
-
-.label {
-  display: block;
-  margin-bottom: 5px;
-  font-family: Spoqa Han Sans Neo;
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 26px;
-  text-align: left;
-  color: #111322;
-}
-
-.input {
-  border-radius: 4px;
-  width: 350px;
-  height: 58px;
-  padding: 16px 20px 16px 20px;
-  gap: 10px;
-  border-radius: 6px;
-  border: 1px solid #cbc9cf;
-
-  &:hover {
-    border: 1px solid #ff6b6b;
-  }
-
-  &:focus {
-    border: 1px solid #ff6b6b;
-    outline: none;
-  }
-}
-
-.errorMessage {
-  color: red;
-  font-size: 12px;
-}
-
 .submitButton {
   width: 100%;
   height: 48px;
@@ -86,43 +47,4 @@
   &:hover {
     text-decoration: underline;
   }
-}
-
-.radioGroup {
-  display: flex;
-  gap: 10px;
-}
-
-.radioLabel {
-  position: relative;
-  cursor: pointer;
-}
-
-.radioInput {
-  position: absolute;
-  opacity: 0;
-  cursor: pointer;
-}
-
-.radioButton {
-  display: inline-block;
-  width: 167px;
-  height: 50px;
-  padding: 15px 55px;
-  border: 2px solid #ccc;
-  border-radius: 25px;
-  background-color: white;
-  color: #333;
-  font-weight: bold;
-  transition: all 0.3s ease;
-}
-
-.radioInput:checked + .radioButton {
-  background-color: #ff6b6b;
-  border-color: #ff6b6b;
-  color: white;
-}
-
-.radioInput:focus + .radioButton {
-  box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.3);
 }

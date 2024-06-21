@@ -1,0 +1,58 @@
+.inputGroup {
+  margin-bottom: 15px;
+}
+
+.label {
+  display: block;
+  margin-bottom: 5px;
+  font-family: Spoqa Han Sans Neo;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 26px;
+  text-align: left;
+  color: #111322;
+}
+
+.radioGroup {
+  display: flex;
+  gap: 10px;
+}
+
+.radioLabel {
+  position: relative;
+  cursor: pointer;
+}
+
+.radioInput {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.radioButton {
+  display: inline-block;
+  width: 167px;
+  height: 50px;
+  padding: 15px 55px;
+  border: 2px solid #ccc;
+  border-radius: 25px;
+  background-color: white;
+  color: #333;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.radioInput:checked + .radioButton {
+  background-color: #ff6b6b;
+  border-color: #ff6b6b;
+  color: white;
+}
+
+.radioInput:focus + .radioButton {
+  box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.3);
+}
+
+.errorMessage {
+  color: red;
+  font-size: 12px;
+}
