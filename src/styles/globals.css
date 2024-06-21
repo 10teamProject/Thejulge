@@ -10,10 +10,10 @@
   --background-end-rgb: 255, 255, 255;
 
   /* 메인컬러 */
-  --main-yellow: #ffd43b;
+  /* --main-yellow: #ffd43b;
   --sub-yellow: #ffe066;
   --light-yellow: #ffec99;
-  --thick-yellow: #fcc419;
+  --thick-yellow: #fcc419; */
 
   --primary-glow: conic-gradient(
     from 180deg at 50% 50%,
