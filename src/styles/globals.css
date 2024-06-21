@@ -117,7 +117,7 @@ a {
 
 @font-face {
   font-family: 'Pretendard', sans-serif;
-  src: url('../assets/font/PretendardVariable.ttf');
+  src: url('../../public/assets/font/PretendardVariable.ttf');
 }
 
 html,
