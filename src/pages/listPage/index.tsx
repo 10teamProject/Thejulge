@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState, ChangeEvent } from 'react';
 import styles from './ListPage.module.scss';
 import Image from 'next/image';
 import NoticeCard from '@/components/listPage/NoticeCard';
-import X from '../../../public/assets/images/black_x.png';
+import X from '@/public/assets/images/black_x.png';
 
 const ListPage = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -10,6 +10,7 @@ const ListPage = () => {
   const [label, setLabel] = useState('마감임박순');
   const [minDate, setMinDate] = useState('');
   const [startDate, setStartDate] = useState('');
+  const [filterPrice, setFilterPrice] = useState('');
 
   const sortOptions = [
     { key: 'time', label: '마감임박순' },
@@ -34,6 +35,12 @@ const ListPage = () => {
     setStartDate(selectedDate);
   };
 
+  const handleFilterPriceChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const newValue = e.target.value;
+    if (/^\d*$/.test(newValue)) {
+      setFilterPrice(newValue);
+    }
+  };
   return (
     <>
       <div className={styles.customContainer}>
@@ -97,6 +104,20 @@ const ListPage = () => {
                 />
                 <div className={styles.line} />
                 <p className={styles.filterName}>금액</p>
+                <div className={styles.fliterTop}>
+                  <input
+                    value={filterPrice}
+                    placeholder="입력"
+                    className={styles.filterPrice}
+                    onChange={handleFilterPriceChange}
+                  ></input>
+                  <p className={styles.filterPriceText}>원</p>
+                  <p className={styles.filterName}>이상부터</p>
+                </div>
+                <div className={styles.filterBottom}>
+                  <button className={styles.reset}>초기화</button>
+                  <button className={styles.submit}>적용하기</button>
+                </div>
               </div>
             )}
           </div>
