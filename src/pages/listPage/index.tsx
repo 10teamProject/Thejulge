@@ -2,8 +2,8 @@ import Image from 'next/image';
 import { useState } from 'react';
 
 import NoticeCard from '@/components/listPage/NoticeCard';
+import X from '@/public/assets/images/black_x.png';
 
-import X from '../../../public/assets/images/black_x.png';
 import styles from './ListPage.module.scss';
 
 const ListPage = () => {
