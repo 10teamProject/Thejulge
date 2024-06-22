@@ -14,8 +14,8 @@ export default function LoginPage() {
           <Image src={logo} alt="로고" width={248} height={45} />
         </div>
         <LoginForm />
-        <Link className={styles.signupLink} href="/signup">
-          아직 회원이 아니신가요? 회원가입
+        <Link className={styles.loginLink} href="/signup">
+          회원이 아닌가요? 회원가입하기
         </Link>
       </div>
     </div>

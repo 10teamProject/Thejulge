@@ -10,6 +10,7 @@
   font-weight: 400;
   line-height: 26px;
   text-align: left;
+  margin-bottom: 10px;
   color: #111322;
 }
 
@@ -43,13 +44,13 @@
 }
 
 .radioInput:checked + .radioButton {
-  background-color: #ff6b6b;
-  border-color: #ff6b6b;
-  color: white;
+  background-color: #ffe854;
+  border-color: #ffe854;
+  color: #272665;
 }
 
 .radioInput:focus + .radioButton {
-  box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.3);
+  box-shadow: 0 0 0 3px #ffec99;
 }
 
 .errorMessage {

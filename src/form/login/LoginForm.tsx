@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-import Input from '@/components/auth/InputComponets';
+import Input from '@/components/auth/InputComponents';
 import { LoginUser } from '@/pages/api/LoginUser';
 import { loginSchema } from '@/utils/validation/Schema';
 
