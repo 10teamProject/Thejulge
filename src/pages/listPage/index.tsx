@@ -4,7 +4,7 @@ import NoticeCard from '@/components/listPage/NoticeCard';
 
 const ListPage = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [sortBy, setSortBy] = useState('마감임박순');
+  const [label, setLabel] = useState('마감임박순');
 
   const sortOptions = [
     { key: 'time', label: '마감임박순' },
@@ -13,10 +13,11 @@ const ListPage = () => {
     { key: 'shop', label: '가나다순' },
   ];
 
-  const handleSortChange = (newSortBy: string) => {
-    setSortBy(newSortBy);
+  const handleSortChange = (newSortBy: string, newLabel: string) => {
+    setLabel(newLabel);
     setIsDropdownOpen(false);
   };
+
   return (
     <>
       <div className={styles.customContainer}>
@@ -32,14 +33,14 @@ const ListPage = () => {
             className={styles.sortDropdown}
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
           >
-            마감임박순 ▼
+            {label} ▼
             {isDropdownOpen && (
               <ul className={styles.sortDropdownMenu}>
                 {sortOptions.map((option) => (
                   <li
                     key={option.key}
                     className={`${styles.sortDropdownText} ${styles.dropdownLine}`}
-                    onClick={() => handleSortChange(option.key)}
+                    onClick={() => handleSortChange(option.key, option.label)}
                   >
                     {option.label}
                   </li>
