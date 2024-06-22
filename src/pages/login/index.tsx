@@ -1,8 +1,8 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
-import logo from '@/../public/assets/images/biglogo.png';
 import LoginForm from '@/form/login/LoginForm';
+import logo from '@/public/assets/images/biglogo.png';
 
 import styles from './LoginPage.module.scss';
 
