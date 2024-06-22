@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import styles from './ListPage.module.scss';
-import NoticeCard from '@/components/listPage/NoticeCard';
 import Image from 'next/image';
+import NoticeCard from '@/components/listPage/NoticeCard';
 import X from '../../../public/assets/images/black_x.png';
 
 const ListPage = () => {
