@@ -1,5 +1,5 @@
 .customContainer {
-  background-color: #ffec99;
+  background-color: var(--yellow2);
   height: 535px;
   width: 100%;
   justify-content: center;
@@ -17,6 +17,7 @@
   font-size: 28px;
   line-height: 35px;
   color: #111322;
+  margin-bottom: 30px;
 }
 .container {
   padding: 60px 0;
@@ -63,7 +64,7 @@
   margin: 0 0 0 0;
   width: 79px;
   height: 30px;
-  background: #fcc419;
+  background: var(--yellow5);
   border-radius: 5px;
 
   font-family: 'Spoqa Han Sans Neo';
@@ -111,7 +112,7 @@
   flex-direction: column;
   align-items: flex-start;
   padding: 24px 20px;
-  gap: 24px;
+  gap: 10px;
   z-index: 1;
   position: absolute;
   top: 130%;
@@ -133,7 +134,48 @@
 .fliterTop {
   display: flex;
   width: 350px;
+  margin-bottom: 14px;
 }
 .xImage {
   margin: 0 0 0 auto;
+}
+.filterName {
+  font-family: 'Spoqa Han Sans Neo';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 26px;
+  color: #111322;
+}
+.filterLocation {
+  width: 350px;
+  height: 258px;
+  background: #ffffff;
+  border: 1px solid #e5e4e7;
+  border-radius: 6px;
+  overflow: auto;
+}
+.line {
+  width: 350px;
+  height: 2px;
+  background: #f2f2f3;
+  margin: 10px 0 10px;
+}
+.filterDate {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 350px;
+  margin-top: 10px;
+
+  &:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+  }
+
+  &::placeholder {
+    color: #999;
+  }
 }

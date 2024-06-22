@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './ListPage.module.scss';
 import NoticeCard from '@/components/listPage/NoticeCard';
 import Image from 'next/image';
@@ -8,6 +8,8 @@ const ListPage = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isFilterOpen, setisFilterOpen] = useState(false);
   const [label, setLabel] = useState('마감임박순');
+  const [minDate, setMinDate] = useState('');
+  const [startDate, setStartDate] = useState('');
 
   const sortOptions = [
     { key: 'time', label: '마감임박순' },
@@ -19,6 +21,17 @@ const ListPage = () => {
   const handleSortChange = (newSortBy: string, newLabel: string) => {
     setLabel(newLabel);
     setIsDropdownOpen(false);
+  };
+
+  useEffect(() => {
+    const today = new Date().toISOString().split('T')[0];
+    setMinDate(today);
+    setStartDate(today);
+  }, []);
+
+  const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedDate = event.target.value;
+    setStartDate(selectedDate);
   };
 
   return (
@@ -57,7 +70,10 @@ const ListPage = () => {
           >
             상세 필터
             {isFilterOpen && (
-              <div className={styles.filterContainer}>
+              <div
+                className={styles.filterContainer}
+                onClick={(e) => e.stopPropagation()}
+              >
                 <div className={styles.fliterTop}>
                   상세필터
                   <Image
@@ -67,6 +83,20 @@ const ListPage = () => {
                     onClick={() => setisFilterOpen(!isFilterOpen)}
                   />
                 </div>
+                <p className={styles.filterName}>위치</p>
+                <div className={styles.filterLocation}></div>
+                <div className={styles.line} />
+                <p className={styles.filterName}>시작일</p>
+                <input
+                  type="date"
+                  className={styles.filterDate}
+                  min={minDate}
+                  value={startDate}
+                  onChange={handleDateChange}
+                  onClick={(e) => e.stopPropagation()}
+                />
+                <div className={styles.line} />
+                <p className={styles.filterName}>금액</p>
               </div>
             )}
           </div>
