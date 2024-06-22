@@ -2,20 +2,20 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import logo from '@/../public/assets/images/biglogo.png';
-import LoginForm from '@/form/login/LoginForm';
+import SignUpForm from '@/form/signup/SignUpForm';
 
-import styles from './LoginPage.module.scss';
+import styles from './SignUpPage.module.scss';
 
-export default function LoginPage() {
+export default function SignUpPage() {
   return (
     <div className={styles.pageContainer}>
       <div className={styles.formContainer}>
         <div className={styles.logoContainer}>
           <Image src={logo} alt="로고" width={248} height={45} />
         </div>
-        <LoginForm />
-        <Link className={styles.loginLink} href="/signup">
-          회원이 아닌가요? 회원가입하기
+        <SignUpForm />
+        <Link className={styles.loginLink} href="/login">
+          이미 가입하셨나요? 로그인하기
         </Link>
       </div>
     </div>
