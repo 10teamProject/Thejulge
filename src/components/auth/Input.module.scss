@@ -1,0 +1,38 @@
+.inputGroup {
+  margin-bottom: 15px;
+}
+
+.label {
+  display: block;
+  margin-bottom: 5px;
+  font-family: Spoqa Han Sans Neo;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 26px;
+  text-align: left;
+  color: #111322;
+}
+
+.input {
+  border-radius: 4px;
+  width: 350px;
+  height: 58px;
+  padding: 16px 20px 16px 20px;
+  gap: 10px;
+  border-radius: 6px;
+  border: 1px solid #cbc9cf;
+
+  &:hover {
+    border: 1px solid #ffe854;
+  }
+
+  &:focus {
+    border: 1px solid #ffe854;
+    outline: none;
+  }
+}
+
+.errorMessage {
+  color: red;
+  font-size: 12px;
+}
