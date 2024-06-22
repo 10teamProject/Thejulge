@@ -1,0 +1,29 @@
+@import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css);
+
+.main {
+  display: flex;
+  justify-content: center; 
+  border: 1px solid red;
+}
+
+.mainContainer {
+  
+  
+}
+
+.profileTitle {
+  font-family: 'Spoqa Han Sans Neo', sans-serif;
+  font-weight: 700;
+  font-size: 28px;
+  line-height: 33.6px;
+  margin-top: 60px;
+  margin-bottom: 24px;
+}
+
+.profilebox {
+  width: 964px;
+  height: 217px;
+  border-radius: 12px;
+  border: 1px solid #E5E4E7;
+  padding: 60px 24px 60px 24px;
+}
