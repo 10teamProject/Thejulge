@@ -24,7 +24,7 @@ function SignUpForm() {
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
-  const autoLogin = useAutoLogin();
+  const { autoLogin } = useAutoLogin();
 
   const {
     handleSubmit,
