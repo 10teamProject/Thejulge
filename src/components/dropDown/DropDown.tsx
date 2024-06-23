@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 
-import arrowImg from '../../../public/assets/icon/arrow.svg';
+import arrowImg from '@/public/assets/icon/arrow.svg';
 import styles from './DropDown.module.scss';
 
 export type Option = {
