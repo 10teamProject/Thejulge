@@ -70,7 +70,7 @@
   background-color: #ffd43b;
   border-radius: 20px;
   font-size: 14px;
-  font-weight: 400;
+  font-weight: 700;
   line-height: 17px;
   color: #ffffff;
   padding: 12px;
@@ -102,9 +102,7 @@
   font-weight: 400;
 }
 
-.shop_contents button {
-  background-color: #ffd43b;
-  color: #ffffff;
+.button {
   width: 100%;
   padding: 14px 136px;
   border-radius: 6px;
@@ -145,4 +143,5 @@
 .notice_container > h1 {
   font-size: 28px;
   font-weight: 700;
+  margin-bottom: 32px;
 }

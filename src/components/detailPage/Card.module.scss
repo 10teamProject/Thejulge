@@ -1,0 +1,56 @@
+.card_container {
+  width: 312px;
+  height: 349px;
+  border: 1px solid #e5e4e7;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  gap: 20px;
+}
+
+.shot_img {
+  width: 280px;
+  height: 160px;
+  border-radius: 12px;
+}
+
+.shop_name {
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 25px;
+}
+
+.workAt {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.address {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.hourlPay {
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card_container span {
+  background-color: #ffd43b;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 17px;
+  color: #ffffff;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
