@@ -1,6 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import axios from 'axios';
-import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -8,8 +7,7 @@ import { useForm } from 'react-hook-form';
 import Modal from '@/components/auth/ErrorModal';
 import Input from '@/components/auth/InputComponents';
 import RadioGroup from '@/components/auth/RadioButton';
-import { useAuth } from '@/contexts/AuthProvider';
-import { LoginUser } from '@/pages/api/LoginUser';
+import { useAutoLogin } from '@/hooks/useAutoLogin';
 import { SignupUser } from '@/pages/api/SignupUser';
 import { signUpSchema } from '@/utils/validation/Schema';
 
@@ -26,7 +24,7 @@ function SignUpForm() {
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
-  const { setUser, setToken } = useAuth();
+  const autoLogin = useAutoLogin();
 
   const {
     handleSubmit,
@@ -43,26 +41,10 @@ function SignUpForm() {
       const requestData = { email, password, type };
       const signupResponse = await SignupUser(requestData);
 
-      // 회원가입 성공 (201 상태 코드)
       if (signupResponse?.status === 201) {
-        try {
-          const loginResponse = await LoginUser({ email, password });
-          if (loginResponse && loginResponse.item && loginResponse.item.token) {
-            Cookies.set('token', loginResponse.item.token, { expires: 7 });
-            setToken(loginResponse.item.token);
-            setUser(loginResponse.item.user.item);
-            setModalMessage('회원가입에 성공했습니다. 자동으로 로그인됩니다.');
-          } else {
-            throw new Error('로그인 실패');
-          }
-        } catch (loginError) {
-          console.error('자동 로그인 실패:', loginError);
-          setModalMessage(
-            '회원가입에 성공했지만 자동 로그인에 실패했습니다. 수동으로 로그인해주세요.',
-          );
-        }
+        const loginResult = await autoLogin(email, password);
+        setModalMessage(loginResult.message);
       } else {
-        // 201이 아닌 다른 상태 코드인 경우
         throw new Error('회원가입 실패');
       }
     } catch (error) {
