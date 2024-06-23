@@ -69,13 +69,13 @@ export default function DropDown({
   const [isOpen, setIsOpen] = useState(false);
   const inputRef = useRef<HTMLDivElement>(null);
 
-  function handleInputClick() {
+  const handleInputClick = () => {
     setIsOpen((prevIsOpen) => !prevIsOpen);
-  }
+  };
 
-  function handleBlur() {
+  const handleBlur = () => {
     setIsOpen(false);
-  }
+  };
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
