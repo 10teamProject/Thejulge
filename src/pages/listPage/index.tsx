@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+
 import styles from './ListPage.module.scss';
 import NoticeCard from '@/components/listPage/NoticeCard';
 import FilterDropdown from '@/components/listPage/FilterDropdown';
