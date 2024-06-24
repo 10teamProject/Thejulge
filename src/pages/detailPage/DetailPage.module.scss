@@ -74,6 +74,9 @@
   line-height: 17px;
   color: #ffffff;
   padding: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .startsAt {
@@ -110,6 +113,16 @@
   font-size: 16px;
   font-weight: 700;
   cursor: pointer;
+  &.true {
+    background-color: #ffffff;
+    color: #ffd43b;
+    border: 1px solid #ffd43b;
+  }
+
+  &.false {
+    background-color: #ffd43b;
+    color: #ffffff;
+  }
 }
 
 .notice_description {
@@ -143,5 +156,5 @@
 .notice_container > h1 {
   font-size: 28px;
   font-weight: 700;
-  margin-bottom: 32px;
+  padding-bottom: 32px;
 }

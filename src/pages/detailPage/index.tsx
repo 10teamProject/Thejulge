@@ -5,8 +5,14 @@ import location from '@/public/assets/images/location.png';
 import time from '@/public/assets/images/timers.png';
 import styles from './DetailPage.module.scss';
 import Card from '@/components/detailPage/Card';
+import { useState } from 'react';
 
 function DetailPage() {
+  const [isApplied, setIsApplied] = useState(false);
+  const applyButton = () => {
+    setIsApplied(!isApplied);
+  };
+
   return (
     <>
       <div className={styles.datail_container}>
@@ -41,7 +47,12 @@ function DetailPage() {
                 쉬운 편에 속하는 가게입니다
               </p>
               <div>
-                <button className={styles.button}>신청하기</button>
+                <button
+                  className={`${styles.button} ${isApplied ? styles.true : styles.false}`}
+                  onClick={applyButton}
+                >
+                  {isApplied ? '취소하기' : '신청하기'}
+                </button>
               </div>
             </div>
           </div>
@@ -58,7 +69,7 @@ function DetailPage() {
       </div>
       <div className={styles.notice_container}>
         <h1>최근에 본 공고</h1>
-        <div className="">
+        <div>
           <Card />
         </div>
       </div>
