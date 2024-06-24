@@ -36,3 +36,26 @@
   color: red;
   font-size: 12px;
 }
+
+/* Chrome, Safari, Edge, Opera */
+.input::-webkit-outer-spin-button,
+.input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox  */
+.input[type='number'] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+.textarea {
+  resize: none;
+  height: 153px;
+  width: 100%;
+}
+
+.storeRegisterInput {
+  width: 100%;
+}

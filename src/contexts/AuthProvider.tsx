@@ -80,7 +80,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   };
 
   if (!isLoaded) {
-    return null; // 또는 로딩 인디케이터
+    return null;
   }
 
   return (
