@@ -1,0 +1,89 @@
+.input {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  cursor: pointer;
+  border: 1px solid #cbc9cf;
+  font-size: 13px;
+  margin-bottom: 15px;
+  line-height: 22px;
+}
+
+.input:hover,
+.input:focus {
+  border-color: #ffe854;
+}
+
+.placeholder {
+  color: grey;
+}
+
+.arrow {
+  transform: rotate(180deg);
+  transition: transform 0.2s ease;
+}
+
+.opened .arrow {
+  transform: rotate(0);
+}
+
+.options {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  left: 0;
+  z-index: 1;
+  overflow-y: scroll;
+  background-color: #fff;
+  border-radius: 10px;
+  transform: scaleY(0);
+  transform-origin: top center;
+  transition: transform 0.2s ease-in-out;
+  border: 1px solid #e5e4e7;
+  box-shadow: 0px 4px 25px 0px #0000001a;
+  height: 230px;
+}
+
+.options::-webkit-scrollbar {
+  width: 10px;
+}
+.options::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+.options::-webkit-scrollbar-thumb {
+  background-color: #ffd43b;
+  border-radius: 10px;
+}
+.options::-webkit-scrollbar-button {
+  display: none;
+}
+
+.opened .options {
+  transform: scaleY(1);
+}
+
+.option {
+  padding: 10px 15px;
+  cursor: pointer;
+}
+
+.option:not(:last-child) {
+  border-bottom: 1px solid #e5e4e7;
+}
+
+.option:first-child {
+  padding-top: 15px;
+}
+
+.option:last-child {
+  padding-bottom: 15px;
+}
+
+.option.selected,
+.option:hover {
+  background-color: #fff3bf;
+}
