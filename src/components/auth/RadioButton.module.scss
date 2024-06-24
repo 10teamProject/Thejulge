@@ -50,7 +50,7 @@
 }
 
 .radioInput:focus + .radioButton {
-  box-shadow: 0 0 0 3px #ffec99;
+  box-shadow: 0 0 0 3px var(--yellow2);
 }
 
 .errorMessage {

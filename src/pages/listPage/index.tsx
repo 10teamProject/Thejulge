@@ -1,14 +1,13 @@
-import Image from 'next/image';
 import { useState } from 'react';
 
+import FilterDropdown from '@/components/listPage/FilterDropdown';
 import NoticeCard from '@/components/listPage/NoticeCard';
-import X from '@/public/assets/images/black_x.png';
 
 import styles from './ListPage.module.scss';
 
-const ListPage = () => {
+const ListPage: React.FC = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [isFilterOpen, setisFilterOpen] = useState(false);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [label, setLabel] = useState('마감임박순');
 
   const sortOptions = [
@@ -55,21 +54,11 @@ const ListPage = () => {
           </div>
           <div
             className={styles.detailFilter}
-            onClick={() => setisFilterOpen(!isFilterOpen)}
+            onClick={() => setIsFilterOpen(!isFilterOpen)}
           >
             상세 필터
             {isFilterOpen && (
-              <div className={styles.filterContainer}>
-                <div className={styles.fliterTop}>
-                  상세필터
-                  <Image
-                    src={X}
-                    alt="X"
-                    className={styles.xImage}
-                    onClick={() => setisFilterOpen(!isFilterOpen)}
-                  />
-                </div>
-              </div>
+              <FilterDropdown setIsFilterOpen={setIsFilterOpen} />
             )}
           </div>
         </div>
