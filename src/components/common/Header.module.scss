@@ -10,7 +10,7 @@
 .logo {
   font-size: 1.5rem;
   font-weight: bold;
-  color: #fcc419;
+  color: var(--yellow5);
   text-decoration: none;
 }
 
@@ -35,12 +35,12 @@
 
     &:focus {
       outline: none;
-      border-color: #fcc419;
+      border-color: var(--yellow5);
       box-shadow: 0 0 0 2px rgba(252, 196, 25, 0.2);
     }
     &:hover {
       outline: none;
-      border-color: #fcc419;
+      border-color: var(--yellow5);
       box-shadow: 0 0 0 2px rgba(252, 196, 25, 0.2);
     }
   }
@@ -62,7 +62,7 @@
     color: #111322;
 
     &:hover {
-      color: #fcc419;
+      color: var(--yellow5);
     }
   }
 }
