@@ -47,7 +47,50 @@
   border: 1px solid #e5e4e7;
   border-radius: 6px;
   overflow: auto;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  padding: 10px;
 }
+.locationOption {
+  text-align: center;
+  cursor: pointer;
+  font-family: 'Spoqa Han Sans Neo';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 22px;
+  color: #111322;
+}
+
+.selectedTags {
+  margin-top: 20px;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  margin: 3px;
+  justify-content: center;
+  align-items: center;
+  padding: 6px 10px;
+  gap: 4px;
+  background: #fff9db;
+  border-radius: 20px;
+
+  font-family: 'Spoqa Han Sans Neo';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 18px;
+  color: var(--yellow5);
+}
+
+.tagClose {
+  cursor: pointer;
+  font-weight: bold;
+}
+
 .line {
   width: 350px;
   height: 2px;

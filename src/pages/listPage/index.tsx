@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import styles from './ListPage.module.scss';
 import NoticeCard from '@/components/listPage/NoticeCard';
-import FilterDropdown from '@/components/listPage/filterDropdown';
+import FilterDropdown from '@/components/listPage/FilterDropdown';
 
-const ListPage = () => {
+const ListPage: React.FC = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [isFilterOpen, setisFilterOpen] = useState(false);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [label, setLabel] = useState('마감임박순');
 
   const sortOptions = [
@@ -52,10 +52,12 @@ const ListPage = () => {
           </div>
           <div
             className={styles.detailFilter}
-            onClick={() => setisFilterOpen(!isFilterOpen)}
+            onClick={() => setIsFilterOpen(!isFilterOpen)}
           >
             상세 필터
-            {isFilterOpen && <FilterDropdown />}
+            {isFilterOpen && (
+              <FilterDropdown setIsFilterOpen={setIsFilterOpen} />
+            )}
           </div>
         </div>
       </div>
