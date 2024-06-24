@@ -80,9 +80,11 @@ const ListPage: React.FC<ListPageProps> = ({ initialNotices }) => {
       <div className={styles.customContainer}>
         <div className={styles.customSection}>
           <h2 className={styles.title}>맞춤 공고</h2>
-          {notices.map((notice) => (
-            <NoticeCard key={notice.id} notice={notice} />
-          ))}
+          <div className={styles.fitNotice}>
+            {notices.map((notice) => (
+              <NoticeCard key={notice.id} notice={notice} />
+            ))}
+          </div>
         </div>
       </div>
       <div className={styles.container}>
