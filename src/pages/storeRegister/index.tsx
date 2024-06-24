@@ -5,7 +5,8 @@ import DropDown, {
   addressOptions,
   categoryOptions,
 } from '@/components/dropDown/DropDown';
-import styles from '@/components/storeRegister/StoreRegister.module.scss';
+import styles from './StoreRegister.module.scss';
+import ImageUpload from '@/components/storeRegister/ImageUpload';
 
 export default function StoreRegister() {
   const [formValue, setFormValue] = useState<{ [key: string]: string }>({});
@@ -89,7 +90,7 @@ export default function StoreRegister() {
         </div>
         <div>
           <label>가게 이미지</label>
-          {/* 이미지 컴포넌트 추가 */}
+          <ImageUpload />
         </div>
         <div>
           <Input
