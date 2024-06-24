@@ -7,6 +7,12 @@ import styles from './DetailPage.module.scss';
 import Card from '@/components/detailPage/Card';
 import { useEffect, useState } from 'react';
 import { instance } from '../api/AxiosInstance';
+import {
+  calculateHourlyPayIncrease,
+  formatDate,
+  calculateEndTime,
+} from '@/utils/NoticeCard/CalculateThings';
+import { useRouter } from 'next/router';
 
 interface Props {
   shopid: string;
@@ -25,7 +31,7 @@ interface StoreData {
         category: string;
         name: string;
         imageUrl: string;
-
+        originalHourlyPay: number;
         address1: string;
         address2?: string;
         description: string;
@@ -34,20 +40,51 @@ interface StoreData {
   };
 }
 
+const initialStoreData: StoreData = {
+  item: {
+    closed: false,
+    hourlyPay: 0,
+    description: '',
+    startsAt: '',
+    workhour: 0,
+    shop: {
+      item: {
+        category: '',
+        name: '',
+        imageUrl: '',
+        originalHourlyPay: 0,
+        address1: '',
+        address2: '',
+        description: '',
+      },
+    },
+  },
+};
+
 function DetailPage({ shopid, noticeid }: Props) {
-  const [storeData, setStoreData] = useState<StoreData | null>(null);
+  const [storeData, setStoreData] = useState<StoreData>(initialStoreData);
   const [isApplied, setIsApplied] = useState(false);
-  const applyButton = () => {
-    setIsApplied(!isApplied);
-  };
   console.log(storeData);
 
+  const increaseRate = calculateHourlyPayIncrease(
+    storeData.item.shop.item.originalHourlyPay,
+    storeData.item.hourlyPay,
+  );
+
+  const startTime = formatDate(storeData.item.startsAt);
+  const endTime = calculateEndTime(
+    storeData.item.startsAt,
+    storeData.item.workhour,
+  );
+
+  const handleApply = () => {
+    setIsApplied(!isApplied);
+  };
   async function getData() {
     // const res = await instance.get(`/shops/${shopid}/notices/${noticeid}`);
     const res = await instance.get(
-      // 샘플 데이터 주소
       `/shops/63fcc375-5d0a-4ba4-ac5b-101b03973c74/notices/2ad3ac93-0054-442e-a882-d6cce8c10470`,
-    );
+    ); // 샘플 데이터 주소
     const nextRes = res.data;
     setStoreData(nextRes);
   }
@@ -55,10 +92,6 @@ function DetailPage({ shopid, noticeid }: Props) {
   useEffect(() => {
     getData();
   }, []);
-
-  if (storeData === null) {
-    return; // 처음에 null이 있으면 화면에 렌더링 오류가 발생할 수 있으니 if문을 줘서 오류발생을 막음
-  }
 
   return (
     <>
@@ -76,14 +109,18 @@ function DetailPage({ shopid, noticeid }: Props) {
             <div className={styles.shop_contents}>
               <h1>시급</h1>
               <div className={styles.shop_hourlPay}>
-                {storeData.item.hourlyPay}
-                <span>
-                  기존 시급보다 50% <Image src={arrow} alt="상승" />
-                </span>
+                {storeData.item.hourlyPay}원
+                {storeData.item.shop.item.originalHourlyPay <= // 기존 금액이 현재 금액보다 작으면 화면에 렌더링
+                  storeData.item.hourlyPay && (
+                  <span>
+                    기존 시급보다 {increaseRate}%
+                    <Image src={arrow} alt="상승" />
+                  </span>
+                )}
               </div>
               <div className={styles.startsAt}>
                 <Image src={time} alt="근무일" />
-                {storeData.item.startsAt} ({storeData.item.workhour}시간)
+                {startTime} ~ {endTime} ({storeData.item.workhour}시간)
               </div>
               <div className={styles.address}>
                 <Image src={location} alt="위치" />
@@ -93,7 +130,7 @@ function DetailPage({ shopid, noticeid }: Props) {
               <div>
                 <button
                   className={`${styles.button} ${isApplied ? styles.true : styles.false}`}
-                  onClick={applyButton}
+                  onClick={handleApply}
                 >
                   {isApplied ? '취소하기' : '신청하기'}
                 </button>
