@@ -147,3 +147,9 @@ table {
   border-collapse: collapse;
   border-spacing: 0;
 }
+:root {
+  --yellow2: #ffec99;
+  --yellow3: #ffe066;
+  --yellow4: #ffd43b;
+  --yellow5: #fcc419;
+}

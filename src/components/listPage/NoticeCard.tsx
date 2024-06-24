@@ -1,8 +1,8 @@
 import Image from 'next/image';
 
-import arrow from '../../../public/assets/images/arrow.png';
-import location from '../../../public/assets/images/location.png';
-import timer from '../../../public/assets/images/timers.png';
+import arrow from '@/public/assets/images/arrow.png';
+import location from '@/public/assets/images/location.png';
+import timer from '@/public/assets/images/timers.png';
 import styles from './NoticeCard.module.scss';
 
 export default function NoticeCard() {
