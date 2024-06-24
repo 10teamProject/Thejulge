@@ -2,7 +2,7 @@ import Image from 'next/image';
 import cameraImg from '@/public/assets/icon/icon_camera.svg';
 
 import styles from './ImageUpload.module.scss';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 
 export default function ImageUpload() {
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string>('');
@@ -14,6 +14,14 @@ export default function ImageUpload() {
       setImagePreviewUrl(imageUrl);
     }
   };
+
+  useEffect(() => {
+    return () => {
+      if (imagePreviewUrl) {
+        URL.revokeObjectURL(imagePreviewUrl);
+      }
+    };
+  }, [imagePreviewUrl]);
 
   return (
     <>
