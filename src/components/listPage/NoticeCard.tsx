@@ -8,27 +8,13 @@ import {
   calculateEndTime,
   calculateHourlyPayIncrease,
   formatDate,
-} from '@/utils/NoticeCard/CalculateThings'; // 함수 가져오기
+} from '@/utils/NoticeCard/CalculateThings';
 
 import styles from './NoticeCard.module.scss';
+import { Notice } from '@/utils/NoticeCard/NoticesType';
 
 interface NoticeCardProps {
-  notice: {
-    id: string;
-    hourlyPay: number;
-    startsAt: string;
-    workhour: number;
-    description: string;
-    closed: boolean;
-    shop: {
-      id: string;
-      name: string;
-      category: string;
-      address1: string;
-      imageUrl: string;
-      originalHourlyPay: number;
-    };
-  };
+  notice: Notice;
 }
 
 const NoticeCard: React.FC<NoticeCardProps> = ({ notice }) => {
