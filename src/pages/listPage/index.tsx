@@ -1,69 +1,92 @@
 import { GetServerSideProps } from 'next';
 import { useEffect, useState } from 'react';
+import Pagination from 'react-js-pagination';
 
 import FilterDropdown from '@/components/listPage/FilterDropdown';
 import NoticeCard from '@/components/listPage/NoticeCard';
+import { Notice, NoticeResponse } from '@/utils/NoticeCard/NoticesType';
+import paginationStyles from '@/utils/Pagination.module.scss';
 
 import { instance } from '../api/AxiosInstance';
 import styles from './ListPage.module.scss';
 
-interface Notice {
-  id: string;
-  hourlyPay: number;
-  startsAt: string;
-  workhour: number;
-  description: string;
-  closed: boolean;
-  shop: {
-    id: string;
-    name: string;
-    category: string;
-    address1: string;
-    imageUrl: string;
-    originalHourlyPay: number;
-  };
-}
+type Props = {
+  initialNotices: Notice[];
+  totalCount: number;
+  currentPage: number;
+};
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
+export const getServerSideProps: GetServerSideProps<Props> = async (
+  context,
+) => {
+  const currentPage = context.query.page
+    ? parseInt(context.query.page as string, 10)
+    : 1;
+  const limit = 6;
+  const offset = (currentPage - 1) * limit;
+
   try {
-    const response = await instance.get('/notices');
-    const data = response.data.items.map((item: any) => ({
-      id: item.item.id,
-      hourlyPay: item.item.hourlyPay,
-      startsAt: item.item.startsAt,
-      workhour: item.item.workhour,
-      description: item.item.description,
-      closed: item.item.closed,
-      shop: {
-        id: item.item.shop.item.id,
-        name: item.item.shop.item.name,
-        category: item.item.shop.item.category,
-        address1: item.item.shop.item.address1,
-        imageUrl: item.item.shop.item.imageUrl,
-        originalHourlyPay: item.item.shop.item.originalHourlyPay,
+    const response = await instance.get<NoticeResponse>('/notices', {
+      params: {
+        offset,
+        limit,
       },
-    }));
+    });
+    const initialNotices: Notice[] = response.data.items.map(
+      (item) => item.item,
+    );
+    const totalCount = response.data.count;
 
-    return { props: { initialNotices: data } };
+    return {
+      props: {
+        initialNotices,
+        totalCount,
+        currentPage,
+      },
+    };
   } catch (error) {
-    console.error('Failed to fetch notices', error);
-    return { props: { initialNotices: [] } };
+    console.error(error);
+    return {
+      props: {
+        initialNotices: [],
+        totalCount: 0,
+        currentPage,
+      },
+    };
   }
 };
 
-interface ListPageProps {
-  initialNotices: Notice[];
-}
-const ListPage: React.FC<ListPageProps> = ({ initialNotices }) => {
+const ListPage: React.FC<Props> = ({
+  initialNotices,
+  totalCount,
+  currentPage,
+}) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [label, setLabel] = useState('마감임박순');
   const [notices, setNotices] = useState<Notice[]>(initialNotices);
-  useEffect(() => {
-    console.log('Initial Notices:', initialNotices); // 데이터 확인
+  const [page, setPage] = useState(currentPage);
+  const itemsPerPage = 6;
 
-    console.log(' Notices:', notices); // 데이터 확인
-  }, [initialNotices]);
+  useEffect(() => {
+    const fetchNotices = async (page: number) => {
+      const offset = (page - 1) * itemsPerPage;
+      try {
+        const response = await instance.get<NoticeResponse>('/notices', {
+          params: {
+            offset,
+            limit: itemsPerPage,
+          },
+        });
+        setNotices(response.data.items.map((item) => item.item));
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchNotices(page);
+  }, [page]);
+
   const sortOptions = [
     { key: 'time', label: '마감임박순' },
     { key: 'pay', label: '시급많은순' },
@@ -76,13 +99,17 @@ const ListPage: React.FC<ListPageProps> = ({ initialNotices }) => {
     setIsDropdownOpen(false);
   };
 
+  const handlePageChange = (pageNumber: number) => {
+    setPage(pageNumber);
+  };
+
   return (
     <>
       <div className={styles.customContainer}>
         <div className={styles.customSection}>
           <h2 className={styles.title}>맞춤 공고</h2>
           <div className={styles.fitNotice}>
-            {notices.map((notice) => (
+            {initialNotices.map((notice) => (
               <NoticeCard key={notice.id} notice={notice} />
             ))}
           </div>
@@ -120,8 +147,25 @@ const ListPage: React.FC<ListPageProps> = ({ initialNotices }) => {
             )}
           </div>
         </div>
+        <div className={styles.notices}>
+          {notices.map((notice) => (
+            <NoticeCard key={notice.id} notice={notice} />
+          ))}
+        </div>
+        <Pagination
+          activePage={page}
+          itemsCountPerPage={itemsPerPage}
+          totalItemsCount={totalCount}
+          pageRangeDisplayed={7}
+          onChange={handlePageChange}
+          innerClass={paginationStyles.pagination}
+          itemClass={paginationStyles['page-item']}
+          linkClass={paginationStyles['page-link']}
+          activeClass={paginationStyles.active}
+        />
       </div>
     </>
   );
 };
+
 export default ListPage;

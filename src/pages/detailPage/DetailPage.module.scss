@@ -47,7 +47,7 @@
   padding-top: 16px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  justify-content: space-between;
 }
 
 .shop_contents > h1 {
@@ -76,7 +76,6 @@
   padding: 12px;
   display: flex;
   align-items: center;
-  gap: 8px;
 }
 
 .startsAt {
@@ -122,6 +121,7 @@
   &.false {
     background-color: #ffd43b;
     color: #ffffff;
+    border: 1px solid #ffffff; // 하얀 테두리를 넣은 이유 : 테두리를 안넣으니 화면이 움직임
   }
 }
 

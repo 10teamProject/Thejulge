@@ -21,6 +21,7 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.52.0",
+    "react-js-pagination": "^3.0.3",
     "sass": "^1.77.5",
     "yup": "^1.4.0"
   },
@@ -31,6 +32,7 @@
     "@types/node": "^20.14.8",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@types/react-js-pagination": "^3.0.7",
     "eslint": "^9.5.0",
     "eslint-config-next": "14.2.4",
     "eslint-config-prettier": "^9.1.0",
