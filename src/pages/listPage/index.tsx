@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react';
 import { GetServerSideProps } from 'next';
+import { useEffect, useState } from 'react';
 
-import styles from './ListPage.module.scss';
-import NoticeCard from '@/components/listPage/NoticeCard';
 import FilterDropdown from '@/components/listPage/FilterDropdown';
+import NoticeCard from '@/components/listPage/NoticeCard';
+
 import { instance } from '../api/AxiosInstance';
+import styles from './ListPage.module.scss';
 
 interface Notice {
   id: string;
