@@ -1,9 +1,11 @@
 import Image from 'next/image';
-import styles from './Card.module.scss';
+
+import arrow from '@/public/assets/images/arrow.png';
+import address from '@/public/assets/images/location.png';
 import logo from '@/public/assets/images/logo.png';
 import time from '@/public/assets/images/timers.png';
-import address from '@/public/assets/images/location.png';
-import arrow from '@/public/assets/images/arrow.png';
+
+import styles from './Card.module.scss';
 
 function Card() {
   return (

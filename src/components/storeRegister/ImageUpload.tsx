@@ -1,8 +1,9 @@
 import Image from 'next/image';
+import { ChangeEvent, useEffect, useState } from 'react';
+
 import cameraImg from '@/public/assets/icon/icon_camera.svg';
 
 import styles from './ImageUpload.module.scss';
-import { ChangeEvent, useEffect, useState } from 'react';
 
 export default function ImageUpload() {
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string>('');
@@ -31,7 +32,7 @@ export default function ImageUpload() {
             <div
               className={styles.imagePreview}
               style={{ backgroundImage: `url(${imagePreviewUrl})` }}
-            ></div>
+            />
           ) : (
             <>
               <Image src={cameraImg} alt="카메라 이미지" />

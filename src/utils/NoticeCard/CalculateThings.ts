@@ -25,7 +25,7 @@ export const calculateEndTime = (
 ) => {
   const dateObj = new Date(startTimeString);
   const millisecondsPerHour = 60 * 60 * 1000;
-  let currentMilliseconds = dateObj.getTime();
+  const currentMilliseconds = dateObj.getTime();
   const targetMilliseconds =
     currentMilliseconds + workHours * millisecondsPerHour;
   const newDateObj = new Date(targetMilliseconds);
