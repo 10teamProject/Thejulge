@@ -1,8 +1,12 @@
 import Image from 'next/image';
+import { useState } from 'react';
+
+import Card from '@/components/detailPage/Card';
 import arrow from '@/public/assets/images/arrow.png';
 import logo from '@/public/assets/images/biglogo.png';
 import location from '@/public/assets/images/location.png';
 import time from '@/public/assets/images/timers.png';
+
 import styles from './DetailPage.module.scss';
 import Card from '@/components/detailPage/Card';
 import { useEffect, useState } from 'react';
