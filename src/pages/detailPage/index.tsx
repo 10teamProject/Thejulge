@@ -67,21 +67,19 @@ const initialStoreData: StoreData = {
 
 function DetailPage({ shopid, noticeid }: Props) {
   const [storeData, setStoreData] = useState<StoreData>(initialStoreData);
+  const { hourlyPay, startsAt, workhour, description } = storeData.item; //description은 이름이 겹쳐서 공고 description만 변수선언
+  const { category, name, imageUrl, address1, originalHourlyPay } =
+    storeData.item.shop.item;
+
   const [isApplied, setIsApplied] = useState(false);
   const [recentNotices, setRecentNotices] = useState<string[]>([]);
 
   console.log(recentNotices);
 
-  const increaseRate = calculateHourlyPayIncrease(
-    storeData.item.shop.item.originalHourlyPay,
-    storeData.item.hourlyPay,
-  );
+  const increaseRate = calculateHourlyPayIncrease(originalHourlyPay, hourlyPay);
 
-  const startTime = formatDate(storeData.item.startsAt);
-  const endTime = calculateEndTime(
-    storeData.item.startsAt,
-    storeData.item.workhour,
-  );
+  const startTime = formatDate(startsAt);
+  const endTime = calculateEndTime(startsAt, workhour);
 
   const handleApply = () => {
     setIsApplied(!isApplied);
@@ -104,8 +102,8 @@ function DetailPage({ shopid, noticeid }: Props) {
       <div className={styles.datail_container}>
         <div className={styles.shop_box}>
           <div className={styles.shop_title}>
-            <h1>{storeData.item.shop.item.category}</h1>
-            <h2>{storeData.item.shop.item.name}</h2>
+            <h1>{category}</h1>
+            <h2>{name}</h2>
           </div>
 
           <div className={styles.shop_info}>
@@ -115,9 +113,8 @@ function DetailPage({ shopid, noticeid }: Props) {
             <div className={styles.shop_contents}>
               <h1>시급</h1>
               <div className={styles.shop_hourlPay}>
-                {storeData.item.hourlyPay}원
-                {storeData.item.shop.item.originalHourlyPay < // 기존 금액이 현재 금액보다 작으면 화면에 렌더링
-                  storeData.item.hourlyPay && (
+                {hourlyPay}원
+                {originalHourlyPay < hourlyPay && ( // 기존 금액이 현재 금액보다 작으면 화면에 렌더링
                   <span>
                     기존 시급보다 {increaseRate}%
                     <Image src={arrow} alt="상승" />
@@ -126,11 +123,11 @@ function DetailPage({ shopid, noticeid }: Props) {
               </div>
               <div className={styles.startsAt}>
                 <Image src={time} alt="근무일" />
-                {startTime} ~ {endTime} ({storeData.item.workhour}시간)
+                {startTime} ~ {endTime} ({workhour}시간)
               </div>
               <div className={styles.address}>
                 <Image src={location} alt="위치" />
-                {storeData.item.shop.item.address1}
+                {address1}
               </div>
               <p>{storeData.item.shop.item.description}</p>
               <div>
@@ -146,7 +143,7 @@ function DetailPage({ shopid, noticeid }: Props) {
 
           <div className={styles.notice_description}>
             <h1>공고설명</h1>
-            <p>{storeData.item.description}</p>
+            <p>{description}</p>
           </div>
         </div>
       </div>
@@ -154,7 +151,7 @@ function DetailPage({ shopid, noticeid }: Props) {
         <h1>최근에 본 공고</h1>
         <div>
           <Card notice={storeData} />
-          {/* 렌더링 잘되는지 storeData를 넘어봄 나중에 로컬 스토리지에 있는 데이터를 넘겨줘야함*/}
+          {/* 렌더링 잘되는지 storeData를 넣어봄 나중에 로컬 스토리지에 있는 데이터를 넘겨줘야함*/}
         </div>
       </div>
     </>
