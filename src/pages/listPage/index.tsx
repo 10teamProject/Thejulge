@@ -4,10 +4,10 @@ import Pagination from 'react-js-pagination';
 
 import FilterDropdown from '@/components/listPage/FilterDropdown';
 import NoticeCard from '@/components/listPage/NoticeCard';
+import { Notice, NoticeResponse } from '@/utils/NoticeCard/NoticesType';
 
 import { instance } from '../api/AxiosInstance';
 import styles from './ListPage.module.scss';
-import { Notice, NoticeResponse } from '@/utils/NoticeCard/NoticesType';
 
 type Props = {
   initialNotices: Notice[];
@@ -56,7 +56,6 @@ const ListPage: React.FC<Props> = ({ initialNotices }) => {
     { key: 'hour', label: '시간적은순' },
     { key: 'shop', label: '가나다순' },
   ];
-
   const handleSortChange = (newSortBy: string, newLabel: string) => {
     setLabel(newLabel);
     setIsDropdownOpen(false);
@@ -114,9 +113,11 @@ const ListPage: React.FC<Props> = ({ initialNotices }) => {
             )}
           </div>
         </div>
-        {notices.map((notice) => (
-          <NoticeCard key={notice.id} notice={notice} />
-        ))}
+        <div className={styles.notices}>
+          {notices.map((notice) => (
+            <NoticeCard key={notice.id} notice={notice} />
+          ))}
+        </div>
       </div>
     </>
   );

@@ -9,9 +9,9 @@ import {
   calculateHourlyPayIncrease,
   formatDate,
 } from '@/utils/NoticeCard/CalculateThings';
+import { Notice } from '@/utils/NoticeCard/NoticesType';
 
 import styles from './NoticeCard.module.scss';
-import { Notice } from '@/utils/NoticeCard/NoticesType';
 
 interface NoticeCardProps {
   notice: Notice;
