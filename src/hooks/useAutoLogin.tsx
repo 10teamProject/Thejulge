@@ -1,4 +1,3 @@
-import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
@@ -23,9 +22,12 @@ export const useAutoLogin = () => {
     try {
       const loginResponse = await LoginUser({ email, password });
       if (loginResponse && loginResponse.item && loginResponse.item.token) {
-        Cookies.set('token', loginResponse.item.token, { expires: 7 });
         setToken(loginResponse.item.token);
-        setUser(loginResponse.item.user.item);
+        setUser({
+          id: loginResponse.item.user.item.id,
+          email: loginResponse.item.user.item.email,
+          type: loginResponse.item.user.item.type as 'employee' | 'employer',
+        });
         setModalMessage('회원가입에 성공했습니다. 자동으로 로그인됩니다.');
         setIsModalOpen(true);
         return {
