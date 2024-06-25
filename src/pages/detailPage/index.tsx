@@ -72,12 +72,9 @@ function DetailPage({ shopid, noticeid }: Props) {
     storeData.item.shop.item;
 
   const [isApplied, setIsApplied] = useState(false);
-  const [recentNotices, setRecentNotices] = useState<string[]>([]);
-
-  console.log(recentNotices);
+  const [recentNotices, setRecentNotices] = useState<string[]>([]); // 로컬스토리지 담을 변수
 
   const increaseRate = calculateHourlyPayIncrease(originalHourlyPay, hourlyPay);
-
   const startTime = formatDate(startsAt);
   const endTime = calculateEndTime(startsAt, workhour);
 
@@ -85,16 +82,29 @@ function DetailPage({ shopid, noticeid }: Props) {
     setIsApplied(!isApplied);
   };
   async function getData() {
-    // const res = await instance.get(`/shops/${shopid}/notices/${noticeid}`);
-    const res = await instance.get(
-      `/shops/63fcc375-5d0a-4ba4-ac5b-101b03973c74/notices/3ddb7188-8ced-4021-9d07-663f98b5411b`,
-    ); // 샘플 데이터 주소
-    const nextRes = res.data;
-    setStoreData(nextRes);
+    try {
+      // const res = await instance.get(`/shops/${shopid}/notices/${noticeid}`);
+      const res = await instance.get(
+        `/shops/63fcc375-5d0a-4ba4-ac5b-101b03973c74/notices/3ddb7188-8ced-4021-9d07-663f98b5411b`,
+      ); // 샘플 데이터 주소
+      const nextRes = res.data;
+      setStoreData(nextRes);
+    } catch (error) {
+      console.log(error);
+    }
   }
+
+  //// 받아오는 로컬 스토리지 구현
+  const getLocalStorageData = () => {
+    const localData = localStorage.getItem('RECENT_NOTICES');
+    const recentNotices = localData ? JSON.parse(localData) : [];
+    setRecentNotices(recentNotices);
+    // console.log(recentNotices);
+  };
 
   useEffect(() => {
     getData();
+    getLocalStorageData();
   }, []);
 
   return (
@@ -149,9 +159,11 @@ function DetailPage({ shopid, noticeid }: Props) {
       </div>
       <div className={styles.notice_container}>
         <h1>최근에 본 공고</h1>
-        <div>
-          <Card notice={storeData} />
-          {/* 렌더링 잘되는지 storeData를 넣어봄 나중에 로컬 스토리지에 있는 데이터를 넘겨줘야함*/}
+        {/* 카드 컴포넌트에는 로컬 스토리지에 있는 데이터 배열을 넘겨줘야한다 */}
+        <div className={styles.card_container}>
+          {recentNotices.map((noticeData: any) => (
+            <Card notice={noticeData} />
+          ))}
         </div>
       </div>
     </>
