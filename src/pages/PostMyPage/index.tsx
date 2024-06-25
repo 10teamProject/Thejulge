@@ -4,9 +4,9 @@ import React from 'react';
 const PostMyPage = () => {
 
   return (
-    <>
-    <h1>안녕</h1>
-    </>
+    <main>
+      <h1>내 프로필</h1>
+    </main>
   );
  };
 
