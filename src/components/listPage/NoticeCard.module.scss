@@ -11,6 +11,7 @@
   border-radius: 12px;
 }
 .storeImage {
+  position: relative;
   width: 280px;
   height: 160px;
   border-radius: 12px;
@@ -69,4 +70,7 @@
   line-height: 18px;
   text-align: center;
   color: #ffffff;
+
+  overflow: hidden;
+  white-space: nowrap;
 }

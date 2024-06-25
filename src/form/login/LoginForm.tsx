@@ -1,6 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { AxiosError } from 'axios';
-import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -40,9 +39,12 @@ export default function LoginForm() {
       const response = await LoginUser(requestData);
       if (response && response.item && response.item.token) {
         console.log('로그인 성공');
-        Cookies.set('token', response.item.token, { expires: 7 });
         setToken(response.item.token);
-        setUser(response.item.user.item);
+        setUser({
+          id: response.item.user.item.id,
+          email: response.item.user.item.email,
+          type: response.item.user.item.type as 'employee' | 'employer',
+        });
         router.push('/');
       } else {
         throw new Error('토큰을 받지 못했습니다.');

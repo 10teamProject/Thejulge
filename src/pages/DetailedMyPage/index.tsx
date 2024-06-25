@@ -2,6 +2,7 @@ import React from 'react';
 import styles from './DetailedMyPage.module.scss';
 import { useRouter } from 'next/router';
 
+
 const DetailedMyPage = () => {
   const router = useRouter();
 
