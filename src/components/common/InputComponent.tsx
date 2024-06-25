@@ -15,7 +15,7 @@ export interface InputProps {
   onBlur?: (event: FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
   isTextArea?: boolean;
   required?: boolean;
-  errorMessage?: string;
+  error?: string;
 }
 
 const Input: React.FC<InputProps> = ({
@@ -28,12 +28,14 @@ const Input: React.FC<InputProps> = ({
   onKeyDown,
   onBlur,
   isTextArea,
-  errorMessage,
+  required,
+  error,
 }) => {
   return (
     <div className={styles.inputGroup}>
       <label className={styles.label} htmlFor={name}>
         {label}
+        {required && <span className={styles.required}>*</span>}
       </label>
       {isTextArea ? (
         <textarea
@@ -58,8 +60,8 @@ const Input: React.FC<InputProps> = ({
           onBlur={onBlur}
         />
       )}
-      {errorMessage && (
-        <span className={styles.errorMessage}>{errorMessage}</span>
+      {required && error && (
+        <span className={styles.errorMessage}>{error}</span>
       )}
     </div>
   );

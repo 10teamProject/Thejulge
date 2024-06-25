@@ -16,8 +16,9 @@ type DropDownProps = {
   value: string;
   options: Option[];
   onChange: (name: string, value: string) => void;
-  errorMessage?: string;
   placeholder?: string;
+  required?: boolean;
+  error?: string;
 };
 
 export const categoryOptions = [
@@ -66,6 +67,8 @@ export default function DropDown({
   options,
   onChange,
   placeholder,
+  required,
+  error,
 }: DropDownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const inputRef = useRef<HTMLDivElement>(null);
