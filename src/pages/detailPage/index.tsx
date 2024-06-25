@@ -15,35 +15,14 @@ import {
 
 import { instance } from '../api/AxiosInstance';
 import styles from './DetailPage.module.scss';
+import { NoticeItem, Notice } from '@/utils/NoticeCard/NoticesType';
 
 interface Props {
   shopid: string;
   noticeid: string;
 }
 
-interface StoreData {
-  item: {
-    id: string;
-    closed?: boolean;
-    hourlyPay: number;
-    description: string;
-    startsAt: string;
-    workhour: number;
-    shop: {
-      item: {
-        category: string;
-        name: string;
-        imageUrl: string;
-        originalHourlyPay: number;
-        address1: string;
-        address2?: string;
-        description: string;
-      };
-    };
-  };
-}
-
-const initialStoreData: StoreData = {
+const initialStoreData: NoticeItem = {
   item: {
     id: '',
     closed: false,
@@ -53,8 +32,9 @@ const initialStoreData: StoreData = {
     workhour: 0,
     shop: {
       item: {
-        category: '',
+        id: '',
         name: '',
+        category: '',
         imageUrl: '',
         originalHourlyPay: 0,
         address1: '',
@@ -63,16 +43,25 @@ const initialStoreData: StoreData = {
       },
     },
   },
+  links: [
+    {
+      rel: '',
+      description: '',
+      method: '',
+      href: '',
+    },
+  ],
 };
 
 function DetailPage({ shopid, noticeid }: Props) {
-  const [storeData, setStoreData] = useState<StoreData>(initialStoreData);
+  const [storeData, setStoreData] = useState<NoticeItem>(initialStoreData);
   const { hourlyPay, startsAt, workhour, description } = storeData.item; //description은 이름이 겹쳐서 공고 description만 변수선언
   const { category, name, imageUrl, address1, originalHourlyPay } =
     storeData.item.shop.item;
 
   const [isApplied, setIsApplied] = useState(false);
-  const [recentNotices, setRecentNotices] = useState<string[]>([]); // 로컬스토리지 담을 변수
+  const [recentNotices, setRecentNotices] = useState<Notice[]>([]); // 로컬스토리지 담을 변수
+  // console.log(recentNotices);
 
   const increaseRate = calculateHourlyPayIncrease(originalHourlyPay, hourlyPay);
   const startTime = formatDate(startsAt);
@@ -161,7 +150,7 @@ function DetailPage({ shopid, noticeid }: Props) {
         <h1>최근에 본 공고</h1>
         {/* 카드 컴포넌트에는 로컬 스토리지에 있는 데이터 배열을 넘겨줘야한다 */}
         <div className={styles.card_container}>
-          {recentNotices.map((noticeData: any) => (
+          {recentNotices.map((noticeData) => (
             <Card notice={noticeData} />
           ))}
         </div>

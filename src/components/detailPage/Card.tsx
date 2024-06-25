@@ -9,32 +9,15 @@ import {
   calculateHourlyPayIncrease,
   formatDate,
 } from '@/utils/NoticeCard/CalculateThings';
+import { Notice } from '@/utils/NoticeCard/NoticesType';
 
 import styles from './Card.module.scss';
 
-interface CardProps {
-  notice: {
-    id: string;
-    closed?: boolean;
-    hourlyPay: number;
-    description: string;
-    startsAt: string;
-    workhour: number;
-    shop: {
-      item: {
-        category: string;
-        name: string;
-        imageUrl: string;
-        originalHourlyPay: number;
-        address1: string;
-        address2?: string;
-        description: string;
-      };
-    };
-  };
+interface DetailCardProps {
+  notice: Notice;
 }
 
-const Card: React.FC<CardProps> = ({ notice }) => {
+const Card: React.FC<DetailCardProps> = ({ notice }) => {
   console.log('notice : ', notice);
   const { hourlyPay, startsAt, workhour } = notice;
   const { name, imageUrl, address1, originalHourlyPay } = notice.shop.item;
