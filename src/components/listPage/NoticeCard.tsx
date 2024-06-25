@@ -5,29 +5,74 @@ import location from '@/public/assets/images/location.png';
 import timer from '@/public/assets/images/timers.png';
 
 import styles from './NoticeCard.module.scss';
+import { useState } from 'react';
+import {
+  calculateHourlyPayIncrease,
+  formatDate,
+  calculateEndTime,
+} from '@/utils/NoticeCard/CalculateThings'; // 함수 가져오기
 
-export default function NoticeCard() {
+interface NoticeCardProps {
+  notice: {
+    id: string;
+    hourlyPay: number;
+    startsAt: string;
+    workhour: number;
+    description: string;
+    closed: boolean;
+    shop: {
+      id: string;
+      name: string;
+      category: string;
+      address1: string;
+      imageUrl: string;
+      originalHourlyPay: number;
+    };
+  };
+}
+
+const NoticeCard: React.FC<NoticeCardProps> = ({ notice }) => {
+  const { hourlyPay, startsAt, workhour, shop } = notice;
+  const { name, address1, imageUrl, originalHourlyPay } = shop;
+
+  const increaseRate = calculateHourlyPayIncrease(originalHourlyPay, hourlyPay);
+  const roundedIncreaseRate = Math.round(increaseRate);
+  const formattedStartTime = formatDate(startsAt);
+  const endTime = calculateEndTime(startsAt, workhour);
+
   return (
     <>
       <div className={styles.container}>
-        <img className={styles.storeImage} alt="가게 이미지" />
-        <h3 className={styles.storeName}>맛집</h3>
+        <div className={styles.storeImage}>
+          <Image
+            src={imageUrl}
+            fill
+            alt="가게 이미지"
+            style={{
+              objectFit: 'cover',
+            }}
+          />
+        </div>
+        <h3 className={styles.storeName}>{name}</h3>
         <div className={styles.detailSection}>
           <Image src={timer} alt="시간" />
-          <p className={styles.detail}>2023-02-31 15:00~18:00 (3시간)</p>
+          <p className={styles.detail}>
+            {formattedStartTime} ~ {endTime} ({workhour}시간)
+          </p>
         </div>
         <div className={styles.detailSection}>
           <Image src={location} alt="장소" style={{ margin: '0 2px 0 2px' }} />
-          <p className={styles.detail}>서울시 강남구</p>
+          <p className={styles.detail}>{address1}</p>
         </div>
         <div className={styles.detailSection}>
-          <p className={styles.price}>12,000원</p>
+          <p className={styles.price}>{hourlyPay}원</p>
           <div className={styles.badge}>
-            기존 시급보다 50%️️
+            기존 시급보다 {roundedIncreaseRate}%️️
             <Image src={arrow} alt="화살표" />
           </div>
         </div>
       </div>
     </>
   );
-}
+};
+export default NoticeCard;
