@@ -5,26 +5,43 @@ import Pagination from 'react-js-pagination';
 import FilterDropdown from '@/components/listPage/FilterDropdown';
 import NoticeCard from '@/components/listPage/NoticeCard';
 import { Notice, NoticeResponse } from '@/utils/NoticeCard/NoticesType';
+import paginationStyles from '@/utils/Pagination.module.scss';
 
 import { instance } from '../api/AxiosInstance';
 import styles from './ListPage.module.scss';
 
 type Props = {
   initialNotices: Notice[];
+  totalCount: number;
+  currentPage: number;
 };
 
 export const getServerSideProps: GetServerSideProps<Props> = async (
   context,
 ) => {
+  const currentPage = context.query.page
+    ? parseInt(context.query.page as string, 10)
+    : 1;
+  const limit = 6;
+  const offset = (currentPage - 1) * limit;
+
   try {
-    const response = await instance.get<NoticeResponse>('/notices');
+    const response = await instance.get<NoticeResponse>('/notices', {
+      params: {
+        offset,
+        limit,
+      },
+    });
     const initialNotices: Notice[] = response.data.items.map(
       (item) => item.item,
     );
+    const totalCount = response.data.count;
 
     return {
       props: {
         initialNotices,
+        totalCount,
+        currentPage,
       },
     };
   } catch (error) {
@@ -32,23 +49,43 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
     return {
       props: {
         initialNotices: [],
+        totalCount: 0,
+        currentPage,
       },
     };
   }
 };
 
-const ListPage: React.FC<Props> = ({ initialNotices }) => {
+const ListPage: React.FC<Props> = ({
+  initialNotices,
+  totalCount,
+  currentPage,
+}) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [label, setLabel] = useState('마감임박순');
   const [notices, setNotices] = useState<Notice[]>(initialNotices);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [page, setPage] = useState(currentPage);
   const itemsPerPage = 6;
 
   useEffect(() => {
-    console.log('Initial Notices:', initialNotices); // 데이터 확인
-    console.log('Notices:', notices); // 데이터 확인
-  }, [initialNotices, notices]);
+    const fetchNotices = async (page: number) => {
+      const offset = (page - 1) * itemsPerPage;
+      try {
+        const response = await instance.get<NoticeResponse>('/notices', {
+          params: {
+            offset,
+            limit: itemsPerPage,
+          },
+        });
+        setNotices(response.data.items.map((item) => item.item));
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchNotices(page);
+  }, [page]);
 
   const sortOptions = [
     { key: 'time', label: '마감임박순' },
@@ -56,18 +93,15 @@ const ListPage: React.FC<Props> = ({ initialNotices }) => {
     { key: 'hour', label: '시간적은순' },
     { key: 'shop', label: '가나다순' },
   ];
+
   const handleSortChange = (newSortBy: string, newLabel: string) => {
     setLabel(newLabel);
     setIsDropdownOpen(false);
   };
 
   const handlePageChange = (pageNumber: number) => {
-    setCurrentPage(pageNumber);
+    setPage(pageNumber);
   };
-
-  const indexOfLastNotice = currentPage * itemsPerPage;
-  const indexOfFirstNotice = indexOfLastNotice - itemsPerPage;
-  const currentNotices = notices.slice(indexOfFirstNotice, indexOfLastNotice);
 
   return (
     <>
@@ -75,7 +109,7 @@ const ListPage: React.FC<Props> = ({ initialNotices }) => {
         <div className={styles.customSection}>
           <h2 className={styles.title}>맞춤 공고</h2>
           <div className={styles.fitNotice}>
-            {notices.map((notice) => (
+            {initialNotices.map((notice) => (
               <NoticeCard key={notice.id} notice={notice} />
             ))}
           </div>
@@ -118,6 +152,17 @@ const ListPage: React.FC<Props> = ({ initialNotices }) => {
             <NoticeCard key={notice.id} notice={notice} />
           ))}
         </div>
+        <Pagination
+          activePage={page}
+          itemsCountPerPage={itemsPerPage}
+          totalItemsCount={totalCount}
+          pageRangeDisplayed={7}
+          onChange={handlePageChange}
+          innerClass={paginationStyles.pagination}
+          itemClass={paginationStyles['page-item']}
+          linkClass={paginationStyles['page-link']}
+          activeClass={paginationStyles.active}
+        />
       </div>
     </>
   );
