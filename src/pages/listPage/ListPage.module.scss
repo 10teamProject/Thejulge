@@ -111,3 +111,23 @@
   height: 34px;
   border-bottom: 1px solid #e5e4e7;
 }
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.paginationWrapper {
+  display: flex;
+  list-style: none;
+  padding: 0;
+}
+
+.pageItem {
+  margin: 0 5px;
+  cursor: pointer;
+}
+
+.activePage {
+  font-weight: bold;
+}

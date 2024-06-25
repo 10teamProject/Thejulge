@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import arrow from '@/public/assets/images/arrow.png';
 import location from '@/public/assets/images/location.png';
@@ -19,13 +19,16 @@ interface NoticeCardProps {
 
 const NoticeCard: React.FC<NoticeCardProps> = ({ notice }) => {
   const { hourlyPay, startsAt, workhour, shop } = notice;
-  const { name, address1, imageUrl, originalHourlyPay } = shop;
+  const { name, address1, imageUrl, originalHourlyPay } = shop.item;
 
   const increaseRate = calculateHourlyPayIncrease(originalHourlyPay, hourlyPay);
   const roundedIncreaseRate = Math.round(increaseRate);
   const formattedStartTime = formatDate(startsAt);
   const endTime = calculateEndTime(startsAt, workhour);
 
+  useEffect(() => {
+    console.log(shop);
+  }, [notice]);
   return (
     <>
       <div className={styles.container}>

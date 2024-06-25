@@ -1,5 +1,6 @@
 import { GetServerSideProps } from 'next';
 import { useEffect, useState } from 'react';
+import Pagination from 'react-js-pagination';
 
 import FilterDropdown from '@/components/listPage/FilterDropdown';
 import NoticeCard from '@/components/listPage/NoticeCard';
@@ -41,6 +42,8 @@ const ListPage: React.FC<Props> = ({ initialNotices }) => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [label, setLabel] = useState('마감임박순');
   const [notices, setNotices] = useState<Notice[]>(initialNotices);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 6;
 
   useEffect(() => {
     console.log('Initial Notices:', initialNotices); // 데이터 확인
@@ -58,6 +61,14 @@ const ListPage: React.FC<Props> = ({ initialNotices }) => {
     setLabel(newLabel);
     setIsDropdownOpen(false);
   };
+
+  const handlePageChange = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const indexOfLastNotice = currentPage * itemsPerPage;
+  const indexOfFirstNotice = indexOfLastNotice - itemsPerPage;
+  const currentNotices = notices.slice(indexOfFirstNotice, indexOfLastNotice);
 
   return (
     <>
@@ -103,6 +114,9 @@ const ListPage: React.FC<Props> = ({ initialNotices }) => {
             )}
           </div>
         </div>
+        {notices.map((notice) => (
+          <NoticeCard key={notice.id} notice={notice} />
+        ))}
       </div>
     </>
   );
