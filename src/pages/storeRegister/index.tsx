@@ -5,8 +5,9 @@ import DropDown, {
   addressOptions,
   categoryOptions,
 } from '@/components/dropDown/DropDown';
-import styles from './StoreRegister.module.scss';
 import ImageUpload from '@/components/storeRegister/ImageUpload';
+
+import styles from './StoreRegister.module.scss';
 
 export default function StoreRegister() {
   const [formValue, setFormValue] = useState<{ [key: string]: string }>({});

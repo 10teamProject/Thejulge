@@ -1,7 +1,9 @@
-import { useEffect, useState, ChangeEvent } from 'react';
-import styles from './FilterDropdown.module.scss';
 import Image from 'next/image';
+import { ChangeEvent, useEffect, useState } from 'react';
+
 import X from '@/public/assets/images/black_x.png';
+
+import styles from './FilterDropdown.module.scss';
 
 const addressOptions = [
   { value: 'Jongno-gu', label: '서울시 종로구' },
@@ -135,7 +137,7 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({ setIsFilterOpen }) => {
           placeholder="입력"
           className={styles.filterPrice}
           onChange={handleFilterPriceChange}
-        ></input>
+        />
         <p className={styles.filterPriceText}>원</p>
         <p className={styles.filterName}>이상부터</p>
       </div>
