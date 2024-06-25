@@ -1,4 +1,4 @@
-import React, { useEffect, useState, ChangeEvent } from 'react';
+import { useEffect, useState, ChangeEvent } from 'react';
 import styles from './FilterDropdown.module.scss';
 import Image from 'next/image';
 import X from '@/public/assets/images/black_x.png';
@@ -140,7 +140,7 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({ setIsFilterOpen }) => {
         <p className={styles.filterName}>이상부터</p>
       </div>
       <div className={styles.filterBottom}>
-        <button className={styles.reset}>초기화</button>
+        <button className={styles.buttonReset}>초기화</button>
         <button className={styles.submit}>적용하기</button>
       </div>
     </div>
