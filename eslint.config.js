@@ -1,9 +1,9 @@
 import eslint from '@eslint/js';
-import tseslint from 'typescript-eslint';
-import eslintPluginReact from 'eslint-plugin-react';
 import nextPlugin from '@next/eslint-plugin-next';
 import prettierConfig from 'eslint-config-prettier';
+import eslintPluginReact from 'eslint-plugin-react';
 import simpleImportSort from 'eslint-plugin-simple-import-sort';
+import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
   eslint.configs.recommended,
