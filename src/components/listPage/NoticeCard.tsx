@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import arrow from '@/public/assets/images/arrow.png';
 import location from '@/public/assets/images/location.png';
@@ -8,38 +8,27 @@ import {
   calculateEndTime,
   calculateHourlyPayIncrease,
   formatDate,
-} from '@/utils/NoticeCard/CalculateThings'; // 함수 가져오기
+} from '@/utils/NoticeCard/CalculateThings';
+import { Notice } from '@/utils/NoticeCard/NoticesType';
 
 import styles from './NoticeCard.module.scss';
 
 interface NoticeCardProps {
-  notice: {
-    id: string;
-    hourlyPay: number;
-    startsAt: string;
-    workhour: number;
-    description: string;
-    closed: boolean;
-    shop: {
-      id: string;
-      name: string;
-      category: string;
-      address1: string;
-      imageUrl: string;
-      originalHourlyPay: number;
-    };
-  };
+  notice: Notice;
 }
 
 const NoticeCard: React.FC<NoticeCardProps> = ({ notice }) => {
   const { hourlyPay, startsAt, workhour, shop } = notice;
-  const { name, address1, imageUrl, originalHourlyPay } = shop;
+  const { name, address1, imageUrl, originalHourlyPay } = shop.item;
 
   const increaseRate = calculateHourlyPayIncrease(originalHourlyPay, hourlyPay);
   const roundedIncreaseRate = Math.round(increaseRate);
   const formattedStartTime = formatDate(startsAt);
   const endTime = calculateEndTime(startsAt, workhour);
 
+  useEffect(() => {
+    console.log(shop);
+  }, [notice]);
   return (
     <>
       <div className={styles.container}>
