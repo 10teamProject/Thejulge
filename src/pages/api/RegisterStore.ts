@@ -1,14 +1,14 @@
 import { AxiosError } from 'axios';
 import Cookies from 'js-cookie';
 
-import { storeProfileProps } from '@/types/storeProfileTypes';
+import { StoreProfileProps } from '@/types/storeProfileTypes';
 
 import { instance } from './AxiosInstance';
 
 const REGISTER_FAILED = '가게 정보 등록 중 에러가 발생했습니다.';
 const NETWORK_ERROR = '네트워크 연결 문제가 발생했습니다.';
 
-export const registerStore = async (formData: storeProfileProps) => {
+export const registerStore = async (formData: StoreProfileProps) => {
   try {
     const response = await instance.post('/shops', formData, {
       headers: {

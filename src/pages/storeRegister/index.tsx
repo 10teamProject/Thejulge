@@ -6,12 +6,13 @@ import DropDown, {
   categoryOptions,
 } from '@/components/dropDown/DropDown';
 import ImageUpload from '@/components/storeRegister/ImageUpload';
-import { storeProfileProps } from '@/types/storeProfileTypes';
+import { StoreProfileProps } from '@/types/storeProfileTypes';
+import Messages from '@/utils/validation/Message';
 
 import { registerStore } from '../api/RegisterStore';
 import styles from './StoreRegister.module.scss';
 
-const initialFormValues: storeProfileProps = {
+const initialFormValues: StoreProfileProps = {
   name: '',
   category: '',
   address1: '',
@@ -21,11 +22,68 @@ const initialFormValues: storeProfileProps = {
   originalHourlyPay: 0,
 };
 
-export default function StoreRegister() {
+const StoreRegister: React.FC = () => {
   const [formValues, setFormValues] = useState(initialFormValues);
+  const [formErrors, setFormErrors] = useState({
+    name: '',
+    category: '',
+    address1: '',
+    address2: '',
+    originalHourlyPay: '',
+  });
+
+  const handleInputChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    const { name, value } = e.target;
+
+    setFormValues((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+
+    setFormErrors((prev) => ({
+      ...prev,
+      [name]: '',
+    }));
+  };
+
+  const handleDropDownChange = (name: string, value: string) => {
+    setFormValues((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+
+    setFormErrors((prev) => ({
+      ...prev,
+      [name]: '',
+    }));
+  };
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+
+    const errors: Partial<typeof formErrors> = {};
+    if (!formValues.name) {
+      errors.name = Messages.NAME_REQUIRED;
+    }
+    if (!formValues.category) {
+      errors.category = Messages.CATEGORY_REQUIRED;
+    }
+    if (!formValues.address1) {
+      errors.address1 = Messages.ADDRESS_REQUIRED;
+    }
+    if (!formValues.address2) {
+      errors.address2 = Messages.ADDRESS_DETAIL_REQUIRED;
+    }
+    if (!formValues.originalHourlyPay) {
+      errors.originalHourlyPay = Messages.HOURLY_PAY_REQUIRED;
+    }
+
+    if (Object.keys(errors).length > 0) {
+      setFormErrors(errors as typeof formErrors);
+      return;
+    }
 
     try {
       const result = await registerStore(formValues);
@@ -36,30 +94,6 @@ export default function StoreRegister() {
       console.error('가게 정보 등록 실패:', error);
       alert('가게 정보 등록 실패');
     }
-  };
-
-  const handleInputChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
-    const { name, value } = e.target;
-    if (name === 'originalHourlyPay') {
-      setFormValues((prev) => ({
-        ...prev,
-        [name]: parseFloat(value),
-      }));
-    } else {
-      setFormValues((prev) => ({
-        ...prev,
-        [name]: value,
-      }));
-    }
-  };
-
-  const handleDropDownChange = (name: string, value: string) => {
-    setFormValues((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
   };
 
   return (
@@ -75,6 +109,7 @@ export default function StoreRegister() {
             value={formValues.name}
             onChange={handleInputChange}
             required
+            error={formErrors.name}
           />
         </div>
         <div>
@@ -88,6 +123,7 @@ export default function StoreRegister() {
             onChange={handleDropDownChange}
             placeholder="선택"
             required
+            error={formErrors.category}
           />
         </div>
         <div>
@@ -100,6 +136,8 @@ export default function StoreRegister() {
             options={addressOptions}
             onChange={handleDropDownChange}
             placeholder="선택"
+            required
+            error={formErrors.address1}
           />
         </div>
         <div>
@@ -111,6 +149,7 @@ export default function StoreRegister() {
             value={formValues.address2}
             onChange={handleInputChange}
             required
+            error={formErrors.address2}
           />
         </div>
         <div>
@@ -122,6 +161,7 @@ export default function StoreRegister() {
             value={formValues.originalHourlyPay.toString()}
             onChange={handleInputChange}
             required
+            error={formErrors.originalHourlyPay}
           />
         </div>
         <div>
@@ -139,19 +179,10 @@ export default function StoreRegister() {
             isTextArea={true}
           />
         </div>
-        <button
-          type="submit"
-          disabled={
-            !formValues.name ||
-            !formValues.category ||
-            !formValues.address1 ||
-            !formValues.address2 ||
-            !formValues.originalHourlyPay
-          }
-        >
-          등록하기
-        </button>
+        <button type="submit">등록하기</button>
       </form>
     </>
   );
-}
+};
+
+export default StoreRegister;

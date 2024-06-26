@@ -128,6 +128,9 @@ export default function DropDown({
           </div>
         )}
       </div>
+      {required && error && (
+        <span className={styles.errorMessage}>{error}</span>
+      )}
     </>
   );
 }
