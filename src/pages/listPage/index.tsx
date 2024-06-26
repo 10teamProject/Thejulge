@@ -69,12 +69,14 @@ const ListPage: React.FC<Props> = ({
 
   const [sort, setSort] = useState<'time' | 'pay' | 'hour' | 'shop'>('time');
   const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
+  const [startDate, setStartDate] = useState('');
 
   useEffect(() => {
     const fetchNotices = async (
       page: number,
       sort: 'time' | 'pay' | 'hour' | 'shop',
       locations: string[],
+      startDate: string,
     ) => {
       const offset = (page - 1) * itemsPerPage;
 
@@ -83,7 +85,7 @@ const ListPage: React.FC<Props> = ({
         limit: itemsPerPage,
         sort,
         address: locations,
-        // 추가로 필요한 파라미터
+        startsAtGte: startDate,
       };
 
       try {
@@ -94,8 +96,8 @@ const ListPage: React.FC<Props> = ({
       }
     };
 
-    fetchNotices(page, sort, selectedLocations);
-  }, [page, sort, selectedLocations]);
+    fetchNotices(page, sort, selectedLocations, startDate);
+  }, [page, sort, selectedLocations, startDate]);
 
   const sortOptions: {
     key: 'time' | 'pay' | 'hour' | 'shop';
@@ -119,8 +121,9 @@ const ListPage: React.FC<Props> = ({
   const handlePageChange = (pageNumber: number) => {
     setPage(pageNumber);
   };
-  const handleFilterApply = (locations: string[]) => {
+  const handleFilterApply = (locations: string[], startDate: string) => {
     setSelectedLocations(locations);
+    setStartDate(startDate);
     setIsFilterOpen(false);
   };
 
@@ -166,8 +169,9 @@ const ListPage: React.FC<Props> = ({
             {isFilterOpen && (
               <FilterDropdown
                 setIsFilterOpen={setIsFilterOpen}
-                onApply={handleFilterApply} // 필터 적용 핸들러 추가
-                initialSelectedLocations={selectedLocations} // 초기 선택된 주소 전달
+                onApply={handleFilterApply}
+                initialSelectedLocations={selectedLocations}
+                initialStartDate={startDate}
               />
             )}
           </div>

@@ -39,14 +39,16 @@ const sortedAddressOptions = addressOptions.sort((a, b) => {
 
 interface FilterDropdownProps {
   setIsFilterOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  onApply: (locations: string[]) => void;
+  onApply: (locations: string[], startDate: string) => void;
   initialSelectedLocations: string[];
+  initialStartDate: string;
 }
 
 const FilterDropdown: React.FC<FilterDropdownProps> = ({
   setIsFilterOpen,
   onApply,
   initialSelectedLocations,
+  initialStartDate,
 }) => {
   const [minDate, setMinDate] = useState('');
   const [startDate, setStartDate] = useState('');
@@ -58,7 +60,7 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({
   useEffect(() => {
     const today = new Date().toISOString().split('T')[0];
     setMinDate(today);
-    setStartDate(today);
+    setStartDate(initialStartDate || today);
     setSelectedLocations(
       initialSelectedLocations.map((location) => ({
         value: location,
@@ -92,7 +94,11 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({
   };
 
   const handleApplyClick = () => {
-    onApply(selectedLocations.map((loc) => loc.value)); // 선택된 주소 전달
+    const formattedStartDate = new Date(startDate).toISOString();
+    onApply(
+      selectedLocations.map((loc) => loc.value),
+      formattedStartDate,
+    );
   };
 
   return (
