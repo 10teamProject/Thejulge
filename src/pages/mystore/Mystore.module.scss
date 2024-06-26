@@ -1,0 +1,135 @@
+.container {
+  padding: 60px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.title {
+  font-family: Spoqa Han Sans Neo;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 33.6px;
+  letter-spacing: 0.02em;
+  text-align: left;
+  margin-bottom: 24px;
+}
+
+.card {
+  background-color: #fff9db;
+  border-radius: 10px;
+  overflow: hidden;
+  min-height: 358px; /* 카드의 최소 높이 설정 */
+  display: flex;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.imageContainer {
+  flex: 0 0 50%;
+  max-width: 50%;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.content {
+  flex: 1;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.category {
+  color: var(--yellow5);
+  font-weight: bold;
+}
+
+.storeName {
+  font-family: Spoqa Han Sans Neo;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 33.6px;
+  letter-spacing: 0.02em;
+  text-align: left;
+  margin: 10px 0;
+}
+
+.location {
+  display: flex;
+  align-items: center;
+  color: #666;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.icon {
+  width: 16px;
+  height: 16px;
+  margin-right: 5px;
+}
+
+.description {
+  margin-top: 10px;
+  margin-bottom: 20px;
+  flex-grow: 1;
+
+  font-family: Spoqa Han Sans Neo;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 26px;
+  text-align: left;
+}
+
+.buttonContainer {
+  display: flex;
+  gap: 10px;
+}
+
+.editButton,
+.shareButton {
+  width: 169px;
+  height: 48px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  flex: 1;
+}
+
+.editButton {
+  background-color: white;
+  color: var(--yellow5);
+  border: 1px solid var(--yellow5);
+  font-family: Spoqa Han Sans Neo;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 20px;
+  text-align: center;
+}
+
+.shareButton {
+  background-color: var(--yellow5);
+  color: white;
+  font-family: Spoqa Han Sans Neo;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 20px;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .card {
+    flex-direction: column;
+  }
+
+  .imageContainer {
+    max-width: 100%;
+  }
+
+  .image {
+    height: 200px;
+  }
+}

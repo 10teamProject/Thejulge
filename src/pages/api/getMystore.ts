@@ -1,37 +1,6 @@
-import { AxiosError, AxiosResponse } from 'axios';
-
 import { instance } from './AxiosInstance';
 
-export interface RootObject {
-  item: Item2;
-  links: Link[];
-}
-
-export interface Link {
-  rel: string;
-  description: string;
-  method: string;
-  href: string;
-  body?: Body;
-  query?: Query;
-}
-
-export interface Query {
-  offset: string;
-  limit: string;
-}
-
-export interface Body {
-  name: string;
-  category: string;
-  address1: string;
-  address2: string;
-  description: string;
-  imageUrl: string;
-  originalHourlyPay: string;
-}
-
-export interface Item2 {
+export interface StoreInfo {
   id: string;
   name: string;
   category: string;
@@ -40,16 +9,15 @@ export interface Item2 {
   description: string;
   imageUrl: string;
   originalHourlyPay: number;
-  user: User;
 }
 
-export interface User {
-  item: Item;
-  href: string;
-}
+export const GetMyStore = async (shopId: string): Promise<StoreInfo | null> => {
+  try {
+    const response = await instance.get(`/shops/${shopId}`);
 
-export interface Item {
-  id: string;
-  email: string;
-  type: string;
-}
+    return response.data.item;
+  } catch (error) {
+    console.error('데이터를 받아오지 못했습니다', error);
+    return null;
+  }
+};
