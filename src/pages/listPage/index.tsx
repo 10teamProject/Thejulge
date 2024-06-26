@@ -68,11 +68,13 @@ const ListPage: React.FC<Props> = ({
   const itemsPerPage = 6;
 
   const [sort, setSort] = useState<'time' | 'pay' | 'hour' | 'shop'>('time');
+  const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
 
   useEffect(() => {
     const fetchNotices = async (
       page: number,
       sort: 'time' | 'pay' | 'hour' | 'shop',
+      locations: string[],
     ) => {
       const offset = (page - 1) * itemsPerPage;
 
@@ -80,6 +82,7 @@ const ListPage: React.FC<Props> = ({
         offset,
         limit: itemsPerPage,
         sort,
+        address: locations,
         // 추가로 필요한 파라미터
       };
 
@@ -91,8 +94,8 @@ const ListPage: React.FC<Props> = ({
       }
     };
 
-    fetchNotices(page, sort);
-  }, [page, sort]);
+    fetchNotices(page, sort, selectedLocations);
+  }, [page, sort, selectedLocations]);
 
   const sortOptions: {
     key: 'time' | 'pay' | 'hour' | 'shop';
@@ -115,6 +118,10 @@ const ListPage: React.FC<Props> = ({
 
   const handlePageChange = (pageNumber: number) => {
     setPage(pageNumber);
+  };
+  const handleFilterApply = (locations: string[]) => {
+    setSelectedLocations(locations);
+    setIsFilterOpen(false);
   };
 
   return (
@@ -157,7 +164,11 @@ const ListPage: React.FC<Props> = ({
           >
             상세 필터
             {isFilterOpen && (
-              <FilterDropdown setIsFilterOpen={setIsFilterOpen} />
+              <FilterDropdown
+                setIsFilterOpen={setIsFilterOpen}
+                onApply={handleFilterApply} // 필터 적용 핸들러 추가
+                initialSelectedLocations={selectedLocations} // 초기 선택된 주소 전달
+              />
             )}
           </div>
         </div>
