@@ -58,6 +58,13 @@ export default function StoreRegister() {
     }));
   };
 
+  const handleImageUpload = (url: string) => {
+    setFormValues((prev) => ({
+      ...prev,
+      imageUrl: url,
+    }));
+  };
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
@@ -167,7 +174,7 @@ export default function StoreRegister() {
         </div>
         <div>
           <label>가게 이미지</label>
-          <ImageUpload />
+          <ImageUpload onImageUpload={handleImageUpload} />
         </div>
         <div>
           <Input
