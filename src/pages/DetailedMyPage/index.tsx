@@ -1,6 +1,6 @@
 import React from 'react';
 
-import DetailCard from '../../components/detailProfile/Detailcard';
+import DetailCard from '../../components/detail_Profile/Detailcard';
 
 function DetailedMyPage() {
   return (

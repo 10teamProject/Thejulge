@@ -30,7 +30,12 @@ const addressValue = [
   { value: 'Gangdong-gu', label: '서울시 강동구' },
 ];
 
+
+
+
+
 function PostMyPage(props: PostMyPageProps) {
+
   return (
     <main className={styles.main}>
       <div className={styles.postContainer}>
@@ -51,10 +56,10 @@ function PostMyPage(props: PostMyPageProps) {
                 <label htmlFor="region" className={styles.inputFont}>선호 지역</label>
                 <div>
                   <select className={styles.selectStyle} name="region" id="region"> 선택
-                  <option value="" selected disabled hidden>선택</option>
-                  {addressValue.map(option => (
-                    <option className={styles.selectPlaceHolder} key={option.value} value={option.value}>{option.label}</option>
-                  ))}
+                    <option value="" selected disabled hidden>선택</option>
+                    {addressValue.map(option => (
+                      <option className={styles.selectPlaceHolder} key={option.value} value={option.value}>{option.label}</option>
+                    ))}
                   </select>
                 </div>
               </div> 
