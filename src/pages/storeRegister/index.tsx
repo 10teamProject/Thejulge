@@ -1,12 +1,10 @@
 import React, { ChangeEvent, FormEvent, useState } from 'react';
 
 import Input from '@/components/common/InputComponent';
-import DropDown, {
-  addressOptions,
-  categoryOptions,
-} from '@/components/dropDown/DropDown';
+import DropDown from '@/components/dropDown/DropDown';
 import ImageUpload from '@/components/storeRegister/ImageUpload';
 import { StoreProfileProps } from '@/types/storeProfileTypes';
+import { addressOptions, categoryOptions } from '@/utils/Options';
 import Messages from '@/utils/validation/Message';
 
 import { registerStore } from '../api/RegisterStore';
