@@ -38,6 +38,7 @@
 }
 .sortDropdown {
   cursor: pointer;
+  z-index: 1;
   position: relative;
   display: flex;
   flex-direction: row;

@@ -15,6 +15,12 @@ const nextConfig = {
         port: '',
         pathname: '/0-1/the-julge/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'i.pinimg.com',
+        port: '',
+        pathname: '/736x/**',
+      },
     ],
   },
 };

@@ -67,13 +67,19 @@ const ListPage: React.FC<Props> = ({
   const [page, setPage] = useState(currentPage);
   const itemsPerPage = 6;
 
+  const [sort, setSort] = useState<'time' | 'pay' | 'hour' | 'shop'>('time');
+
   useEffect(() => {
-    const fetchNotices = async (page: number) => {
+    const fetchNotices = async (
+      page: number,
+      sort: 'time' | 'pay' | 'hour' | 'shop',
+    ) => {
       const offset = (page - 1) * itemsPerPage;
 
       const params = {
         offset,
         limit: itemsPerPage,
+        sort,
         // 추가로 필요한 파라미터
       };
 
@@ -85,17 +91,24 @@ const ListPage: React.FC<Props> = ({
       }
     };
 
-    fetchNotices(page);
-  }, [page]);
+    fetchNotices(page, sort);
+  }, [page, sort]);
 
-  const sortOptions = [
+  const sortOptions: {
+    key: 'time' | 'pay' | 'hour' | 'shop';
+    label: string;
+  }[] = [
     { key: 'time', label: '마감임박순' },
     { key: 'pay', label: '시급많은순' },
     { key: 'hour', label: '시간적은순' },
     { key: 'shop', label: '가나다순' },
   ];
 
-  const handleSortChange = (newSortBy: string, newLabel: string) => {
+  const handleSortChange = (
+    newSortBy: 'time' | 'pay' | 'hour' | 'shop',
+    newLabel: string,
+  ) => {
+    setSort(newSortBy);
     setLabel(newLabel);
     setIsDropdownOpen(false);
   };
