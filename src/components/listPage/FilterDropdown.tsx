@@ -2,6 +2,7 @@ import Image from 'next/image';
 import { ChangeEvent, useEffect, useState } from 'react';
 
 import X from '@/public/assets/images/black_x.png';
+import { formatDateForInput } from '@/utils/NoticeCard/CalculateThings';
 
 import styles from './FilterDropdown.module.scss';
 
@@ -60,7 +61,7 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({
   useEffect(() => {
     const today = new Date().toISOString().split('T')[0];
     setMinDate(today);
-    setStartDate(initialStartDate || today);
+    setStartDate(formatDateForInput(initialStartDate || today));
     setSelectedLocations(
       initialSelectedLocations.map((location) => ({
         value: location,
