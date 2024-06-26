@@ -18,6 +18,13 @@ const Messages = {
 
   REGISTER_FAILED: '가게 정보 등록 중 에러가 발생했습니다.',
   NETWORK_ERROR: '네트워크 연결 문제가 발생했습니다.',
+
+  ERROR_PRE_SIGNED_URL_CREATION:
+    'Presigned URL 생성 중 오류 발생가 발생했습니다.',
+  ERROR_PRE_SIGNED_URL_FAILED: 'Presigned URL 생성에 실패했습니다.',
+
+  ERROR_S3_UPLOAD: 'S3 업로드 중 오류 발생가 발생했습니다.',
+  ERROR_S3_UPLOAD_FAILED: '파일을 S3에 업로드하는 데 실패했습니다.',
 };
 
 export default Messages;
