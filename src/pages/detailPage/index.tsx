@@ -12,10 +12,10 @@ import {
   calculateHourlyPayIncrease,
   formatDate,
 } from '@/utils/NoticeCard/CalculateThings';
+import { Notice, NoticeItem } from '@/utils/NoticeCard/NoticesType';
 
 import { instance } from '../api/AxiosInstance';
 import styles from './DetailPage.module.scss';
-import { NoticeItem, Notice } from '@/utils/NoticeCard/NoticesType';
 
 interface Props {
   shopid: string;
