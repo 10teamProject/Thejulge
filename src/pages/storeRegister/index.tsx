@@ -22,7 +22,7 @@ const initialFormValues: StoreProfileProps = {
   originalHourlyPay: 0,
 };
 
-const StoreRegister: React.FC = () => {
+export default function StoreRegister() {
   const [formValues, setFormValues] = useState(initialFormValues);
   const [formErrors, setFormErrors] = useState({
     name: '',
@@ -63,6 +63,7 @@ const StoreRegister: React.FC = () => {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
+    // 필수 입력 필드 검증
     const errors: Partial<typeof formErrors> = {};
     if (!formValues.name) {
       errors.name = Messages.NAME_REQUIRED;
@@ -78,6 +79,8 @@ const StoreRegister: React.FC = () => {
     }
     if (!formValues.originalHourlyPay) {
       errors.originalHourlyPay = Messages.HOURLY_PAY_REQUIRED;
+    } else if (formValues.originalHourlyPay < 1) {
+      errors.originalHourlyPay = Messages.INVALID_HOURLY_PAY;
     }
 
     if (Object.keys(errors).length > 0) {
@@ -183,6 +186,4 @@ const StoreRegister: React.FC = () => {
       </form>
     </>
   );
-};
-
-export default StoreRegister;
+}

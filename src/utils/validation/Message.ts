@@ -14,6 +14,10 @@ const Messages = {
   ADDRESS_REQUIRED: '주소를 선택해주세요.',
   ADDRESS_DETAIL_REQUIRED: '상세 주소를 입력해주세요.',
   HOURLY_PAY_REQUIRED: '기본 시급을 입력해주세요.',
+  INVALID_HOURLY_PAY: '유효한 값을 입력해주세요.',
+
+  REGISTER_FAILED: '가게 정보 등록 중 에러가 발생했습니다.',
+  NETWORK_ERROR: '네트워크 연결 문제가 발생했습니다.',
 };
 
 export default Messages;
