@@ -111,3 +111,10 @@
   height: 34px;
   border-bottom: 1px solid #e5e4e7;
 }
+.notices {
+  margin: 0 auto;
+  width: 964px;
+  display: grid;
+  grid-template: 1fr 1fr / repeat(3, 1fr);
+  gap: 15px;
+}

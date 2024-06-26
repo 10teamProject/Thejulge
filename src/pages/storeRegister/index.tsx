@@ -1,33 +1,71 @@
-import { ChangeEvent, FormEvent, useState } from 'react';
+import Cookies from 'js-cookie';
+import React, { ChangeEvent, FormEvent, useState } from 'react';
 
 import Input from '@/components/common/InputComponent';
 import DropDown, {
   addressOptions,
   categoryOptions,
 } from '@/components/dropDown/DropDown';
-import styles from './StoreRegister.module.scss';
 import ImageUpload from '@/components/storeRegister/ImageUpload';
+import { storeProfileProps } from '@/types/storeProfileTypes';
 
-export default function StoreRegister() {
-  const [formValue, setFormValue] = useState<{ [key: string]: string }>({});
+import { instance } from '../api/AxiosInstance';
+import styles from './StoreRegister.module.scss';
 
-  const handleSubmit = (e: FormEvent) => {
+const initialFormValues: storeProfileProps = {
+  name: '',
+  category: '',
+  address1: '',
+  address2: '',
+  description: '',
+  imageUrl: '',
+  originalHourlyPay: 0,
+};
+
+const StoreRegister: React.FC = () => {
+  const [formValues, setFormValues] = useState(initialFormValues);
+
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    // @TODO: 제출 시 로직 추가
+
+    try {
+      const response = await instance.post('/shops', formValues, {
+        headers: {
+          Authorization: `Bearer ${Cookies.get('token')}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      console.log('가게 정보 등록 성공:', response.data);
+      // @TODO 등록 완료 모달
+      alert('가게 정보 등록 성공');
+    } catch (error) {
+      console.error('가게 정보 등록 실패:', error);
+    }
   };
 
   const handleInputChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
-    handleChange(name, value);
+    if (name === 'originalHourlyPay') {
+      setFormValues((prev) => ({
+        ...prev,
+        [name]: parseFloat(value),
+      }));
+    } else {
+      setFormValues((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
   };
 
-  const handleChange = (name: string, value: string) => {
-    setFormValue({
-      ...formValue,
+  const handleDropDownChange = (name: string, value: string) => {
+    setFormValues((prev) => ({
+      ...prev,
       [name]: value,
-    });
+    }));
   };
 
   return (
@@ -40,8 +78,9 @@ export default function StoreRegister() {
             name="name"
             type="text"
             placeholder="입력"
-            value={formValue['name']}
+            value={formValues.name}
             onChange={handleInputChange}
+            required
           />
         </div>
         <div>
@@ -50,10 +89,11 @@ export default function StoreRegister() {
           </label>
           <DropDown
             name="category"
-            value={formValue['category']}
+            value={formValues.category}
             options={categoryOptions}
-            onChange={handleChange}
+            onChange={handleDropDownChange}
             placeholder="선택"
+            required
           />
         </div>
         <div>
@@ -62,9 +102,9 @@ export default function StoreRegister() {
           </label>
           <DropDown
             name="address1"
-            value={formValue['address1']}
+            value={formValues.address1}
             options={addressOptions}
-            onChange={handleChange}
+            onChange={handleDropDownChange}
             placeholder="선택"
           />
         </div>
@@ -74,8 +114,9 @@ export default function StoreRegister() {
             name="address2"
             type="text"
             placeholder="입력"
-            value={formValue['address2']}
+            value={formValues.address2}
             onChange={handleInputChange}
+            required
           />
         </div>
         <div>
@@ -84,8 +125,9 @@ export default function StoreRegister() {
             name="originalHourlyPay"
             type="number"
             placeholder="입력"
-            value={formValue['originalHourlyPay']}
+            value={formValues.originalHourlyPay.toString()}
             onChange={handleInputChange}
+            required
           />
         </div>
         <div>
@@ -98,12 +140,26 @@ export default function StoreRegister() {
             name="description"
             type="textarea"
             placeholder="입력"
-            value={formValue['description']}
+            value={formValues.description}
             onChange={handleInputChange}
             isTextArea={true}
           />
         </div>
+        <button
+          type="submit"
+          disabled={
+            !formValues.name ||
+            !formValues.category ||
+            !formValues.address1 ||
+            !formValues.address2 ||
+            !formValues.originalHourlyPay
+          }
+        >
+          등록하기
+        </button>
       </form>
     </>
   );
-}
+};
+
+export default StoreRegister;
