@@ -1,4 +1,3 @@
-import Cookies from 'js-cookie';
 import React, { ChangeEvent, FormEvent, useState } from 'react';
 
 import Input from '@/components/common/InputComponent';
@@ -9,7 +8,7 @@ import DropDown, {
 import ImageUpload from '@/components/storeRegister/ImageUpload';
 import { storeProfileProps } from '@/types/storeProfileTypes';
 
-import { instance } from '../api/AxiosInstance';
+import { registerStore } from '../api/RegisterStore';
 import styles from './StoreRegister.module.scss';
 
 const initialFormValues: storeProfileProps = {
@@ -22,25 +21,20 @@ const initialFormValues: storeProfileProps = {
   originalHourlyPay: 0,
 };
 
-const StoreRegister: React.FC = () => {
+export default function StoreRegister() {
   const [formValues, setFormValues] = useState(initialFormValues);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
     try {
-      const response = await instance.post('/shops', formValues, {
-        headers: {
-          Authorization: `Bearer ${Cookies.get('token')}`,
-          'Content-Type': 'application/json',
-        },
-      });
-
-      console.log('가게 정보 등록 성공:', response.data);
+      const result = await registerStore(formValues);
+      console.log('가게 정보 등록 성공:', result);
       // @TODO 등록 완료 모달
       alert('가게 정보 등록 성공');
     } catch (error) {
       console.error('가게 정보 등록 실패:', error);
+      alert('가게 정보 등록 실패');
     }
   };
 
@@ -160,6 +154,4 @@ const StoreRegister: React.FC = () => {
       </form>
     </>
   );
-};
-
-export default StoreRegister;
+}
