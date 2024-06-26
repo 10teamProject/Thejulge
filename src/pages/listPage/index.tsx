@@ -4,10 +4,10 @@ import Pagination from 'react-js-pagination';
 
 import FilterDropdown from '@/components/listPage/FilterDropdown';
 import NoticeCard from '@/components/listPage/NoticeCard';
-import { Notice, NoticeResponse } from '@/utils/NoticeCard/NoticesType';
+import { Notice } from '@/utils/NoticeCard/NoticesType';
 import paginationStyles from '@/utils/Pagination.module.scss';
 
-import { instance } from '../api/AxiosInstance';
+import { getNotices } from '../api/GetNotice';
 import styles from './ListPage.module.scss';
 
 type Props = {
@@ -25,17 +25,16 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
   const limit = 6;
   const offset = (currentPage - 1) * limit;
 
+  const params = {
+    offset,
+    limit,
+    // 추가로 필요한 파라미터들 여기에 추가
+  };
+
   try {
-    const response = await instance.get<NoticeResponse>('/notices', {
-      params: {
-        offset,
-        limit,
-      },
-    });
-    const initialNotices: Notice[] = response.data.items.map(
-      (item) => item.item,
-    );
-    const totalCount = response.data.count;
+    const data = await getNotices(params);
+    const initialNotices: Notice[] = data.items.map((item) => item.item);
+    const totalCount = data.count;
 
     return {
       props: {
@@ -71,14 +70,16 @@ const ListPage: React.FC<Props> = ({
   useEffect(() => {
     const fetchNotices = async (page: number) => {
       const offset = (page - 1) * itemsPerPage;
+
+      const params = {
+        offset,
+        limit: itemsPerPage,
+        // 추가로 필요한 파라미터
+      };
+
       try {
-        const response = await instance.get<NoticeResponse>('/notices', {
-          params: {
-            offset,
-            limit: itemsPerPage,
-          },
-        });
-        setNotices(response.data.items.map((item) => item.item));
+        const data = await getNotices(params);
+        setNotices(data.items.map((item) => item.item));
       } catch (error) {
         console.error(error);
       }
