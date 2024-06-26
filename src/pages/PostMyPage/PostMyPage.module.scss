@@ -1,0 +1,97 @@
+@import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css);
+
+.main {
+  height: 100vh;
+  display: flex;
+  justify-content: center; 
+  background-color: #FAFAFA;
+}
+
+.postContainer {
+  // border: 1px solid red;
+  width: 964px;
+  height: 449px;
+  margin-top: 60px;
+  
+}
+
+.profileTitle {
+  font-family: 'Spoqa Han Sans Neo', sans-serif;
+  font-weight: 700;
+  font-size: 28px;
+  line-height: 33.6px;
+  margin-bottom: 24px;
+}
+
+.formInput {
+  display: flex;
+  width: 964px;
+  height: 449px;
+  // border: 1px solid rgb(255, 0, 238);
+  flex-wrap: wrap;
+}
+
+.formarray {
+  display: flex;
+}
+
+.inputSize {
+  width: 308px;
+  height: 92px;
+  margin-right: 20px;
+}
+
+.inputFont {
+  font-family: 'Spoqa Han Sans Neo', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 26px;
+}
+
+
+.input {
+  width: 308px;
+  height: 58px;
+  border-radius: 6px;
+  border-color: #CBC9CF;
+
+  ::placeholder {
+    color: #A4A1A4;
+    font-family: 'Spoqa Han Sans Neo', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 26px;
+  }
+}
+
+.introduceBox {
+  width: 964px;
+  height: 187px;
+}
+
+.inputBoard {
+  width: 964px;
+  height: 153px;
+  border-radius: 5px;
+  border-color: #CBC9CF;
+}
+
+.button {
+  width: 346px;
+  height: 47px;
+  border-radius: 6px;
+  background-color: var(--yellow4);
+  margin: 0 auto;
+  border: none;
+  cursor: pointer;
+    span {
+      width: 125px;
+      height: 20px;
+      font-family: 'Spoqa Han Sans Neo', sans-serif;
+      font-weight: 700;
+      font-size: 16px;
+      line-height: 20px;
+      text-align: center;
+      color: #FFFFFF;
+}
+}
