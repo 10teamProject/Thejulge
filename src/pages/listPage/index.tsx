@@ -70,6 +70,7 @@ const ListPage: React.FC<Props> = ({
   const [sort, setSort] = useState<'time' | 'pay' | 'hour' | 'shop'>('time');
   const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
   const [startDate, setStartDate] = useState('');
+  const [hourlyPay, setHourlyPay] = useState(0);
 
   useEffect(() => {
     const fetchNotices = async (
@@ -77,6 +78,7 @@ const ListPage: React.FC<Props> = ({
       sort: 'time' | 'pay' | 'hour' | 'shop',
       locations: string[],
       startDate: string,
+      hourlyPay: number,
     ) => {
       const offset = (page - 1) * itemsPerPage;
 
@@ -86,6 +88,7 @@ const ListPage: React.FC<Props> = ({
         sort,
         address: locations,
         startsAtGte: startDate,
+        hourlyPayGte: hourlyPay,
       };
 
       try {
@@ -96,8 +99,8 @@ const ListPage: React.FC<Props> = ({
       }
     };
 
-    fetchNotices(page, sort, selectedLocations, startDate);
-  }, [page, sort, selectedLocations, startDate]);
+    fetchNotices(page, sort, selectedLocations, startDate, hourlyPay);
+  }, [page, sort, selectedLocations, startDate, hourlyPay]);
 
   const sortOptions: {
     key: 'time' | 'pay' | 'hour' | 'shop';
@@ -121,9 +124,14 @@ const ListPage: React.FC<Props> = ({
   const handlePageChange = (pageNumber: number) => {
     setPage(pageNumber);
   };
-  const handleFilterApply = (locations: string[], startDate: string) => {
+  const handleFilterApply = (
+    locations: string[],
+    startDate: string,
+    hourlyPay: number,
+  ) => {
     setSelectedLocations(locations);
     setStartDate(startDate);
+    setHourlyPay(hourlyPay);
     setIsFilterOpen(false);
   };
 
@@ -172,6 +180,7 @@ const ListPage: React.FC<Props> = ({
                 onApply={handleFilterApply}
                 initialSelectedLocations={selectedLocations}
                 initialStartDate={startDate}
+                initialHourlyPay={hourlyPay}
               />
             )}
           </div>

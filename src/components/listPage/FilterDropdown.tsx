@@ -40,9 +40,10 @@ const sortedAddressOptions = addressOptions.sort((a, b) => {
 
 interface FilterDropdownProps {
   setIsFilterOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  onApply: (locations: string[], startDate: string) => void;
+  onApply: (locations: string[], startDate: string, hourlyPay: number) => void;
   initialSelectedLocations: string[];
   initialStartDate: string;
+  initialHourlyPay: number;
 }
 
 const FilterDropdown: React.FC<FilterDropdownProps> = ({
@@ -50,10 +51,11 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({
   onApply,
   initialSelectedLocations,
   initialStartDate,
+  initialHourlyPay,
 }) => {
   const [minDate, setMinDate] = useState('');
   const [startDate, setStartDate] = useState('');
-  const [filterPrice, setFilterPrice] = useState('');
+  const [hourlyPay, setHourlyPay] = useState<number>(0);
   const [selectedLocations, setSelectedLocations] = useState<
     { value: string; label: string }[]
   >([]);
@@ -62,13 +64,14 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({
     const today = new Date().toISOString().split('T')[0];
     setMinDate(today);
     setStartDate(formatDateForInput(initialStartDate || today));
+    setHourlyPay(initialHourlyPay);
     setSelectedLocations(
       initialSelectedLocations.map((location) => ({
         value: location,
         label: location,
       })),
     );
-  }, [initialSelectedLocations]);
+  }, [initialSelectedLocations, initialStartDate, initialHourlyPay]);
 
   const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedDate = event.target.value;
@@ -87,10 +90,11 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({
     );
   };
 
-  const handleFilterPriceChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleHourlyPayChange = (e: ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
     if (/^\d*$/.test(newValue)) {
-      setFilterPrice(newValue);
+      const numericValue = newValue === '' ? 0 : parseInt(newValue, 10); //빈 문자열인 경우 0으로 설정해서 NaN오류 안 나게 설정!
+      setHourlyPay(numericValue);
     }
   };
 
@@ -99,6 +103,7 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({
     onApply(
       selectedLocations.map((loc) => loc.value),
       formattedStartDate,
+      hourlyPay,
     );
   };
 
@@ -156,10 +161,12 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({
       <p className={styles.filterName}>금액</p>
       <div className={styles.fliterTop}>
         <input
-          value={filterPrice}
+          value={hourlyPay}
           placeholder="입력"
+          inputMode="numeric"
+          pattern="[0-9]*"
           className={styles.filterPrice}
-          onChange={handleFilterPriceChange}
+          onChange={handleHourlyPayChange}
         />
         <p className={styles.filterPriceText}>원</p>
         <p className={styles.filterName}>이상부터</p>
