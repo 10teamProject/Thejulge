@@ -1,4 +1,3 @@
-import React from 'react';
 import styles from './PostMyPage.module.scss';
 
 interface PostMyPageProps {}
@@ -31,7 +30,12 @@ const addressValue = [
   { value: 'Gangdong-gu', label: '서울시 강동구' },
 ];
 
-const PostMyPage: React.FC<PostMyPageProps> = () => {
+
+
+
+
+function PostMyPage(props: PostMyPageProps) {
+
   return (
     <main className={styles.main}>
       <div className={styles.postContainer}>
@@ -39,22 +43,23 @@ const PostMyPage: React.FC<PostMyPageProps> = () => {
         <form className={styles.formInput}>
             <div className={styles.formarray}>
               <div className={styles.inputSize}>
-                <label htmlFor="name" className={styles.inputFont}>이름</label>
+                <label htmlFor="name" className={styles.inputFont}>이름*</label>
                 <div><input className={styles.input} type="text" id="name" name="name" placeholder="입력" /></div>
               </div>
             
               <div className={styles.inputSize}>
-                <label htmlFor="tel" className={styles.inputFont}>연락처</label>
+                <label htmlFor="tel" className={styles.inputFont}>연락처*</label>
                 <div><input className={styles.input} type="tel" id="tel" name="tel" placeholder="입력" /></div>
               </div>
 
               <div className={styles.inputSize}>
                 <label htmlFor="region" className={styles.inputFont}>선호 지역</label>
                 <div>
-                  <select className={styles.input} name="region" id="region">
-                  {addressValue.map(option => (
-                    <option key={option.value} value={option.value}>{option.label}</option>
-                  ))}
+                  <select className={styles.selectStyle} name="region" id="region"> 선택
+                    <option value="" selected disabled hidden>선택</option>
+                    {addressValue.map(option => (
+                      <option className={styles.selectPlaceHolder} key={option.value} value={option.value}>{option.label}</option>
+                    ))}
                   </select>
                 </div>
               </div> 
@@ -62,7 +67,7 @@ const PostMyPage: React.FC<PostMyPageProps> = () => {
             
             <div className={styles.introduceBox}>
               <label htmlFor="intro" className={styles.inputFont}>소개</label>
-              <div><input className={styles.inputBoard} type="text" id="intro" name="intro" placeholder="입력" /></div>
+              <div><textarea className={styles.inputBoard} type="text" id="intro" name="intro" placeholder="입력" /></div>
             </div>
 
               <button className={styles.button}><span>등록하기</span></button>
