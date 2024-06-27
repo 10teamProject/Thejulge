@@ -47,9 +47,6 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({
 
   const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedDate = new Date(event.target.value);
-    const now = new Date();
-
-    selectedDate.setHours(now.getHours(), now.getMinutes(), now.getSeconds());
     setStartDate(selectedDate.toISOString().split('T')[0]);
   };
 
