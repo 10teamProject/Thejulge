@@ -1,5 +1,6 @@
 import React, { ChangeEvent, FormEvent, useState } from 'react';
 
+import Button from '@/components/common/Button';
 import Input from '@/components/common/InputComponent';
 import DropDown from '@/components/dropDown/DropDown';
 import ImageUpload from '@/components/storeRegister/ImageUpload';
@@ -104,6 +105,13 @@ export default function StoreRegister() {
     }
   };
 
+  const isFilled =
+    !formValues.name ||
+    !formValues.category ||
+    !formValues.address1 ||
+    !formValues.originalHourlyPay ||
+    !formValues.address2;
+
   return (
     <>
       <h2 className={styles.title}>가게 정보</h2>
@@ -187,7 +195,7 @@ export default function StoreRegister() {
             isTextArea={true}
           />
         </div>
-        <button type="submit">등록하기</button>
+        <Button children="등록하기" disabled={isFilled} />
       </form>
     </>
   );
