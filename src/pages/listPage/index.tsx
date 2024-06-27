@@ -4,10 +4,10 @@ import Pagination from 'react-js-pagination';
 
 import FilterDropdown from '@/components/listPage/FilterDropdown';
 import NoticeCard from '@/components/listPage/NoticeCard';
-import { Notice, NoticeResponse } from '@/utils/NoticeCard/NoticesType';
+import { Notice } from '@/utils/NoticeCard/NoticesType';
 import paginationStyles from '@/utils/Pagination.module.scss';
 
-import { instance } from '../api/AxiosInstance';
+import { getNotices } from '../api/GetNotice';
 import styles from './ListPage.module.scss';
 
 type Props = {
@@ -25,17 +25,16 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
   const limit = 6;
   const offset = (currentPage - 1) * limit;
 
+  const params = {
+    offset,
+    limit,
+    // 추가로 필요한 파라미터들 여기에 추가
+  };
+
   try {
-    const response = await instance.get<NoticeResponse>('/notices', {
-      params: {
-        offset,
-        limit,
-      },
-    });
-    const initialNotices: Notice[] = response.data.items.map(
-      (item) => item.item,
-    );
-    const totalCount = response.data.count;
+    const data = await getNotices(params);
+    const initialNotices: Notice[] = data.items.map((item) => item.item);
+    const totalCount = data.count;
 
     return {
       props: {
@@ -68,39 +67,72 @@ const ListPage: React.FC<Props> = ({
   const [page, setPage] = useState(currentPage);
   const itemsPerPage = 6;
 
+  const [sort, setSort] = useState<'time' | 'pay' | 'hour' | 'shop'>('time');
+  const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
+  const [startDate, setStartDate] = useState('');
+  const [hourlyPay, setHourlyPay] = useState(0);
+
   useEffect(() => {
-    const fetchNotices = async (page: number) => {
+    const fetchNotices = async (
+      page: number,
+      sort: 'time' | 'pay' | 'hour' | 'shop',
+      locations: string[],
+      startDate: string,
+      hourlyPay: number,
+    ) => {
       const offset = (page - 1) * itemsPerPage;
+
+      const params = {
+        offset,
+        limit: itemsPerPage,
+        sort,
+        address: locations,
+        startsAtGte: startDate,
+        hourlyPayGte: hourlyPay,
+      };
+
       try {
-        const response = await instance.get<NoticeResponse>('/notices', {
-          params: {
-            offset,
-            limit: itemsPerPage,
-          },
-        });
-        setNotices(response.data.items.map((item) => item.item));
+        const data = await getNotices(params);
+        setNotices(data.items.map((item) => item.item));
       } catch (error) {
         console.error(error);
       }
     };
 
-    fetchNotices(page);
-  }, [page]);
+    fetchNotices(page, sort, selectedLocations, startDate, hourlyPay);
+  }, [page, sort, selectedLocations, startDate, hourlyPay]);
 
-  const sortOptions = [
+  const sortOptions: {
+    key: 'time' | 'pay' | 'hour' | 'shop';
+    label: string;
+  }[] = [
     { key: 'time', label: '마감임박순' },
     { key: 'pay', label: '시급많은순' },
     { key: 'hour', label: '시간적은순' },
     { key: 'shop', label: '가나다순' },
   ];
 
-  const handleSortChange = (newSortBy: string, newLabel: string) => {
+  const handleSortChange = (
+    newSortBy: 'time' | 'pay' | 'hour' | 'shop',
+    newLabel: string,
+  ) => {
+    setSort(newSortBy);
     setLabel(newLabel);
     setIsDropdownOpen(false);
   };
 
   const handlePageChange = (pageNumber: number) => {
     setPage(pageNumber);
+  };
+  const handleFilterApply = (
+    locations: string[],
+    startDate: string,
+    hourlyPay: number,
+  ) => {
+    setSelectedLocations(locations);
+    setStartDate(startDate);
+    setHourlyPay(hourlyPay);
+    setIsFilterOpen(false);
   };
 
   return (
@@ -143,7 +175,13 @@ const ListPage: React.FC<Props> = ({
           >
             상세 필터
             {isFilterOpen && (
-              <FilterDropdown setIsFilterOpen={setIsFilterOpen} />
+              <FilterDropdown
+                setIsFilterOpen={setIsFilterOpen}
+                onApply={handleFilterApply}
+                initialSelectedLocations={selectedLocations}
+                initialStartDate={startDate}
+                initialHourlyPay={hourlyPay}
+              />
             )}
           </div>
         </div>

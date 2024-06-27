@@ -2,35 +2,36 @@ import Image from 'next/image';
 import { ChangeEvent, useEffect, useState } from 'react';
 
 import X from '@/public/assets/images/black_x.png';
+import { formatDateForInput } from '@/utils/NoticeCard/CalculateThings';
 
 import styles from './FilterDropdown.module.scss';
 
 const addressOptions = [
-  { value: 'Jongno-gu', label: '서울시 종로구' },
-  { value: 'Jung-gu', label: '서울시 중구' },
-  { value: 'Yongsan-gu', label: '서울시 용산구' },
-  { value: 'Seongdong-gu', label: '서울시 성동구' },
-  { value: 'Gwangjin-gu', label: '서울시 광진구' },
-  { value: 'Dongdaemun-gu', label: '서울시 동대문구' },
-  { value: 'Jungnang-gu', label: '서울시 중랑구' },
-  { value: 'Seongbuk-gu', label: '서울시 성북구' },
-  { value: 'Gangbuk-gu', label: '서울시 강북구' },
-  { value: 'Dobong-gu', label: '서울시 도봉구' },
-  { value: 'Nowon-gu', label: '서울시 노원구' },
-  { value: 'Eunpyeong-gu', label: '서울시 은평구' },
-  { value: 'Seodaemun-gu', label: '서울시 서대문구' },
-  { value: 'Mapo-gu', label: '서울시 마포구' },
-  { value: 'Yangcheon-gu', label: '서울시 양천구' },
-  { value: 'Gangseo-gu', label: '서울시 강서구' },
-  { value: 'Guro-gu', label: '서울시 구로구' },
-  { value: 'Geumcheon-gu', label: '서울시 금천구' },
-  { value: 'Yeongdeungpo-gu', label: '서울시 영등포구' },
-  { value: 'Dongjak-gu', label: '서울시 동작구' },
-  { value: 'Gwanak-gu', label: '서울시 관악구' },
-  { value: 'Seocho-gu', label: '서울시 서초구' },
-  { value: 'Gangnam-gu', label: '서울시 강남구' },
-  { value: 'Songpa-gu', label: '서울시 송파구' },
-  { value: 'Gangdong-gu', label: '서울시 강동구' },
+  { value: '서울시 종로구', label: '서울시 종로구' },
+  { value: '서울시 중구', label: '서울시 중구' },
+  { value: '서울시 용산구', label: '서울시 용산구' },
+  { value: '서울시 성동구', label: '서울시 성동구' },
+  { value: '서울시 광진구', label: '서울시 광진구' },
+  { value: '서울시 동대문구', label: '서울시 동대문구' },
+  { value: '서울시 중랑구', label: '서울시 중랑구' },
+  { value: '서울시 성북구', label: '서울시 성북구' },
+  { value: '서울시 강북구', label: '서울시 강북구' },
+  { value: '서울시 도봉구', label: '서울시 도봉구' },
+  { value: '서울시 노원구', label: '서울시 노원구' },
+  { value: '서울시 은평구', label: '서울시 은평구' },
+  { value: '서울시 서대문구', label: '서울시 서대문구' },
+  { value: '서울시 마포구', label: '서울시 마포구' },
+  { value: '서울시 양천구', label: '서울시 양천구' },
+  { value: '서울시 강서구', label: '서울시 강서구' },
+  { value: '서울시 구로구', label: '서울시 구로구' },
+  { value: '서울시 금천구', label: '서울시 금천구' },
+  { value: '서울시 영등포구', label: '서울시 영등포구' },
+  { value: '서울시 동작구', label: '서울시 동작구' },
+  { value: '서울시 관악구', label: '서울시 관악구' },
+  { value: '서울시 서초구', label: '서울시 서초구' },
+  { value: '서울시 강남구', label: '서울시 강남구' },
+  { value: '서울시 송파구', label: '서울시 송파구' },
+  { value: '서울시 강동구', label: '서울시 강동구' },
 ];
 
 const sortedAddressOptions = addressOptions.sort((a, b) => {
@@ -39,21 +40,39 @@ const sortedAddressOptions = addressOptions.sort((a, b) => {
 
 interface FilterDropdownProps {
   setIsFilterOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  onApply: (locations: string[], startDate: string, hourlyPay: number) => void;
+  initialSelectedLocations: string[];
+  initialStartDate: string;
+  initialHourlyPay: number;
 }
 
-const FilterDropdown: React.FC<FilterDropdownProps> = ({ setIsFilterOpen }) => {
+const FilterDropdown: React.FC<FilterDropdownProps> = ({
+  setIsFilterOpen,
+  onApply,
+  initialSelectedLocations,
+  initialStartDate,
+  initialHourlyPay,
+}) => {
   const [minDate, setMinDate] = useState('');
   const [startDate, setStartDate] = useState('');
-  const [filterPrice, setFilterPrice] = useState('');
+  const [hourlyPay, setHourlyPay] = useState<number>(0);
   const [selectedLocations, setSelectedLocations] = useState<
     { value: string; label: string }[]
   >([]);
 
   useEffect(() => {
-    const today = new Date().toISOString().split('T')[0];
+    const now = new Date();
+    const today = now.toISOString().split('T')[0];
     setMinDate(today);
-    setStartDate(today);
-  }, []);
+    setStartDate(formatDateForInput(initialStartDate || now.toISOString()));
+    setHourlyPay(initialHourlyPay);
+    setSelectedLocations(
+      initialSelectedLocations.map((location) => ({
+        value: location,
+        label: location,
+      })),
+    );
+  }, [initialSelectedLocations, initialStartDate, initialHourlyPay]);
 
   const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedDate = event.target.value;
@@ -72,11 +91,21 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({ setIsFilterOpen }) => {
     );
   };
 
-  const handleFilterPriceChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleHourlyPayChange = (e: ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
     if (/^\d*$/.test(newValue)) {
-      setFilterPrice(newValue);
+      const numericValue = newValue === '' ? 0 : parseInt(newValue, 10); //빈 문자열인 경우 0으로 설정해서 NaN오류 안 나게 설정!
+      setHourlyPay(numericValue);
     }
+  };
+
+  const handleApplyClick = () => {
+    const formattedStartDate = new Date(startDate).toISOString();
+    onApply(
+      selectedLocations.map((loc) => loc.value),
+      formattedStartDate,
+      hourlyPay,
+    );
   };
 
   return (
@@ -133,17 +162,21 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({ setIsFilterOpen }) => {
       <p className={styles.filterName}>금액</p>
       <div className={styles.fliterTop}>
         <input
-          value={filterPrice}
+          value={hourlyPay}
           placeholder="입력"
+          inputMode="numeric"
+          pattern="[0-9]*"
           className={styles.filterPrice}
-          onChange={handleFilterPriceChange}
+          onChange={handleHourlyPayChange}
         />
         <p className={styles.filterPriceText}>원</p>
         <p className={styles.filterName}>이상부터</p>
       </div>
       <div className={styles.filterBottom}>
         <button className={styles.buttonReset}>초기화</button>
-        <button className={styles.submit}>적용하기</button>
+        <button className={styles.submit} onClick={handleApplyClick}>
+          적용하기
+        </button>
       </div>
     </div>
   );
