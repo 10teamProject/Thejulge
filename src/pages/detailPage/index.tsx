@@ -12,6 +12,7 @@ import {
   calculateHourlyPayIncrease,
   formatDate,
 } from '@/utils/NoticeCard/CalculateThings';
+import { Notice, NoticeItem } from '@/utils/NoticeCard/NoticesType';
 
 import { instance } from '../api/AxiosInstance';
 import styles from './DetailPage.module.scss';
@@ -21,29 +22,7 @@ interface Props {
   noticeid: string;
 }
 
-interface StoreData {
-  item: {
-    id: string;
-    closed?: boolean;
-    hourlyPay: number;
-    description: string;
-    startsAt: string;
-    workhour: number;
-    shop: {
-      item: {
-        category: string;
-        name: string;
-        imageUrl: string;
-        originalHourlyPay: number;
-        address1: string;
-        address2?: string;
-        description: string;
-      };
-    };
-  };
-}
-
-const initialStoreData: StoreData = {
+const initialStoreData: NoticeItem = {
   item: {
     id: '',
     closed: false,
@@ -53,8 +32,9 @@ const initialStoreData: StoreData = {
     workhour: 0,
     shop: {
       item: {
-        category: '',
+        id: '',
         name: '',
+        category: '',
         imageUrl: '',
         originalHourlyPay: 0,
         address1: '',
@@ -63,21 +43,27 @@ const initialStoreData: StoreData = {
       },
     },
   },
+  links: [
+    {
+      rel: '',
+      description: '',
+      method: '',
+      href: '',
+    },
+  ],
 };
-
 function DetailPage({ shopid, noticeid }: Props) {
-  const [storeData, setStoreData] = useState<StoreData>(initialStoreData);
+  const [storeData, setStoreData] = useState<NoticeItem>(initialStoreData);
   const { hourlyPay, startsAt, workhour, description } = storeData.item; //description은 이름이 겹쳐서 공고 description만 변수선언
   const { category, name, imageUrl, address1, originalHourlyPay } =
     storeData.item.shop.item;
+  // console.log('PagestoreData : ', storeData);
 
   const [isApplied, setIsApplied] = useState(false);
-  const [recentNotices, setRecentNotices] = useState<string[]>([]);
-
-  console.log(recentNotices);
+  const [recentNotices, setRecentNotices] = useState<Notice[]>([]); // 로컬스토리지 담을 변수
+  // console.log(recentNotices);
 
   const increaseRate = calculateHourlyPayIncrease(originalHourlyPay, hourlyPay);
-
   const startTime = formatDate(startsAt);
   const endTime = calculateEndTime(startsAt, workhour);
 
@@ -85,16 +71,29 @@ function DetailPage({ shopid, noticeid }: Props) {
     setIsApplied(!isApplied);
   };
   async function getData() {
-    // const res = await instance.get(`/shops/${shopid}/notices/${noticeid}`);
-    const res = await instance.get(
-      `/shops/63fcc375-5d0a-4ba4-ac5b-101b03973c74/notices/3ddb7188-8ced-4021-9d07-663f98b5411b`,
-    ); // 샘플 데이터 주소
-    const nextRes = res.data;
-    setStoreData(nextRes);
+    try {
+      // const res = await instance.get(`/shops/${shopid}/notices/${noticeid}`);
+      const res = await instance.get(
+        `/shops/fce32f91-a1aa-4699-a639-ea24a9cd1d12/notices/8c03c152-3d0c-4b78-b873-546318979cfc`,
+      ); // 샘플 데이터 주소
+      const nextRes = await res.data;
+      setStoreData(nextRes);
+    } catch (error) {
+      console.log(error);
+    }
   }
+
+  //// 받아오는 로컬 스토리지 구현
+  const getLocalStorageData = () => {
+    const localData = localStorage.getItem('RECENT_NOTICES');
+    const recentLocalData = localData ? JSON.parse(localData) : [];
+    setRecentNotices(recentLocalData);
+    // console.log(recentLocalData);
+  };
 
   useEffect(() => {
     getData();
+    getLocalStorageData();
   }, []);
 
   return (
@@ -149,9 +148,15 @@ function DetailPage({ shopid, noticeid }: Props) {
       </div>
       <div className={styles.notice_container}>
         <h1>최근에 본 공고</h1>
-        <div>
-          <Card notice={storeData} />
-          {/* 렌더링 잘되는지 storeData를 넣어봄 나중에 로컬 스토리지에 있는 데이터를 넘겨줘야함*/}
+        {/* 카드 컴포넌트에는 로컬 스토리지에 있는 데이터 배열을 넘겨줘야한다 */}
+        <div className={styles.card_container}>
+          {recentNotices.map((recentNoticeData) => (
+            <Card
+              key={recentNoticeData.id}
+              recentNoticeData={recentNoticeData}
+              storeData={storeData.item}
+            />
+          ))}
         </div>
       </div>
     </>

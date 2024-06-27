@@ -158,3 +158,13 @@
   font-weight: 700;
   padding-bottom: 32px;
 }
+
+.card_container {
+  display: grid;
+  grid-template-columns: repeat(3, 312px);
+  gap: 32px 14px;
+
+  @media (max-width: 1028px) {
+    grid-template-columns: repeat(2, 312px);
+  }
+}
