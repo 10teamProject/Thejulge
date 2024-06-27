@@ -1,0 +1,86 @@
+.noticeGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.noticeCard {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.imageContainer {
+  position: relative;
+}
+
+.noticeImage {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+}
+
+.closedOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.noticeContent {
+  padding: 12px;
+}
+
+.noticeTitle {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.noticeInfo {
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+  color: #888;
+  margin-bottom: 8px;
+}
+
+.noticeTime,
+.noticeLocation {
+  display: flex;
+  align-items: center;
+  margin-bottom: 4px;
+
+  img {
+    margin-right: 6px;
+  }
+}
+
+.noticePay {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.payAmount {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.payIncrease {
+  background-color: #ff6b6b;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  white-space: nowrap;
+}
