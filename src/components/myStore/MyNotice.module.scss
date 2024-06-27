@@ -6,6 +6,7 @@
 
 .noticeCard {
   background: white;
+  width: 312px;
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -13,11 +14,15 @@
 
 .imageContainer {
   position: relative;
+  width: 100%;
+  height: 170px;
+  overflow: hidden;
+  padding: 16px;
 }
 
 .noticeImage {
   width: 100%;
-  height: 150px;
+  height: 100%;
   object-fit: cover;
 }
 
@@ -37,12 +42,15 @@
 }
 
 .noticeContent {
-  padding: 12px;
+  padding: 16px;
 }
 
 .noticeTitle {
-  font-size: 18px;
-  font-weight: bold;
+  font-family: Spoqa Han Sans Neo;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 25.04px;
+  text-align: left;
   margin-bottom: 8px;
 }
 
@@ -54,11 +62,29 @@
   margin-bottom: 8px;
 }
 
-.noticeTime,
+.noticeTime {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+  font-family: Spoqa Han Sans Neo;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 22px;
+  text-align: left;
+
+  img {
+    margin-right: 6px;
+  }
+}
 .noticeLocation {
   display: flex;
   align-items: center;
-  margin-bottom: 4px;
+  margin-bottom: 16px;
+  font-family: Spoqa Han Sans Neo;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 22px;
+  text-align: left;
 
   img {
     margin-right: 6px;
@@ -72,15 +98,34 @@
 }
 
 .payAmount {
-  font-size: 20px;
-  font-weight: bold;
+  font-family: Spoqa Han Sans Neo;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 30.05px;
+  letter-spacing: 0.02em;
+  text-align: left;
 }
 
 .payIncrease {
-  background-color: #ff6b6b;
+  background-color: var(--yellow4);
   color: white;
-  padding: 4px 8px;
-  border-radius: 12px;
-  font-size: 12px;
+  font-family: Spoqa Han Sans Neo;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 17.53px;
+  text-align: center;
   white-space: nowrap;
+  width: 170px;
+  height: 36px;
+  padding: 8px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.arrowIcon {
+  margin-left: 7px;
+  display: inline-flex;
+  vertical-align: middle;
 }
