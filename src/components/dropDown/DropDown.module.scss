@@ -9,7 +9,6 @@
   cursor: pointer;
   border: 1px solid #cbc9cf;
   font-size: 13px;
-  margin-bottom: 15px;
   line-height: 22px;
 }
 
@@ -86,4 +85,9 @@
 .option.selected,
 .option:hover {
   background-color: #fff3bf;
+}
+
+.errorMessage {
+  color: red;
+  font-size: 12px;
 }

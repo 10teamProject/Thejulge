@@ -1,18 +1,16 @@
-import Cookies from 'js-cookie';
 import React, { ChangeEvent, FormEvent, useState } from 'react';
 
 import Input from '@/components/common/InputComponent';
-import DropDown, {
-  addressOptions,
-  categoryOptions,
-} from '@/components/dropDown/DropDown';
+import DropDown from '@/components/dropDown/DropDown';
 import ImageUpload from '@/components/storeRegister/ImageUpload';
-import { storeProfileProps } from '@/types/storeProfileTypes';
+import { StoreProfileProps } from '@/types/storeProfileTypes';
+import { addressOptions, categoryOptions } from '@/utils/Options';
+import Messages from '@/utils/validation/Message';
 
-import { instance } from '../api/AxiosInstance';
+import { registerStore } from '../api/RegisterStore';
 import styles from './StoreRegister.module.scss';
 
-const initialFormValues: storeProfileProps = {
+const initialFormValues: StoreProfileProps = {
   name: '',
   category: '',
   address1: '',
@@ -22,43 +20,30 @@ const initialFormValues: storeProfileProps = {
   originalHourlyPay: 0,
 };
 
-const StoreRegister: React.FC = () => {
+export default function StoreRegister() {
   const [formValues, setFormValues] = useState(initialFormValues);
-
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-
-    try {
-      const response = await instance.post('/shops', formValues, {
-        headers: {
-          Authorization: `Bearer ${Cookies.get('token')}`,
-          'Content-Type': 'application/json',
-        },
-      });
-
-      console.log('가게 정보 등록 성공:', response.data);
-      // @TODO 등록 완료 모달
-      alert('가게 정보 등록 성공');
-    } catch (error) {
-      console.error('가게 정보 등록 실패:', error);
-    }
-  };
+  const [formErrors, setFormErrors] = useState({
+    name: '',
+    category: '',
+    address1: '',
+    address2: '',
+    originalHourlyPay: '',
+  });
 
   const handleInputChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
-    if (name === 'originalHourlyPay') {
-      setFormValues((prev) => ({
-        ...prev,
-        [name]: parseFloat(value),
-      }));
-    } else {
-      setFormValues((prev) => ({
-        ...prev,
-        [name]: value,
-      }));
-    }
+
+    setFormValues((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+
+    setFormErrors((prev) => ({
+      ...prev,
+      [name]: '',
+    }));
   };
 
   const handleDropDownChange = (name: string, value: string) => {
@@ -66,6 +51,57 @@ const StoreRegister: React.FC = () => {
       ...prev,
       [name]: value,
     }));
+
+    setFormErrors((prev) => ({
+      ...prev,
+      [name]: '',
+    }));
+  };
+
+  const handleImageUpload = (url: string) => {
+    setFormValues((prev) => ({
+      ...prev,
+      imageUrl: url,
+    }));
+  };
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+
+    // 필수 입력 필드 검증
+    const errors: Partial<typeof formErrors> = {};
+    if (!formValues.name) {
+      errors.name = Messages.NAME_REQUIRED;
+    }
+    if (!formValues.category) {
+      errors.category = Messages.CATEGORY_REQUIRED;
+    }
+    if (!formValues.address1) {
+      errors.address1 = Messages.ADDRESS_REQUIRED;
+    }
+    if (!formValues.address2) {
+      errors.address2 = Messages.ADDRESS_DETAIL_REQUIRED;
+    }
+    if (!formValues.originalHourlyPay) {
+      errors.originalHourlyPay = Messages.HOURLY_PAY_REQUIRED;
+    } else if (formValues.originalHourlyPay < 1) {
+      errors.originalHourlyPay = Messages.INVALID_HOURLY_PAY;
+    }
+
+    if (Object.keys(errors).length > 0) {
+      setFormErrors(errors as typeof formErrors);
+      return;
+    }
+
+    try {
+      const result = await registerStore(formValues);
+      console.log('가게 정보 등록 성공:', result);
+      // @TODO 등록 완료 모달
+      alert('가게 정보 등록 성공');
+    } catch (error) {
+      console.error('가게 정보 등록 실패:', error);
+      alert('가게 정보 등록 실패');
+    }
   };
 
   return (
@@ -81,6 +117,7 @@ const StoreRegister: React.FC = () => {
             value={formValues.name}
             onChange={handleInputChange}
             required
+            error={formErrors.name}
           />
         </div>
         <div>
@@ -94,6 +131,7 @@ const StoreRegister: React.FC = () => {
             onChange={handleDropDownChange}
             placeholder="선택"
             required
+            error={formErrors.category}
           />
         </div>
         <div>
@@ -106,6 +144,8 @@ const StoreRegister: React.FC = () => {
             options={addressOptions}
             onChange={handleDropDownChange}
             placeholder="선택"
+            required
+            error={formErrors.address1}
           />
         </div>
         <div>
@@ -117,6 +157,7 @@ const StoreRegister: React.FC = () => {
             value={formValues.address2}
             onChange={handleInputChange}
             required
+            error={formErrors.address2}
           />
         </div>
         <div>
@@ -128,11 +169,12 @@ const StoreRegister: React.FC = () => {
             value={formValues.originalHourlyPay.toString()}
             onChange={handleInputChange}
             required
+            error={formErrors.originalHourlyPay}
           />
         </div>
         <div>
           <label>가게 이미지</label>
-          <ImageUpload />
+          <ImageUpload onImageUpload={handleImageUpload} />
         </div>
         <div>
           <Input
@@ -145,21 +187,8 @@ const StoreRegister: React.FC = () => {
             isTextArea={true}
           />
         </div>
-        <button
-          type="submit"
-          disabled={
-            !formValues.name ||
-            !formValues.category ||
-            !formValues.address1 ||
-            !formValues.address2 ||
-            !formValues.originalHourlyPay
-          }
-        >
-          등록하기
-        </button>
+        <button type="submit">등록하기</button>
       </form>
     </>
   );
-};
-
-export default StoreRegister;
+}
