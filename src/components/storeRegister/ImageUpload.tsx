@@ -1,18 +1,38 @@
 import Image from 'next/image';
 import { ChangeEvent, useEffect, useState } from 'react';
 
+import {
+  createPresignedURL,
+  uploadImageToS3,
+} from '@/pages/api/PresignedUpload';
 import cameraImg from '@/public/assets/icon/icon_camera.svg';
 
 import styles from './ImageUpload.module.scss';
 
-export default function ImageUpload() {
-  const [imagePreviewUrl, setImagePreviewUrl] = useState<string>('');
+interface ImageUploadProps {
+  onImageUpload: (url: string) => void;
+}
 
-  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+export default function ImageUpload({ onImageUpload }: ImageUploadProps) {
+  const [imagePreviewUrl, setImagePreviewUrl] = useState('');
+
+  const handleImageChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setImagePreviewUrl(imageUrl);
+      try {
+        // presigned Url 생성
+        const presignedUrl = await createPresignedURL(file);
+        console.log('createPresignedURL', presignedUrl);
+        const imageUrl = presignedUrl.split('?')[0];
+
+        // S3에 이미지 업로드
+        await uploadImageToS3(presignedUrl, file);
+
+        setImagePreviewUrl(imageUrl);
+        onImageUpload(imageUrl);
+      } catch (error) {
+        console.error('이미지를 업로드하는데 실패했습니다.', error);
+      }
     }
   };
 
