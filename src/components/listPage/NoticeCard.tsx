@@ -26,9 +26,6 @@ const NoticeCard: React.FC<NoticeCardProps> = ({ notice }) => {
   const formattedStartTime = formatDate(startsAt);
   const endTime = calculateEndTime(startsAt, workhour);
 
-  useEffect(() => {
-    console.log(shop);
-  }, [notice]);
   return (
     <>
       <div className={styles.container}>
