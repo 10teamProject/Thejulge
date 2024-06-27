@@ -1,6 +1,6 @@
-import React from 'react';
-import styles from './DetailCard.module.scss';
 import { useRouter } from 'next/router';
+
+import styles from './DetailCard.module.scss';
 
 
 const DetailCard = () => {

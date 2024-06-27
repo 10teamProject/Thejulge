@@ -1,12 +1,11 @@
 import React from 'react';
-import Detail from '../../components/detailProfile/Detailcard'
 
+import DetailCard from '../../components/detail_Profile/Detailcard';
 
-const DetailedMyPage = () => {
-
+function DetailedMyPage() {
   return (
-      <Detail/>
+    <DetailCard />
   );
-};
+}
 
 export default DetailedMyPage;

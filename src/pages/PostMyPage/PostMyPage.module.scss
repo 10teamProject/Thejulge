@@ -7,6 +7,8 @@
   background-color: #FAFAFA;
 }
 
+// 내 프로필
+
 .postContainer {
   // border: 1px solid red;
   width: 964px;
@@ -15,6 +17,7 @@
   
 }
 
+// input 제목 스타일 공통
 .profileTitle {
   font-family: 'Spoqa Han Sans Neo', sans-serif;
   font-weight: 700;
@@ -23,6 +26,8 @@
   margin-bottom: 24px;
 }
 
+
+// 이름, 연락처 input 부분
 .formInput {
   display: flex;
   width: 964px;
@@ -48,22 +53,43 @@
   line-height: 26px;
 }
 
-
 .input {
+  width: 308px;
+  height: 58px;
+  border: 1px solid #CBC9CF;
+  border-radius: 6px;
+  margin-top: 8px;
+  color: #A4A1A4;
+  font-family: 'Spoqa Han Sans Neo', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 26px;
+  padding-left : 20px;
+}
+
+// 선호 지역
+.selectStyle {
   width: 308px;
   height: 58px;
   border-radius: 6px;
   border-color: #CBC9CF;
-
-  ::placeholder {
-    color: #A4A1A4;
-    font-family: 'Spoqa Han Sans Neo', sans-serif;
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 26px;
-  }
+  color: #A4A1A4;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 26px;
+  margin-top: 8px;
+  cursor: pointer;
+  padding-left : 20px;
+  
+  .selectPlaceHolder {
+    text-align: center;
+    border-bottom: 1px solid red;
+    width: 500px;
+    height: 500px;
+   }
 }
 
+// 소개 input 부분
 .introduceBox {
   width: 964px;
   height: 187px;
@@ -74,8 +100,17 @@
   height: 153px;
   border-radius: 5px;
   border-color: #CBC9CF;
+  color: #A4A1A4;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 26px;
+  margin-top: 8px;
+  padding-left : 20px;
+  padding-top: 16px;
 }
 
+
+// 등록하기 버튼
 .button {
   width: 346px;
   height: 47px;

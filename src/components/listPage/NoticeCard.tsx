@@ -1,9 +1,9 @@
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
+import location from '@/public/assets/icon/location.svg';
+import timer from '@/public/assets/icon/timer.svg';
 import arrow from '@/public/assets/images/arrow.png';
-import location from '@/public/assets/images/location.png';
-import timer from '@/public/assets/images/timers.png';
 import {
   calculateEndTime,
   calculateHourlyPayIncrease,
