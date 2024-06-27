@@ -79,14 +79,11 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({
   const handleApplyClick = () => {
     const now = new Date();
     const today = now.toISOString().split('T')[0];
-    let formattedStartDate;
-
-    if (startDate === today) {
-      const currentTime = now.toISOString().split('T')[1];
-      formattedStartDate = `${startDate}T${currentTime}`; // 오늘 날짜에 현재 시간을 결합
-    } else {
-      formattedStartDate = new Date(startDate).toISOString(); // 선택한 날짜를 그대로 사용
-    }
+    const formattedStartDate = startDate
+      ? startDate === today
+        ? `${startDate}T${now.toISOString().split('T')[1]}`
+        : new Date(startDate).toISOString()
+      : '';
 
     onApply(
       selectedLocations.map((loc) => loc.value),

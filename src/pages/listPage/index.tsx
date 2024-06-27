@@ -28,7 +28,6 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
   const params = {
     offset,
     limit,
-    // 추가로 필요한 파라미터들 여기에 추가
   };
 
   try {
