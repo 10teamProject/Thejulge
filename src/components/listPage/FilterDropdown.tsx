@@ -64,7 +64,7 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({
     const now = new Date();
     const today = now.toISOString().split('T')[0];
     setMinDate(today);
-    setStartDate(formatDateForInput(initialStartDate || now.toISOString()));
+    setStartDate(initialStartDate || today);
     setHourlyPay(initialHourlyPay);
     setSelectedLocations(
       initialSelectedLocations.map((location) => ({
@@ -75,8 +75,14 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({
   }, [initialSelectedLocations, initialStartDate, initialHourlyPay]);
 
   const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedDate = event.target.value;
-    setStartDate(selectedDate);
+    const selectedDate = new Date(event.target.value);
+    const now = new Date();
+
+    // 선택한 날짜에 현재 시간을 설정
+    selectedDate.setHours(now.getHours(), now.getMinutes(), now.getSeconds());
+
+    // 설정된 날짜를 문자열로 변환하여 상태에 저장
+    setStartDate(selectedDate.toISOString().split('T')[0]);
   };
 
   const handleLocationClick = (location: { value: string; label: string }) => {
@@ -97,6 +103,12 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({
       const numericValue = newValue === '' ? 0 : parseInt(newValue, 10); //빈 문자열인 경우 0으로 설정해서 NaN오류 안 나게 설정!
       setHourlyPay(numericValue);
     }
+  };
+
+  const handleResetClick = () => {
+    setSelectedLocations([]);
+    setStartDate('');
+    setHourlyPay(0);
   };
 
   const handleApplyClick = () => {
@@ -173,7 +185,9 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({
         <p className={styles.filterName}>이상부터</p>
       </div>
       <div className={styles.filterBottom}>
-        <button className={styles.buttonReset}>초기화</button>
+        <button className={styles.buttonReset} onClick={handleResetClick}>
+          초기화
+        </button>
         <button className={styles.submit} onClick={handleApplyClick}>
           적용하기
         </button>

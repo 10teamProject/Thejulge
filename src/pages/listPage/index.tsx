@@ -66,6 +66,7 @@ const ListPage: React.FC<Props> = ({
   const [notices, setNotices] = useState<Notice[]>(initialNotices);
   const [page, setPage] = useState(currentPage);
   const itemsPerPage = 6;
+  const [totalNoticesCount, setTotalNoticesCount] = useState(totalCount);
 
   const [sort, setSort] = useState<'time' | 'pay' | 'hour' | 'shop'>('time');
   const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
@@ -94,6 +95,7 @@ const ListPage: React.FC<Props> = ({
       try {
         const data = await getNotices(params);
         setNotices(data.items.map((item) => item.item));
+        setTotalNoticesCount(data.count); // 총 개수 업데이트
       } catch (error) {
         console.error(error);
       }
@@ -193,7 +195,7 @@ const ListPage: React.FC<Props> = ({
         <Pagination
           activePage={page}
           itemsCountPerPage={itemsPerPage}
-          totalItemsCount={totalCount}
+          totalItemsCount={totalNoticesCount}
           pageRangeDisplayed={7}
           onChange={handlePageChange}
           innerClass={paginationStyles.pagination}
