@@ -23,6 +23,7 @@ const Header: React.FC = () => {
       router.push(`/mystore/${userInfo.shop.item.id}`);
     } else {
       console.log('ID가 없습니다');
+      router.push(`/mystore`);
     }
   };
 
