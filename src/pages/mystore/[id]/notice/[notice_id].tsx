@@ -1,5 +1,4 @@
 import { GetServerSideProps, NextPage } from 'next';
-import React from 'react';
 
 import NoticeCard from '@/components/myStore/MyNoticeDetial';
 import { GetMyNoticeDetail } from '@/pages/api/GetMyNotice';

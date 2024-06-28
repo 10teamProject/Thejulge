@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { GetMyNotice } from '@/pages/api/GetMyNotice';
 import locationIcon from '@/public/assets/icon/location.svg';

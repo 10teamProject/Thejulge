@@ -1,5 +1,4 @@
 import Image from 'next/image';
-import React from 'react';
 
 import locationIcon from '@/public/assets/icon/location.svg';
 import timerIcon from '@/public/assets/icon/timer.svg';
