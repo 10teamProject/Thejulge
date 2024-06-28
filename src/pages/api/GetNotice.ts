@@ -4,7 +4,7 @@ import { NoticeResponse } from '@/utils/NoticeCard/NoticesType';
 
 import { instance } from '../api/AxiosInstance';
 
-type NoticeParams = {
+export type NoticeParams = {
   offset?: number;
   limit?: number;
   address?: string[];
