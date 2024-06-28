@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import Card from '@/components/detailPage/Card';
 import arrow from '@/public/assets/images/arrow.png';
@@ -52,6 +52,7 @@ const initialStoreData: NoticeItem = {
     },
   ],
 };
+
 function DetailPage({ shopid, noticeid }: Props) {
   const [storeData, setStoreData] = useState<NoticeItem>(initialStoreData);
   const { hourlyPay, startsAt, workhour, description } = storeData.item; //description은 이름이 겹쳐서 공고 description만 변수선언
@@ -74,16 +75,17 @@ function DetailPage({ shopid, noticeid }: Props) {
       // const res = await instance.get(`/shops/${shopid}/notices/${noticeid}`);
       const res = await instance.get(
         `/shops/63fcc375-5d0a-4ba4-ac5b-101b03973c74/notices/3ddb7188-8ced-4021-9d07-663f98b5411b`,
-      ); // 샘플 데이터 주
+      ); // 샘플 데이터
       const nextData = await res.data;
       setStoreData(nextData);
-      localStorageUpdata(nextData.item);
+      localStorageUpdate(nextData.item);
     } catch (error) {
       console.log(error);
     }
   }
 
-  const localStorageUpdata = (storeData: Notice) => {
+  ///// 로컬 스토리지에 저장하는 함수 구현
+  const localStorageUpdate = useCallback((storeData: Notice) => {
     // 로컬 스토리지에 똑같은 key값으로 데이터를 저장할려면 로컬스토리지에 있는 데이터를 가져와서 병합해서 다시 넣어야한다.
     const localData = localStorage.getItem('RECENT_NOTICES');
     const recentLocalData: Notice[] = localData ? JSON.parse(localData) : [];
@@ -112,7 +114,7 @@ function DetailPage({ shopid, noticeid }: Props) {
     // 로컬 스토리지에 데이터를 넣을때는 JSON으로 변환해서 넣어야한다.
     localStorage.setItem('RECENT_NOTICES', JSON.stringify(recentLocalData));
     setRecentNotices(recentLocalData); // 카드 컴포넌트로 넘겨줄 데이터를 setter함수를 이용해 넣어준다.
-  };
+  }, []);
 
   useEffect(() => {
     getData();
