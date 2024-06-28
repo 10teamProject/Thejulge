@@ -105,6 +105,7 @@
   border: 1px solid #ccc;
   border-radius: 4px;
   width: 350px;
+  cursor: pointer;
 
   &:focus {
     outline: none;
@@ -175,6 +176,7 @@
   font-size: 16px;
   line-height: 20px;
   color: var(--yellow5);
+  cursor: pointer;
 }
 .submit {
   display: flex;
@@ -193,4 +195,5 @@
   font-size: 16px;
   line-height: 20px;
   color: #ffffff;
+  cursor: pointer;
 }

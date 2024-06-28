@@ -1,5 +1,9 @@
+import axios from 'axios';
+import { useRouter } from 'next/router';
 import React, { ChangeEvent, FormEvent, useState } from 'react';
 
+import Modal from '@/components/auth/ErrorModal';
+import Button from '@/components/common/Button';
 import Input from '@/components/common/InputComponent';
 import DropDown from '@/components/dropDown/DropDown';
 import ImageUpload from '@/components/storeRegister/ImageUpload';
@@ -7,6 +11,7 @@ import { StoreProfileProps } from '@/types/storeProfileTypes';
 import { addressOptions, categoryOptions } from '@/utils/Options';
 import Messages from '@/utils/validation/Message';
 
+import { GetUserInfo } from '../api/GetUserInfo';
 import { registerStore } from '../api/RegisterStore';
 import styles from './StoreRegister.module.scss';
 
@@ -29,6 +34,9 @@ export default function StoreRegister() {
     address2: '',
     originalHourlyPay: '',
   });
+  const router = useRouter();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
 
   const handleInputChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -93,16 +101,39 @@ export default function StoreRegister() {
       return;
     }
 
+    // @TODO 모달 메시지 안뜨는거 수정해야 함
     try {
-      const result = await registerStore(formValues);
-      console.log('가게 정보 등록 성공:', result);
-      // @TODO 등록 완료 모달
-      alert('가게 정보 등록 성공');
+      const storeResponse = await registerStore(formValues);
+      console.log(storeResponse);
+      if (storeResponse?.status === 200) {
+        setModalMessage('등록이 완료되었습니다.');
+      }
     } catch (error) {
-      console.error('가게 정보 등록 실패:', error);
-      alert('가게 정보 등록 실패');
+      if (axios.isAxiosError(error)) {
+        if (error.response?.status === 409) {
+          setModalMessage(error.response.data.message);
+        } else {
+          console.error('가게 정보 등록 실패했습니다.', error);
+        }
+      }
+    } finally {
+      setIsModalOpen(true);
     }
   };
+  const handleModalClose = async () => {
+    const userInfo = await GetUserInfo();
+    setIsModalOpen(false);
+    if (userInfo && userInfo.type === 'employer' && userInfo.shop?.item?.id) {
+      router.push(`/mystore/${userInfo.shop.item.id}`);
+    }
+  };
+
+  const isFilled =
+    !formValues.name ||
+    !formValues.category ||
+    !formValues.address1 ||
+    !formValues.originalHourlyPay ||
+    !formValues.address2;
 
   return (
     <>
@@ -187,8 +218,13 @@ export default function StoreRegister() {
             isTextArea={true}
           />
         </div>
-        <button type="submit">등록하기</button>
+        <Button children="등록하기" disabled={isFilled} />
       </form>
+      <Modal
+        isOpen={isModalOpen}
+        onClose={handleModalClose}
+        message={modalMessage}
+      />
     </>
   );
 }
