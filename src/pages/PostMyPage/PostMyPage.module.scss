@@ -70,6 +70,8 @@
 
 // 선호 지역
 .selectStyle {
+  display: flex;
+  justify-content: space-between;
   position: relative;
   width: 308px;
   height: 58px;
@@ -99,6 +101,7 @@
   z-index: 1;
   max-height: 150px;
   overflow-y: auto;
+  width: 308px;
 }
 
 .options.show {
@@ -107,16 +110,36 @@
 
 .option {
   font-family: 'Spoqa Han Sans Neo', sans-serif;
-  color: #A4A1A4;
+  color: #111322;
   font-weight: 400;
   font-size: 16px;
   line-height: 26px;
+  text-align: center;
   padding: 10px;
   cursor: pointer;
+  border-bottom: 1px solid #E5E4E7;
 }
 
 .option:hover {
   background-color: #f0f0f0;
+}
+
+// 스크롤바 디자인
+.options::-webkit-scrollbar {
+  width: 4px; // 스크롤바 너비
+}
+
+.options::-webkit-scrollbar-track {
+  background-color: var(--yellow3); // 스크롤바 배경
+}
+
+.options::-webkit-scrollbar-thumb {
+  background-color: #ffb700; // 스크롤바 색상
+  border-radius: 12px 12px 12px 12px;   // 스크롤바 모서리
+  min-height: 50px; // 스크롤바 최소 높이
+}
+.options::-webkit-scrollbar-thumb:hover {
+  background-color: #ff9100; // 스크롤바 hover 색상
 }
 
 // 소개 input 부분

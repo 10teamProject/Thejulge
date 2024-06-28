@@ -43,10 +43,21 @@ const PostMyPage: React.FC<PostMyPageProps> = () => {
               <div>
                 <div className={styles.selectStyle} onClick={toggleDropdown}>
                   {selectedOption}
+                  <span>
+                    {isDropdownOpen ? (
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                        <path d="M7 14l5-5 5 5z" />
+                      </svg>
+                    ) : (
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                        <path d="M7 10l5 5 5-5z" />
+                      </svg>
+                    )}
+                  </span>
                   <ul className={`${styles.options} ${isDropdownOpen ? styles.show : ''}`}>
                     {addressOptions.map((option: Option) => (
                       <li key={option.value} className={styles.option} onClick={() => handleOptionClick(option)}>
-                        {option.value} {/* 변경: option.label 대신 option.value를 출력 */}
+                        {option.value}
                       </li>
                     ))}
                   </ul>
