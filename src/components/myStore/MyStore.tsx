@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import React from 'react';
 
-import { StoreInfo } from '@/pages/api/GetMystore';
+import { StoreInfo } from '@/pages/api/getMystore';
 import locationIcon from '@/public/assets/icon/location.svg';
 
 import styles from './MyStore.module.scss';

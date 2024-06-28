@@ -1,11 +1,12 @@
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
 import { GetMyNotice } from '@/pages/api/GetMyNotice';
 import locationIcon from '@/public/assets/icon/location.svg';
 import timeIcon from '@/public/assets/icon/timer.svg';
 import arrowIcon from '@/public/assets/icon/up_icon.svg';
-import { Item, RequestParams, ResponseStructure } from '@/types/myStoreType';
+import { Item, RequestParams } from '@/types/myStoreType';
 
 import styles from './MyNotice.module.scss';
 
@@ -24,6 +25,7 @@ const MyNotice: React.FC<MyNoticeProps> = ({
 }) => {
   const [notices, setNotices] = useState<Item[]>([]);
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchNotices = async () => {
@@ -50,6 +52,10 @@ const MyNotice: React.FC<MyNoticeProps> = ({
     });
   };
 
+  const handleNoticeClick = (noticeId: string) => {
+    router.push(`/mystore/${shop_id}/notice/${noticeId}`);
+  };
+
   return (
     <div className={styles.noticeGrid}>
       {notices.map((notice) => {
@@ -59,7 +65,12 @@ const MyNotice: React.FC<MyNoticeProps> = ({
         );
 
         return (
-          <div key={notice.id} className={styles.noticeCard}>
+          <div
+            key={notice.id}
+            className={styles.noticeCard}
+            onClick={() => handleNoticeClick(notice.id)}
+            style={{ cursor: 'pointer' }}
+          >
             <div className={styles.imageContainer}>
               <img
                 src={imageUrl}

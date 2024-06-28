@@ -3,9 +3,9 @@ import React from 'react';
 
 import MyNotice from '@/components/myStore/MyNotice';
 import StoreCard from '@/components/myStore/MyStore';
-import { GetMyStore, StoreInfo } from '@/pages/api/GetMystore';
+import { GetMyStore, StoreInfo } from '@/pages/api/getMystore';
 
-import styles from './Mystore.module.scss';
+import styles from '../Mystore.module.scss';
 
 interface MyStoreProps {
   storeData: StoreInfo | null;
