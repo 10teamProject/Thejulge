@@ -3,39 +3,13 @@ import { ChangeEvent, useEffect, useState } from 'react';
 
 import X from '@/public/assets/images/black_x.png';
 import { formatDateForInput } from '@/utils/NoticeCard/CalculateThings';
+import type { Option } from '@/utils/Options';
+import { addressOptions } from '@/utils/Options';
 
 import styles from './FilterDropdown.module.scss';
 
-const addressOptions = [
-  { value: '서울시 종로구', label: '서울시 종로구' },
-  { value: '서울시 중구', label: '서울시 중구' },
-  { value: '서울시 용산구', label: '서울시 용산구' },
-  { value: '서울시 성동구', label: '서울시 성동구' },
-  { value: '서울시 광진구', label: '서울시 광진구' },
-  { value: '서울시 동대문구', label: '서울시 동대문구' },
-  { value: '서울시 중랑구', label: '서울시 중랑구' },
-  { value: '서울시 성북구', label: '서울시 성북구' },
-  { value: '서울시 강북구', label: '서울시 강북구' },
-  { value: '서울시 도봉구', label: '서울시 도봉구' },
-  { value: '서울시 노원구', label: '서울시 노원구' },
-  { value: '서울시 은평구', label: '서울시 은평구' },
-  { value: '서울시 서대문구', label: '서울시 서대문구' },
-  { value: '서울시 마포구', label: '서울시 마포구' },
-  { value: '서울시 양천구', label: '서울시 양천구' },
-  { value: '서울시 강서구', label: '서울시 강서구' },
-  { value: '서울시 구로구', label: '서울시 구로구' },
-  { value: '서울시 금천구', label: '서울시 금천구' },
-  { value: '서울시 영등포구', label: '서울시 영등포구' },
-  { value: '서울시 동작구', label: '서울시 동작구' },
-  { value: '서울시 관악구', label: '서울시 관악구' },
-  { value: '서울시 서초구', label: '서울시 서초구' },
-  { value: '서울시 강남구', label: '서울시 강남구' },
-  { value: '서울시 송파구', label: '서울시 송파구' },
-  { value: '서울시 강동구', label: '서울시 강동구' },
-];
-
 const sortedAddressOptions = addressOptions.sort((a, b) => {
-  return a.label.localeCompare(b.label, 'ko');
+  return a.value.localeCompare(b.value, 'ko');
 });
 
 interface FilterDropdownProps {
@@ -56,30 +30,27 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({
   const [minDate, setMinDate] = useState('');
   const [startDate, setStartDate] = useState('');
   const [hourlyPay, setHourlyPay] = useState<number>(0);
-  const [selectedLocations, setSelectedLocations] = useState<
-    { value: string; label: string }[]
-  >([]);
+  const [selectedLocations, setSelectedLocations] = useState<Option[]>([]);
 
   useEffect(() => {
     const now = new Date();
     const today = now.toISOString().split('T')[0];
     setMinDate(today);
-    setStartDate(formatDateForInput(initialStartDate || now.toISOString()));
+    setStartDate(formatDateForInput(initialStartDate || today));
     setHourlyPay(initialHourlyPay);
     setSelectedLocations(
       initialSelectedLocations.map((location) => ({
         value: location,
-        label: location,
       })),
     );
   }, [initialSelectedLocations, initialStartDate, initialHourlyPay]);
 
   const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedDate = event.target.value;
-    setStartDate(selectedDate);
+    const selectedDate = new Date(event.target.value);
+    setStartDate(selectedDate.toISOString().split('T')[0]);
   };
 
-  const handleLocationClick = (location: { value: string; label: string }) => {
+  const handleLocationClick = (location: Option) => {
     if (!selectedLocations.find((loc) => loc.value === location.value)) {
       setSelectedLocations([...selectedLocations, location]);
     }
@@ -99,8 +70,21 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({
     }
   };
 
+  const handleResetClick = () => {
+    setSelectedLocations([]);
+    setStartDate('');
+    setHourlyPay(0);
+  };
+
   const handleApplyClick = () => {
-    const formattedStartDate = new Date(startDate).toISOString();
+    const now = new Date();
+    const today = now.toISOString().split('T')[0];
+    const formattedStartDate = startDate
+      ? startDate === today
+        ? `${startDate}T${now.toISOString().split('T')[1]}`
+        : new Date(startDate).toISOString()
+      : '';
+
     onApply(
       selectedLocations.map((loc) => loc.value),
       formattedStartDate,
@@ -130,14 +114,14 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({
             className={styles.locationOption}
             onClick={() => handleLocationClick(option)}
           >
-            {option.label}
+            {option.value}
           </div>
         ))}
       </div>
       <div className={styles.selectedTags}>
         {selectedLocations.map((location) => (
           <div key={location.value} className={styles.tag}>
-            {location.label}
+            {location.value}
             <span
               className={styles.tagClose}
               onClick={() => handleTagRemove(location.value)}
@@ -173,7 +157,9 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({
         <p className={styles.filterName}>이상부터</p>
       </div>
       <div className={styles.filterBottom}>
-        <button className={styles.buttonReset}>초기화</button>
+        <button className={styles.buttonReset} onClick={handleResetClick}>
+          초기화
+        </button>
         <button className={styles.submit} onClick={handleApplyClick}>
           적용하기
         </button>
