@@ -16,8 +16,13 @@ type NoticeParams = {
 
 export const getNotices = async (params: NoticeParams) => {
   try {
+    const filteredParams = { ...params };
+    if (filteredParams.startsAtGte === '') {
+      delete filteredParams.startsAtGte;
+    }
+
     const response = await instance.get<NoticeResponse>('/notices', {
-      params,
+      params: filteredParams,
       paramsSerializer: (params) => {
         return qs.stringify(params, { arrayFormat: 'repeat' });
       },
