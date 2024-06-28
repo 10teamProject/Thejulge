@@ -51,6 +51,7 @@
   font-weight: 400;
   font-size: 16px;
   line-height: 26px;
+  color: #111322;
 }
 
 .input {
@@ -69,24 +70,53 @@
 
 // 선호 지역
 .selectStyle {
+  position: relative;
   width: 308px;
   height: 58px;
   border-radius: 6px;
-  border-color: #CBC9CF;
+  background-color: #FFFFFF;
+  border: 1px solid #CBC9CF;
+  margin-top: 8px;
+  cursor: pointer;
+  text-align: left;
+  padding: 16px 20px;
+  font-family: 'Spoqa Han Sans Neo', sans-serif;
   color: #A4A1A4;
   font-weight: 400;
   font-size: 16px;
   line-height: 26px;
-  margin-top: 8px;
+}
+
+.options {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background-color: #FFFFFF;
+  border: 1px solid #CBC9CF;
+  border-radius: 6px;
+  z-index: 1;
+  max-height: 150px;
+  overflow-y: auto;
+}
+
+.options.show {
+  display: block;
+}
+
+.option {
+  font-family: 'Spoqa Han Sans Neo', sans-serif;
+  color: #A4A1A4;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 26px;
+  padding: 10px;
   cursor: pointer;
-  padding-left : 20px;
-  
-  .selectPlaceHolder {
-    text-align: center;
-    border-bottom: 1px solid red;
-    width: 500px;
-    height: 500px;
-   }
+}
+
+.option:hover {
+  background-color: #f0f0f0;
 }
 
 // 소개 input 부분
@@ -130,3 +160,4 @@
       color: #FFFFFF;
 }
 }
+
