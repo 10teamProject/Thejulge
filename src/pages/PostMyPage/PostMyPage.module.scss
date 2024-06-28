@@ -68,6 +68,10 @@
   padding-left : 20px;
 }
 
+.input:focus {
+  outline: none;
+}
+
 // 선호 지역
 .selectStyle {
   display: flex;
@@ -102,6 +106,8 @@
   max-height: 150px;
   overflow-y: auto;
   width: 308px;
+  margin-top: 8px;
+  box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.2);
 }
 
 .options.show {
@@ -161,6 +167,11 @@
   padding-left : 20px;
   padding-top: 16px;
 }
+
+.inputBoard:focus {
+ outline: none;
+}
+
 
 
 // 등록하기 버튼
