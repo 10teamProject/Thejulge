@@ -32,7 +32,7 @@ const NoticeCard: React.FC<NoticeCardProps> = ({ noticeData }) => {
   );
 
   return (
-    <>
+    <div className={styles.CardWrapper}>
       <div className={styles.card}>
         <div className={styles.imageContainer}>
           <Image
@@ -78,7 +78,7 @@ const NoticeCard: React.FC<NoticeCardProps> = ({ noticeData }) => {
         <h3 className={styles.descriptionTitle}>공고 설명</h3>
         <p className={styles.descriptionContent}>{item.description}</p>
       </div>
-    </>
+    </div>
   );
 };
 
