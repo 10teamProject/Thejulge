@@ -20,9 +20,11 @@ type Props = {
   startDate: string;
   hourlyPay: number;
 };
+
 export const getServerSideProps: GetServerSideProps<Props> = async (
   context,
 ) => {
+  // 쿼리 파라미터에서 현재 페이지 및 정렬 기준 등을 가져옵니다.
   const currentPage = context.query.page
     ? parseInt(context.query.page as string, 10)
     : 1;
@@ -33,12 +35,9 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
   const hourlyPay = context.query.hourlyPay
     ? parseInt(context.query.hourlyPay as string, 10)
     : 0;
-  const limit = 6;
-  const offset = (currentPage - 1) * limit;
 
+  // 페이지네이션 없이 모든 데이터를 불러오기 위해 limit과 offset을 제거합니다.
   const params = {
-    offset,
-    limit,
     sort,
     address: selectedLocations,
     startsAtGte: startDate,
@@ -76,6 +75,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
     };
   }
 };
+
 const ListPage: React.FC<Props> = ({
   initialNotices,
   totalCount,
