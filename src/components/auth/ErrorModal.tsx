@@ -3,7 +3,7 @@ import styles from './ErrorModal.module.scss';
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
-  title: string;
+  title?: string;
   message: string;
 }
 
