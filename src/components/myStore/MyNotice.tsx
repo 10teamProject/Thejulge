@@ -6,6 +6,7 @@ import { GetMyNotice } from '@/pages/api/GetMyNotice';
 import locationIcon from '@/public/assets/icon/location.svg';
 import timeIcon from '@/public/assets/icon/timer.svg';
 import arrowIcon from '@/public/assets/icon/up_icon.svg';
+import Chicken from '@/public/assets/images/chicken.jpg';
 import { Item, RequestParams } from '@/types/myStoreType';
 
 import styles from './MyNotice.module.scss';
@@ -72,8 +73,8 @@ const MyNotice: React.FC<MyNoticeProps> = ({
             style={{ cursor: 'pointer' }}
           >
             <div className={styles.imageContainer}>
-              <img
-                src={imageUrl}
+              <Image
+                src={Chicken}
                 alt="가게 이미지"
                 className={styles.noticeImage}
               />

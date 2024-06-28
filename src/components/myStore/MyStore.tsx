@@ -3,6 +3,7 @@ import React from 'react';
 
 import { StoreInfo } from '@/pages/api/getMystore';
 import locationIcon from '@/public/assets/icon/location.svg';
+import chickenImage from '@/public/assets/images/chicken.jpg';
 
 import styles from './MyStore.module.scss';
 
@@ -15,11 +16,9 @@ const StoreCard: React.FC<StoreCardProps> = ({ storeData }) => (
     <div className={styles.imageContainer}>
       {storeData.imageUrl && (
         <Image
-          src={storeData.imageUrl}
+          src={chickenImage}
           alt={storeData.name}
           className={styles.image}
-          width={539}
-          height={300}
         />
       )}
     </div>
