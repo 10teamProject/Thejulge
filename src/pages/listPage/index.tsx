@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import Pagination from 'react-js-pagination';
 
 import FilterDropdown from '@/components/listPage/FilterDropdown';
+import FitNotice from '@/components/listPage/FitNotice';
 import NoticeCard from '@/components/listPage/NoticeCard';
 import { Notice } from '@/utils/NoticeCard/NoticesType';
 import paginationStyles from '@/utils/Pagination.module.scss';
@@ -14,20 +15,34 @@ type Props = {
   initialNotices: Notice[];
   totalCount: number;
   currentPage: number;
+  sort: 'time' | 'pay' | 'hour' | 'shop';
+  selectedLocations: string[];
+  startDate: string;
+  hourlyPay: number;
 };
-
 export const getServerSideProps: GetServerSideProps<Props> = async (
   context,
 ) => {
   const currentPage = context.query.page
     ? parseInt(context.query.page as string, 10)
     : 1;
+  const sort =
+    (context.query.sort as 'time' | 'pay' | 'hour' | 'shop') || 'time';
+  const selectedLocations = (context.query.locations as string[]) || [];
+  const startDate = (context.query.startDate as string) || '';
+  const hourlyPay = context.query.hourlyPay
+    ? parseInt(context.query.hourlyPay as string, 10)
+    : 0;
   const limit = 6;
   const offset = (currentPage - 1) * limit;
 
   const params = {
     offset,
     limit,
+    sort,
+    address: selectedLocations,
+    startsAtGte: startDate,
+    hourlyPayGte: hourlyPay,
   };
 
   try {
@@ -40,6 +55,10 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
         initialNotices,
         totalCount,
         currentPage,
+        sort,
+        selectedLocations,
+        startDate,
+        hourlyPay,
       },
     };
   } catch (error) {
@@ -49,15 +68,22 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
         initialNotices: [],
         totalCount: 0,
         currentPage,
+        sort: 'time',
+        selectedLocations: [],
+        startDate: '',
+        hourlyPay: 0,
       },
     };
   }
 };
-
 const ListPage: React.FC<Props> = ({
   initialNotices,
   totalCount,
   currentPage,
+  sort: initialSort,
+  selectedLocations: initialSelectedLocations,
+  startDate: initialStartDate,
+  hourlyPay: initialHourlyPay,
 }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -142,9 +168,7 @@ const ListPage: React.FC<Props> = ({
         <div className={styles.customSection}>
           <h2 className={styles.title}>맞춤 공고</h2>
           <div className={styles.fitNotice}>
-            {initialNotices.map((notice) => (
-              <NoticeCard key={notice.id} notice={notice} />
-            ))}
+            <FitNotice initialNotices={initialNotices} />
           </div>
         </div>
       </div>
