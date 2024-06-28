@@ -16,35 +16,26 @@ type Props = {
   totalCount: number;
   currentPage: number;
   sort: 'time' | 'pay' | 'hour' | 'shop';
-  selectedLocations: string[];
-  startDate: string;
-  hourlyPay: number;
 };
 
 export const getServerSideProps: GetServerSideProps<Props> = async (
   context,
 ) => {
-  // 쿼리 파라미터에서 현재 페이지 및 정렬 기준 등을 가져옴
   const currentPage = context.query.page
     ? parseInt(context.query.page as string, 10)
     : 1;
-  const sort =
-    (context.query.sort as 'time' | 'pay' | 'hour' | 'shop') || 'time';
-  const selectedLocations = (context.query.locations as string[]) || [];
-  const startDate = (context.query.startDate as string) || '';
-  const hourlyPay = context.query.hourlyPay
-    ? parseInt(context.query.hourlyPay as string, 10)
-    : 0;
-
-  // 페이지네이션 없이 모든 데이터를 불러오기 위해 limit과 offset을 제거
-  const params = {
-    sort,
-    address: selectedLocations,
-    startsAtGte: startDate,
-    hourlyPayGte: hourlyPay,
-  };
 
   try {
+    const sort =
+      context.query.sort &&
+      ['time', 'pay', 'hour', 'shop'].includes(context.query.sort as string)
+        ? (context.query.sort as 'time' | 'pay' | 'hour' | 'shop')
+        : 'time';
+
+    const params = {
+      sort,
+    };
+
     const data = await getNotices(params);
     const initialNotices: Notice[] = data.items.map((item) => item.item);
     const totalCount = data.count;
@@ -55,9 +46,6 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
         totalCount,
         currentPage,
         sort,
-        selectedLocations,
-        startDate,
-        hourlyPay,
       },
     };
   } catch (error) {
@@ -68,9 +56,6 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
         totalCount: 0,
         currentPage,
         sort: 'time',
-        selectedLocations: [],
-        startDate: '',
-        hourlyPay: 0,
       },
     };
   }
@@ -81,9 +66,6 @@ const ListPage: React.FC<Props> = ({
   totalCount,
   currentPage,
   sort: initialSort,
-  selectedLocations: initialSelectedLocations,
-  startDate: initialStartDate,
-  hourlyPay: initialHourlyPay,
 }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
