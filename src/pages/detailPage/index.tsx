@@ -23,6 +23,19 @@ interface Props {
   noticeid: string;
 }
 
+interface User {
+  id: string;
+  email: string;
+  type: string;
+}
+
+interface ProfileData {
+  name: string;
+  phone: string;
+  address: string;
+  bio: string;
+}
+
 const initialStoreData: NoticeItem = {
   item: {
     id: '',
@@ -55,7 +68,6 @@ const initialStoreData: NoticeItem = {
 };
 function DetailPage({ shopid, noticeid }: Props) {
   const [storeData, setStoreData] = useState<NoticeItem>(initialStoreData);
-  console.log('data : ', storeData);
   const { hourlyPay, startsAt, workhour, description } = storeData.item; //description은 이름이 겹쳐서 공고 description만 변수선언
   const { category, name, imageUrl, address1, originalHourlyPay } =
     storeData.item.shop.item;
@@ -66,70 +78,97 @@ function DetailPage({ shopid, noticeid }: Props) {
   const [recentNotices, setRecentNotices] = useState<Notice[]>([]); // 로컬스토리지 담을 변수
   const [isApplied, setIsApplied] = useState(false);
 
+  ///// 세션 스토리지와 관련된 변수들
+  const [isLogin, setIsLogin] = useState<boolean>(false); // 로그인 여부를 확인
+  const [userId, setUserId] = useState<string>(''); // user 아이디를 저장
+  const [userType, setUserType] = useState<string>(''); // user가 알바생인지 사장님인지 확인
+  const [isProfile, setIsProfile] = useState<boolean>(false); // 프로필 여부를 확인
+  // console.log('로그인여부 : ', isLogin);
+  // console.log('userId : ', userId);
+  // console.log('userType : ', userType);
+  // console.log('프로필여부 : ', isProfile);
+
   ////// 세션 스토리지에서 데이터 가져오기 구현
+  const getSesstionStorageData = () => {
+    const sessionStorageData = sessionStorage.getItem('user');
+    if (sessionStorageData) {
+      // 만약 세션 스토리지에 데이터가 있으면 실행
+      const sessionData: User = JSON.parse(sessionStorageData); // 데이터를 JS로 변환
+      setIsLogin(true); // 로그인여부를 true
+      setUserId(sessionData.id); // 세션에 있는 유저 id 저장
+      setUserType(sessionData.type); // 세션에 있는 유저 type 저장
+      getCheckProfile(sessionData.id);
+    }
+  };
 
-  let isLogin: boolean; // 로그인 여부를 담을 변수
-  let userId: string | undefined; // user_id를 담을 변수
-  let user_type: string | undefined; // 알바생인지 사장님인지 확인하는 변수
-  const sessionStorageData = sessionStorage.getItem('user'); // 세션 스토리지에 key값이 'user'인 데이터를 가져온다
-  if (sessionStorageData) {
-    // 만약 데이터가 존재하면 JSON형식으로 되어있으니깐 JS로 변환해주고 sessionId에는 user_id 값을 넣어주고 isLogin에는 true를 넣어준다
-    const sessionData = JSON.parse(sessionStorageData);
-    userId = sessionData.id;
-    user_type = sessionData.type;
-    isLogin = true;
-  } else {
-    // 만약 데이터가 없으면 로그인이 안된 상태니깐 sessionId는 빈값을 넣고 isLogin은 false를 넣어준다.
-    userId = undefined;
-    user_type = undefined;
-    isLogin = false;
-  }
-
-  console.log('type: ', user_type);
-
-  ///// 신청하기 버튼 클릭 시 실행되는 함수구현
-  const handleApply = async () => {
-    if (isLogin) {
-      // 로그인이 되어있을 경우
+  ///// 프로필 API로 요청을 보내서 프로필 여부를 확인하기
+  const getCheckProfile = async (userId: string) => {
+    try {
       const res = await instance.get(`/users/${userId}`);
-      const resData = res.data.item;
-      console.log('resData : ', resData);
-      if (!resData.name || !resData.phone || !resData.address || !resData.bio) {
-        console.log('프로필 페이지로 이동하자'); // 여기에 모달창을 띄우는 구문 만들기
+      const profileData: ProfileData = res.data.item;
+      // 만약 받아온 프로필 정보에 name,phone,address,bio가 없으면 프로필여부를 true와 false로 지정
+      if (
+        !profileData.name ||
+        !profileData.phone ||
+        !profileData.address ||
+        !profileData.bio
+      ) {
+        setIsProfile(false);
       } else {
-        if (!isApplied) {
-          const res = instance.post(
-            `/shops/${shopid}/notices/${noticeid}/applications`,
-            {},
-            {
-              headers: {
-                Authorization: `Bearer ${Cookies.get('token')}`,
-              },
-            },
-          );
-          console.log('지원완료리스폰스', res);
-          console.log('지원완료'); // 토스트 메시지랑 POST 요청을 보내야함
+        setIsProfile(true);
+      }
+    } catch (error) {
+      console.log('프로필 API 연결 실패 : ', error);
+    }
+  };
+
+  ///// 신청하기 버튼 구현하기
+  const handleApply = async () => {
+    if (!isLogin) {
+      console.log('로그인이 필요합니다'); // 모달창과 함께 로그인페이지로 이동
+    } else if (userType === 'employer') {
+      console.log('사장님은 신청하지 못합니다.'); // 모달창
+    } else if (isProfile) {
+      console.log('프로필을 작성해주세요'); // 모달창과 함께 프로필 페이지로 이동
+    } else {
+      if (!isApplied) {
+        try {
+          // 일단 shopid와 noticeid를 받아오지 않아서 일단 주석처리 해놓음. 나중에 사용할거면 아래 주석처리 해제하면 된다.
+          // const res = await instance.post(
+          //   `/shops/${shopid}/notices/${noticeid}/applications`,
+          //   {},
+          //   {
+          //     headers: {
+          //       Authorization: `Bearer ${Cookies.get('token')}`,
+          //     },
+          //   },
+          // );
+          console.log('지원완료'); // 토스트 메시지
           setIsApplied(true);
-        } else {
-          const res = instance.post(
-            // `/shops/${shopid}/notices/${noticeid}/applications/${applicationid}`,
-            `/shops/${shopid}/notices/${noticeid}/applications/`, // 아직 applicationid를 어디서 받아와야할지 모르겠음...
-            { status: 'canceled' },
-            {
-              headers: {
-                Authorization: `Bearer ${Cookies.get('token')}`,
-                'Content-Type': 'application/json',
-              },
-            },
-          );
-          console.log('취소완료리스폰스', res);
-          console.log('취소완료'); // 모달창과 PUT요청을 보내야함
+        } catch (error) {
+          console.log('POST에러', error);
+        }
+      } else {
+        console.log('취소하시겠습니까?'); // 모달창
+        try {
+          // `/shops/${shopid}/notices/${noticeid}/applications/${applicationid}`; // 이 주소로 API PUT요청을 보내야한다.
+
+          // const res = await instance.put(
+          //   `/shops/${shopid}/notices/${noticeid}/applications/11111`,
+          //   { status: 'canceled' },
+          //   {
+          //     headers: {
+          //       Authorization: `Bearer ${Cookies.get('token')}`,
+          //       'Content-Type': 'application/json',
+          //     },
+          //   },
+          // );
+          console.log('취소완료');
           setIsApplied(false);
+        } catch (error) {
+          console.log('PUT에러', error);
         }
       }
-      console.log('로그인 중 ');
-    } else {
-      console.log('로그인하러 이동하자'); // 여기에 모달창을 띄우는 상태를 true로 만들기
     }
   };
 
@@ -181,6 +220,7 @@ function DetailPage({ shopid, noticeid }: Props) {
 
   useEffect(() => {
     getData();
+    getSesstionStorageData();
   }, []);
 
   return (
