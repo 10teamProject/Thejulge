@@ -1,0 +1,177 @@
+.CardWrapper {
+  margin-bottom: 120px;
+}
+
+.card {
+  width: 100%;
+  display: flex;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  margin-bottom: 20px;
+
+  @media (max-width: 1024px) {
+    flex-direction: column;
+  }
+}
+
+.imageContainer {
+  position: relative;
+  width: 50%;
+  padding: 20px;
+
+  @media (max-width: 1024px) {
+    width: 100%;
+    padding: 20px 20px 0 20px;
+  }
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+}
+
+.content {
+  flex: 1;
+  padding: 20px;
+}
+
+.title {
+  font-family: Spoqa Han Sans Neo;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 20px;
+  text-align: left;
+  color: var(--yellow5);
+  margin-bottom: 5px;
+}
+
+.payInfo {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+
+  @media (max-width: 1024px) {
+    flex-wrap: wrap; // 줄 바꿈을 허용
+  }
+}
+
+.pay {
+  font-family: Spoqa Han Sans Neo;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 35.06px;
+  letter-spacing: 0.02em;
+  text-align: left;
+  color: #111322;
+  margin-right: 10px; // 오른쪽 여백 추가
+}
+
+.increase {
+  font-family: Spoqa Han Sans Neo;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 17.53px;
+  color: #fff;
+  background-color: var(--yellow4);
+  padding: 8px 12px;
+  height: 36px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap; // 텍스트 줄 바꿈 방지
+
+  img {
+    margin-left: 4px;
+  }
+
+  @media (max-width: 1024px) {
+    font-size: 12px; // 폰트 크기 줄임
+    padding: 6px 10px; // 패딩 줄임
+    height: 30px; // 높이 줄임
+  }
+}
+
+.info {
+  margin-bottom: 15px;
+}
+
+.infoItem {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+
+  font-family: Spoqa Han Sans Neo;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 26px;
+  text-align: left;
+
+  span {
+    margin-left: 10px;
+    font-size: 14px;
+    color: #666;
+  }
+}
+
+.description {
+  font-family: Spoqa Han Sans Neo;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 26px;
+  text-align: left;
+  color: #111322;
+  margin-bottom: 20px;
+}
+
+.applyButton {
+  width: 100%;
+  padding: 12px;
+  background-color: #fff;
+  color: var(--yellow5);
+  border: 1px solid var(--yellow4);
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s;
+
+  &:hover {
+    background-color: var(--yellow5);
+    color: #fff;
+  }
+
+  @media (max-width: 1024px) {
+    margin-top: 20px;
+  }
+}
+
+.descriptionCard {
+  background-color: #f8f8f8;
+  border-radius: 12px;
+  padding: 30px;
+  margin-top: 20px;
+  margin-bottom: 32px;
+}
+
+.descriptionTitle {
+  font-family: Spoqa Han Sans Neo;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 20px;
+  text-align: left;
+  color: #111322;
+  margin-bottom: 12px;
+}
+
+.descriptionContent {
+  font-family: Spoqa Han Sans Neo;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 26px;
+  text-align: left;
+  color: #111322;
+}
