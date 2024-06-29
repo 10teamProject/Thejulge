@@ -17,6 +17,9 @@
   &:hover .page-link {
     background-color: #f0f0f0;
   }
+  @media (max-width: 767px) {
+    margin: 0 3px;
+  }
 }
 
 .page-link {
