@@ -70,6 +70,7 @@ function DetailPage({
   const [isProfile, setIsProfile] = useState<boolean>(false); // 프로필 여부를 확인
   const [userType, setUserType] = useState<string>(''); // user가 알바생인지 사장님인지 확인
   const [applicationId, setApplicationId] = useState<string>(''); // applicaionId를 담는 변수인데 "신청하기" 버튼을 누르면 값이 담김
+  const router = useRouter();
 
   ////// 세션 스토리지에서 데이터 가져오기 구현
   const getSesstionStorageData = () => {
@@ -141,10 +142,12 @@ function DetailPage({
   ///// 신청하기 버튼 구현하기
   const handleApply = async () => {
     if (!isLogin) {
+      router.push('/login');
       console.log('로그인이 필요합니다'); // 모달창과 함께 로그인페이지로 이동
     } else if (userType === 'employer') {
       console.log('사장님은 신청하지 못합니다.'); // 모달창
-    } else if (isProfile) {
+    } else if (!isProfile) {
+      router.push('/DetailedMyPage');
       console.log('프로필을 작성해주세요'); // 모달창과 함께 프로필 페이지로 이동
     } else {
       if (!isApplied) {
