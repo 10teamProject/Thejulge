@@ -2,8 +2,20 @@ import React, { useState } from 'react';
 
 import { addressOptions } from '../../utils/Options';
 import styles from './PostMyPage.module.scss';
-
-function PostMyPage(props: PostMyPageProps) {
+interface Option {
+  value: string;
+}
+interface PostMyPageProps {}
+const PostMyPage: React.FC<PostMyPageProps> = () => {
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [selectedOption, setSelectedOption] = useState<string>('선택');
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
+  const handleOptionClick = (option: Option) => {
+    setSelectedOption(option.value);
+    setIsDropdownOpen(false);
+  };
   return (
     <main className={styles.main}>
       <div className={styles.postContainer}>
@@ -24,7 +36,6 @@ function PostMyPage(props: PostMyPageProps) {
                 />
               </div>
             </div>
-
             <div className={styles.inputSize}>
               <label htmlFor="tel" className={styles.inputFont}>
                 연락처*
@@ -39,36 +50,51 @@ function PostMyPage(props: PostMyPageProps) {
                 />
               </div>
             </div>
-
             <div className={styles.inputSize}>
               <label htmlFor="region" className={styles.inputFont}>
                 선호 지역
               </label>
               <div>
-                <select
-                  className={styles.selectStyle}
-                  name="region"
-                  id="region"
-                >
-                  {' '}
-                  선택
-                  <option value="" selected disabled hidden>
-                    선택
-                  </option>
-                  {addressValue.map((option) => (
-                    <option
-                      className={styles.selectPlaceHolder}
-                      key={option.value}
-                      value={option.value}
-                    >
-                      {option.label}
-                    </option>
-                  ))}
-                </select>
+                <div className={styles.selectStyle} onClick={toggleDropdown}>
+                  {selectedOption}
+                  <span>
+                    {isDropdownOpen ? (
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                      >
+                        <path d="M7 14l5-5 5 5z" />
+                      </svg>
+                    ) : (
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                      >
+                        <path d="M7 10l5 5 5-5z" />
+                      </svg>
+                    )}
+                  </span>
+                  <ul
+                    className={`${styles.options} ${isDropdownOpen ? styles.show : ''}`}
+                  >
+                    {addressOptions.map((option: Option) => (
+                      <li
+                        key={option.value}
+                        className={styles.option}
+                        onClick={() => handleOptionClick(option)}
+                      >
+                        {option.value}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
             </div>
           </div>
-
           <div className={styles.introduceBox}>
             <label htmlFor="intro" className={styles.inputFont}>
               소개
@@ -82,7 +108,6 @@ function PostMyPage(props: PostMyPageProps) {
               />
             </div>
           </div>
-
           <button className={styles.button}>
             <span>등록하기</span>
           </button>
@@ -90,6 +115,5 @@ function PostMyPage(props: PostMyPageProps) {
       </div>
     </main>
   );
-}
-
+};
 export default PostMyPage;
