@@ -157,39 +157,41 @@ const ListPage: React.FC<Props> = ({
       <div className={styles.container}>
         <div className={styles.titleSection}>
           <h2 className={styles.title}>전체 공고</h2>
-          <div
-            className={styles.sortDropdown}
-            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-          >
-            {label} ▼
-            {isDropdownOpen && (
-              <ul className={styles.sortDropdownMenu}>
-                {sortOptions.map((option) => (
-                  <li
-                    key={option.key}
-                    className={`${styles.sortDropdownText} ${styles.dropdownLine}`}
-                    onClick={() => handleSortChange(option.key, option.label)}
-                  >
-                    {option.label}
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-          <div
-            className={styles.detailFilter}
-            onClick={() => setIsFilterOpen(!isFilterOpen)}
-          >
-            상세 필터
-            {isFilterOpen && (
-              <FilterDropdown
-                setIsFilterOpen={setIsFilterOpen}
-                onApply={handleFilterApply}
-                initialSelectedLocations={selectedLocations}
-                initialStartDate={startDate}
-                initialHourlyPay={hourlyPay}
-              />
-            )}
+          <div className={styles.dropdownGroup}>
+            <div
+              className={styles.sortDropdown}
+              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+            >
+              {label} ▼
+              {isDropdownOpen && (
+                <ul className={styles.sortDropdownMenu}>
+                  {sortOptions.map((option) => (
+                    <li
+                      key={option.key}
+                      className={`${styles.sortDropdownText} ${styles.dropdownLine}`}
+                      onClick={() => handleSortChange(option.key, option.label)}
+                    >
+                      {option.label}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+            <div
+              className={styles.detailFilter}
+              onClick={() => setIsFilterOpen(!isFilterOpen)}
+            >
+              상세 필터
+              {isFilterOpen && (
+                <FilterDropdown
+                  setIsFilterOpen={setIsFilterOpen}
+                  onApply={handleFilterApply}
+                  initialSelectedLocations={selectedLocations}
+                  initialStartDate={startDate}
+                  initialHourlyPay={hourlyPay}
+                />
+              )}
+            </div>
           </div>
         </div>
         <div className={styles.notices}>

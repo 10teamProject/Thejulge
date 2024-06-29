@@ -7,7 +7,7 @@
   padding: 60px 0;
   @media (max-width: 767px) {
     height: 375px;
-    padding: 0px 12px;
+    padding: 30px 12px;
   }
 }
 .customSection {
@@ -18,7 +18,7 @@
   }
   @media (max-width: 767px) {
     width: 350px;
-    margin: 0;
+    margin: 0 auto;
   }
 }
 .title {
@@ -31,9 +31,9 @@
   margin-bottom: 30px;
   @media (max-width: 767px) {
     font-size: 20px;
+    margin-bottom: 10px;
   }
 }
-//여기부터 핸드폰 사이즈 안 함
 .fitNotice {
   display: flex;
   gap: 10px;
@@ -43,6 +43,12 @@
   width: 100%;
   margin: 0 auto;
   background-color: white;
+  @media (max-width: 1199px) {
+    width: 678px;
+  }
+  @media (max-width: 767px) {
+    width: 350px;
+  }
 }
 .titleSection {
   display: flex;
@@ -53,11 +59,18 @@
     width: 678px;
   }
   @media (max-width: 767px) {
-    height: 375px;
-    padding: 0px 12px;
+    flex-direction: column;
   }
 }
-
+.dropdownGroup {
+  display: flex;
+  margin: 0;
+  @media (max-width: 767px) {
+    width: 350px;
+    gap: 10px;
+    margin-bottom: 15px;
+  }
+}
 .sortDropdown {
   cursor: pointer;
   z-index: 1;
@@ -67,7 +80,6 @@
   align-items: center;
   justify-content: center;
   padding: 12px;
-  margin: 0 0 0 auto;
   gap: 6px;
   background: #f2f2f3;
   border-radius: 5px;
@@ -89,7 +101,6 @@
   align-items: center;
   padding: 12px;
   gap: 6px;
-  margin: 0 0 0 0;
   width: 79px;
   height: 30px;
   background: var(--yellow5);
@@ -147,5 +158,8 @@
     width: 678px;
     gap: 15px;
     grid-template: 1fr 1fr / repeat(2, 1fr);
+  }
+  @media (max-width: 767px) {
+    width: 350px;
   }
 }
