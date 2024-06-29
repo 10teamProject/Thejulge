@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef,useState } from 'react';
 
 import { addressOptions } from '../../utils/Options';
 import styles from './PostMyPage.module.scss';
@@ -9,9 +9,23 @@ interface Option {
 
 interface PostMyPageProps {}
 
-const PostMyPage: React.FC<PostMyPageProps> = () => {
+function PostMyPage(props: PostMyPageProps) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState<string>('선택');
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  const handleClickOutside = (event: MouseEvent) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      setIsDropdownOpen(false);
+    }
+  };
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -41,7 +55,7 @@ const PostMyPage: React.FC<PostMyPageProps> = () => {
             <div className={styles.inputSize}>
               <label htmlFor="region" className={styles.inputFont}>선호 지역</label>
               <div>
-                <div className={styles.selectStyle} onClick={toggleDropdown}>
+                <div className={styles.selectStyle} ref={dropdownRef} onClick={toggleDropdown}>
                   {selectedOption}
                   <span>
                     {isDropdownOpen ? (
@@ -76,6 +90,6 @@ const PostMyPage: React.FC<PostMyPageProps> = () => {
       </div>
     </main>
   );
-};
+}
 
 export default PostMyPage;
