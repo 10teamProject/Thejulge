@@ -14,6 +14,12 @@
 html,
 body {
   overflow-x: hidden;
+}
+
+html,
+body,
+input,
+textarea {
   font-family: 'Spoqa Han Sans Neo', 'Pretendard', sans-serif;
 }
 

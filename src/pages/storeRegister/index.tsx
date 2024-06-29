@@ -1,11 +1,12 @@
 import { useRouter } from 'next/router';
-import React, { ChangeEvent, FormEvent, useState } from 'react';
+import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 
 import Modal from '@/components/auth/ErrorModal';
 import Button from '@/components/common/Button';
 import Input from '@/components/common/InputComponent';
 import DropDown from '@/components/dropDown/DropDown';
 import ImageUpload from '@/components/storeRegister/ImageUpload';
+import useWindowSize from '@/hooks/useWindowSize';
 import { StoreProfileProps } from '@/types/storeProfileTypes';
 import { addressOptions, categoryOptions } from '@/utils/Options';
 import Messages from '@/utils/validation/Message';
@@ -36,6 +37,7 @@ export default function StoreRegister() {
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
+  const { width } = useWindowSize();
 
   const handleInputChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -131,11 +133,15 @@ export default function StoreRegister() {
     !formValues.originalHourlyPay ||
     !formValues.address2;
 
+  const getWindowSize = () => {
+    return width <= 767 ? 'full' : 'large';
+  };
+
   return (
-    <>
+    <div className={styles.container}>
       <h2 className={styles.title}>가게 정보</h2>
       <form onSubmit={handleSubmit}>
-        <div>
+        <div className={styles.inputWrapper}>
           <Input
             label="가게 이름"
             name="name"
@@ -147,8 +153,8 @@ export default function StoreRegister() {
             error={formErrors.name}
           />
         </div>
-        <div>
-          <label htmlFor="category" className={styles.dropdownLabel}>
+        <div className={styles.inputWrapper}>
+          <label htmlFor="category" className={styles.label}>
             분류
           </label>
           <DropDown
@@ -161,8 +167,8 @@ export default function StoreRegister() {
             error={formErrors.category}
           />
         </div>
-        <div>
-          <label htmlFor="address1" className={styles.dropdownLabel}>
+        <div className={styles.inputWrapper}>
+          <label htmlFor="address1" className={styles.label}>
             주소
           </label>
           <DropDown
@@ -175,7 +181,7 @@ export default function StoreRegister() {
             error={formErrors.address1}
           />
         </div>
-        <div>
+        <div className={styles.inputWrapper}>
           <Input
             label="상세 주소"
             name="address2"
@@ -187,7 +193,7 @@ export default function StoreRegister() {
             error={formErrors.address2}
           />
         </div>
-        <div>
+        <div className={styles.inputWrapper}>
           <Input
             label="기본 시급"
             name="originalHourlyPay"
@@ -199,11 +205,11 @@ export default function StoreRegister() {
             error={formErrors.originalHourlyPay}
           />
         </div>
-        <div>
-          <label>가게 이미지</label>
+        <div className={styles.inputWrapper}>
+          <label className={styles.label}>가게 이미지</label>
           <ImageUpload onImageUpload={handleImageUpload} />
         </div>
-        <div>
+        <div className={styles.inputWrapper}>
           <Input
             label="가게 설명"
             name="description"
@@ -214,13 +220,17 @@ export default function StoreRegister() {
             isTextArea={true}
           />
         </div>
-        <Button children="등록하기" disabled={isFilled} />
+        <Button
+          children="등록하기"
+          disabled={isFilled}
+          size={getWindowSize()}
+        />
       </form>
       <Modal
         isOpen={isModalOpen}
         onClose={handleModalClose}
         message={modalMessage}
       />
-    </>
+    </div>
   );
 }

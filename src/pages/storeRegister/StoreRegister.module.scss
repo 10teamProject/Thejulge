@@ -1,9 +1,32 @@
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 60px 32px;
+}
+
 .title {
   font-size: 28px;
   font-weight: 700;
+  margin-bottom: 32px;
 }
 
-.dropdownLabel {
+.inputWrapper {
+  margin-bottom: 24px;
+}
+
+.label {
   display: block;
   margin-bottom: 5px;
+  line-height: 26px;
+}
+
+@media (max-width: 767px) {
+  .container {
+    padding: 40px 12px;
+  }
+
+  .title {
+    margin-bottom: 24px;
+  }
 }
