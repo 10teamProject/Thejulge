@@ -5,7 +5,7 @@
   justify-content: center;
   align-items: center;
   padding: 60px 0;
-  @media (max-width: 768px) {
+  @media (max-width: 767px) {
     height: 375px;
     padding: 0px 12px;
   }
@@ -16,7 +16,7 @@
   @media (max-width: 1199px) {
     width: 680px;
   }
-  @media (max-width: 768px) {
+  @media (max-width: 767px) {
     width: 350px;
     margin: 0;
   }
@@ -29,10 +29,11 @@
   line-height: 35px;
   color: #111322;
   margin-bottom: 30px;
-  @media (max-width: 768px) {
+  @media (max-width: 767px) {
     font-size: 20px;
   }
 }
+//여기부터 핸드폰 사이즈 안 함
 .fitNotice {
   display: flex;
   gap: 10px;
@@ -41,7 +42,6 @@
   padding: 60px 0;
   width: 100%;
   margin: 0 auto;
-  height: 995px;
   background-color: white;
 }
 .titleSection {
@@ -52,7 +52,7 @@
   @media (max-width: 1199px) {
     width: 678px;
   }
-  @media (max-width: 768px) {
+  @media (max-width: 767px) {
     height: 375px;
     padding: 0px 12px;
   }
@@ -78,7 +78,7 @@
   font-size: 14px;
   line-height: 18px;
   color: #111322;
-  @media (max-width: 768px) {
+  @media (max-width: 767px) {
   }
 }
 .detailFilter {
@@ -101,7 +101,7 @@
   font-size: 14px;
   line-height: 17px;
   color: #ffffff;
-  @media (max-width: 768px) {
+  @media (max-width: 767px) {
   }
 }
 .sortDropdownMenu {
