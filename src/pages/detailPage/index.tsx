@@ -1,3 +1,4 @@
+import Cookies from 'js-cookie';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
@@ -52,29 +53,91 @@ const initialStoreData: NoticeItem = {
     },
   ],
 };
-
 function DetailPage({ shopid, noticeid }: Props) {
   const [storeData, setStoreData] = useState<NoticeItem>(initialStoreData);
+  console.log('data : ', storeData);
   const { hourlyPay, startsAt, workhour, description } = storeData.item; //description은 이름이 겹쳐서 공고 description만 변수선언
   const { category, name, imageUrl, address1, originalHourlyPay } =
     storeData.item.shop.item;
-
   const increaseRate = calculateHourlyPayIncrease(originalHourlyPay, hourlyPay);
   const startTime = formatDate(startsAt);
   const endTime = calculateEndTime(startsAt, workhour);
 
-  const [isApplied, setIsApplied] = useState(false);
   const [recentNotices, setRecentNotices] = useState<Notice[]>([]); // 로컬스토리지 담을 변수
+  const [isApplied, setIsApplied] = useState(false);
 
-  const handleApply = () => {
-    setIsApplied(!isApplied);
+  ////// 세션 스토리지에서 데이터 가져오기 구현
+
+  let isLogin: boolean; // 로그인 여부를 담을 변수
+  let userId: string | undefined; // user_id를 담을 변수
+  let user_type: string | undefined; // 알바생인지 사장님인지 확인하는 변수
+  const sessionStorageData = sessionStorage.getItem('user'); // 세션 스토리지에 key값이 'user'인 데이터를 가져온다
+  if (sessionStorageData) {
+    // 만약 데이터가 존재하면 JSON형식으로 되어있으니깐 JS로 변환해주고 sessionId에는 user_id 값을 넣어주고 isLogin에는 true를 넣어준다
+    const sessionData = JSON.parse(sessionStorageData);
+    userId = sessionData.id;
+    user_type = sessionData.type;
+    isLogin = true;
+  } else {
+    // 만약 데이터가 없으면 로그인이 안된 상태니깐 sessionId는 빈값을 넣고 isLogin은 false를 넣어준다.
+    userId = undefined;
+    user_type = undefined;
+    isLogin = false;
+  }
+
+  console.log('type: ', user_type);
+
+  ///// 신청하기 버튼 클릭 시 실행되는 함수구현
+  const handleApply = async () => {
+    if (isLogin) {
+      // 로그인이 되어있을 경우
+      const res = await instance.get(`/users/${userId}`);
+      const resData = res.data.item;
+      console.log('resData : ', resData);
+      if (!resData.name || !resData.phone || !resData.address || !resData.bio) {
+        console.log('프로필 페이지로 이동하자'); // 여기에 모달창을 띄우는 구문 만들기
+      } else {
+        if (!isApplied) {
+          const res = instance.post(
+            `/shops/${shopid}/notices/${noticeid}/applications`,
+            {},
+            {
+              headers: {
+                Authorization: `Bearer ${Cookies.get('token')}`,
+              },
+            },
+          );
+          console.log('지원완료리스폰스', res);
+          console.log('지원완료'); // 토스트 메시지랑 POST 요청을 보내야함
+          setIsApplied(true);
+        } else {
+          const res = instance.post(
+            // `/shops/${shopid}/notices/${noticeid}/applications/${applicationid}`,
+            `/shops/${shopid}/notices/${noticeid}/applications/`, // 아직 applicationid를 어디서 받아와야할지 모르겠음...
+            { status: 'canceled' },
+            {
+              headers: {
+                Authorization: `Bearer ${Cookies.get('token')}`,
+                'Content-Type': 'application/json',
+              },
+            },
+          );
+          console.log('취소완료리스폰스', res);
+          console.log('취소완료'); // 모달창과 PUT요청을 보내야함
+          setIsApplied(false);
+        }
+      }
+      console.log('로그인 중 ');
+    } else {
+      console.log('로그인하러 이동하자'); // 여기에 모달창을 띄우는 상태를 true로 만들기
+    }
   };
 
   async function getData() {
     try {
       // const res = await instance.get(`/shops/${shopid}/notices/${noticeid}`);
       const res = await instance.get(
-        `/shops/63fcc375-5d0a-4ba4-ac5b-101b03973c74/notices/3ddb7188-8ced-4021-9d07-663f98b5411b`,
+        `/shops/fce32f91-a1aa-4699-a639-ea24a9cd1d12/notices/8c03c152-3d0c-4b78-b873-546318979cfc`,
       ); // 샘플 데이터
       const nextData = await res.data;
       setStoreData(nextData);
