@@ -51,6 +51,7 @@
   font-weight: 400;
   font-size: 16px;
   line-height: 26px;
+  color: #111322;
 }
 
 .input {
@@ -67,26 +68,84 @@
   padding-left : 20px;
 }
 
+.input:focus {
+  outline: none;
+}
+
 // 선호 지역
 .selectStyle {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
   width: 308px;
   height: 58px;
   border-radius: 6px;
-  border-color: #CBC9CF;
+  background-color: #FFFFFF;
+  border: 1px solid #CBC9CF;
+  margin-top: 8px;
+  cursor: pointer;
+  text-align: left;
+  padding: 16px 20px;
+  font-family: 'Spoqa Han Sans Neo', sans-serif;
   color: #A4A1A4;
   font-weight: 400;
   font-size: 16px;
   line-height: 26px;
+}
+
+.options {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background-color: #FFFFFF;
+  border: 1px solid #CBC9CF;
+  border-radius: 6px;
+  z-index: 1;
+  max-height: 150px;
+  overflow-y: auto;
+  width: 308px;
   margin-top: 8px;
+  box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.2);
+}
+
+.options.show {
+  display: block;
+}
+
+.option {
+  font-family: 'Spoqa Han Sans Neo', sans-serif;
+  color: #111322;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 26px;
+  text-align: center;
+  padding: 10px;
   cursor: pointer;
-  padding-left : 20px;
-  
-  .selectPlaceHolder {
-    text-align: center;
-    border-bottom: 1px solid red;
-    width: 500px;
-    height: 500px;
-   }
+  border-bottom: 1px solid #E5E4E7;
+}
+
+.option:hover {
+  background-color: #f0f0f0;
+}
+
+// 스크롤바 디자인
+.options::-webkit-scrollbar {
+  width: 4px; // 스크롤바 너비
+}
+
+.options::-webkit-scrollbar-track {
+  background-color: var(--yellow3); // 스크롤바 배경
+}
+
+.options::-webkit-scrollbar-thumb {
+  background-color: #ffb700; // 스크롤바 색상
+  border-radius: 12px 12px 12px 12px;   // 스크롤바 모서리
+  min-height: 50px; // 스크롤바 최소 높이
+}
+.options::-webkit-scrollbar-thumb:hover {
+  background-color: #ff9100; // 스크롤바 hover 색상
 }
 
 // 소개 input 부분
@@ -109,6 +168,11 @@
   padding-top: 16px;
 }
 
+.inputBoard:focus {
+ outline: none;
+}
+
+
 
 // 등록하기 버튼
 .button {
@@ -130,3 +194,4 @@
       color: #FFFFFF;
 }
 }
+

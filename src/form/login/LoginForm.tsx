@@ -45,7 +45,7 @@ export default function LoginForm() {
           email: response.item.user.item.email,
           type: response.item.user.item.type as 'employee' | 'employer',
         });
-        router.push('/');
+        router.push('/listPage');
       } else {
         throw new Error('토큰을 받지 못했습니다.');
       }

@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import Pagination from 'react-js-pagination';
 
 import FilterDropdown from '@/components/listPage/FilterDropdown';
+import FitNotice from '@/components/listPage/FitNotice';
 import NoticeCard from '@/components/listPage/NoticeCard';
 import { Notice } from '@/utils/NoticeCard/NoticesType';
 import paginationStyles from '@/utils/Pagination.module.scss';
@@ -14,6 +15,7 @@ type Props = {
   initialNotices: Notice[];
   totalCount: number;
   currentPage: number;
+  sort: 'time' | 'pay' | 'hour' | 'shop';
 };
 
 export const getServerSideProps: GetServerSideProps<Props> = async (
@@ -22,15 +24,18 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
   const currentPage = context.query.page
     ? parseInt(context.query.page as string, 10)
     : 1;
-  const limit = 6;
-  const offset = (currentPage - 1) * limit;
-
-  const params = {
-    offset,
-    limit,
-  };
 
   try {
+    const sort =
+      context.query.sort &&
+      ['time', 'pay', 'hour', 'shop'].includes(context.query.sort as string)
+        ? (context.query.sort as 'time' | 'pay' | 'hour' | 'shop')
+        : 'time';
+
+    const params = {
+      sort,
+    };
+
     const data = await getNotices(params);
     const initialNotices: Notice[] = data.items.map((item) => item.item);
     const totalCount = data.count;
@@ -40,6 +45,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
         initialNotices,
         totalCount,
         currentPage,
+        sort,
       },
     };
   } catch (error) {
@@ -49,6 +55,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
         initialNotices: [],
         totalCount: 0,
         currentPage,
+        sort: 'time',
       },
     };
   }
@@ -58,6 +65,7 @@ const ListPage: React.FC<Props> = ({
   initialNotices,
   totalCount,
   currentPage,
+  sort: initialSort,
 }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -142,9 +150,7 @@ const ListPage: React.FC<Props> = ({
         <div className={styles.customSection}>
           <h2 className={styles.title}>맞춤 공고</h2>
           <div className={styles.fitNotice}>
-            {initialNotices.map((notice) => (
-              <NoticeCard key={notice.id} notice={notice} />
-            ))}
+            <FitNotice initialNotices={initialNotices} />
           </div>
         </div>
       </div>

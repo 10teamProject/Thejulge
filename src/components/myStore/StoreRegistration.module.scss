@@ -1,0 +1,11 @@
+.registerContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid #e5e4e7;
+  padding: 60px 0;
+  gap: 24px;
+}

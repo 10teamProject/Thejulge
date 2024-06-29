@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { useRouter } from 'next/router';
 import React, { ChangeEvent, FormEvent, useState } from 'react';
 
@@ -101,25 +100,22 @@ export default function StoreRegister() {
       return;
     }
 
-    // @TODO 모달 메시지 안뜨는거 수정해야 함
     try {
-      const storeResponse = await registerStore(formValues);
-      console.log(storeResponse);
-      if (storeResponse?.status === 200) {
-        setModalMessage('등록이 완료되었습니다.');
-      }
+      await registerStore(formValues);
+      setModalMessage('등록이 완료되었습니다.');
     } catch (error) {
-      if (axios.isAxiosError(error)) {
-        if (error.response?.status === 409) {
-          setModalMessage(error.response.data.message);
+      if (error instanceof Error) {
+        if (error.message === Messages.NETWORK_ERROR) {
+          setModalMessage(Messages.REGISTER_FAILED);
         } else {
-          console.error('가게 정보 등록 실패했습니다.', error);
+          setModalMessage(error.message);
         }
       }
     } finally {
       setIsModalOpen(true);
     }
   };
+
   const handleModalClose = async () => {
     const userInfo = await GetUserInfo();
     setIsModalOpen(false);
