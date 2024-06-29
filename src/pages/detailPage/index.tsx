@@ -8,6 +8,7 @@ import arrow from '@/public/assets/images/arrow.png';
 import logo from '@/public/assets/images/biglogo.png';
 import location from '@/public/assets/images/location.png';
 import time from '@/public/assets/images/timers.png';
+import { Application, ProfileData, Props, User } from '@/types/detailPageType';
 import {
   calculateEndTime,
   calculateHourlyPayIncrease,
@@ -17,24 +18,6 @@ import { Notice, NoticeItem } from '@/utils/NoticeCard/NoticesType';
 
 import { instance } from '../api/AxiosInstance';
 import styles from './DetailPage.module.scss';
-
-interface Props {
-  shopid: string;
-  noticeid: string;
-}
-
-interface User {
-  id: string;
-  email: string;
-  type: string;
-}
-
-interface ProfileData {
-  name: string;
-  phone: string;
-  address: string;
-  bio: string;
-}
 
 const initialStoreData: NoticeItem = {
   item: {
@@ -66,7 +49,11 @@ const initialStoreData: NoticeItem = {
     },
   ],
 };
-function DetailPage({ shopid, noticeid }: Props) {
+
+function DetailPage({
+  shopid,
+  noticeid = '064f8810-8e63-426f-b12f-e616709561f7', // 테스트한다고 임의로 값을 넣음. 나중에 지워줘야한다
+}: Props) {
   const [storeData, setStoreData] = useState<NoticeItem>(initialStoreData);
   const { hourlyPay, startsAt, workhour, description } = storeData.item; //description은 이름이 겹쳐서 공고 description만 변수선언
   const { category, name, imageUrl, address1, originalHourlyPay } =
@@ -76,17 +63,13 @@ function DetailPage({ shopid, noticeid }: Props) {
   const endTime = calculateEndTime(startsAt, workhour);
 
   const [recentNotices, setRecentNotices] = useState<Notice[]>([]); // 로컬스토리지 담을 변수
-  const [isApplied, setIsApplied] = useState(false);
+  const [isApplied, setIsApplied] = useState(false); // 신청하기 버튼 상태관리변수
 
   ///// 세션 스토리지와 관련된 변수들
   const [isLogin, setIsLogin] = useState<boolean>(false); // 로그인 여부를 확인
-  const [userId, setUserId] = useState<string>(''); // user 아이디를 저장
-  const [userType, setUserType] = useState<string>(''); // user가 알바생인지 사장님인지 확인
   const [isProfile, setIsProfile] = useState<boolean>(false); // 프로필 여부를 확인
-  // console.log('로그인여부 : ', isLogin);
-  // console.log('userId : ', userId);
-  // console.log('userType : ', userType);
-  // console.log('프로필여부 : ', isProfile);
+  const [userType, setUserType] = useState<string>(''); // user가 알바생인지 사장님인지 확인
+  const [applicationId, setApplicationId] = useState<string>(''); // applicaionId를 담는 변수인데 "신청하기" 버튼을 누르면 값이 담김
 
   ////// 세션 스토리지에서 데이터 가져오기 구현
   const getSesstionStorageData = () => {
@@ -95,9 +78,9 @@ function DetailPage({ shopid, noticeid }: Props) {
       // 만약 세션 스토리지에 데이터가 있으면 실행
       const sessionData: User = JSON.parse(sessionStorageData); // 데이터를 JS로 변환
       setIsLogin(true); // 로그인여부를 true
-      setUserId(sessionData.id); // 세션에 있는 유저 id 저장
-      setUserType(sessionData.type); // 세션에 있는 유저 type 저장
+      setUserType(sessionData.type); // 세션에 있는 유저 type 저장 (알바생 | 사장님)
       getCheckProfile(sessionData.id);
+      getUserApplications(sessionData.id);
     }
   };
 
@@ -106,7 +89,7 @@ function DetailPage({ shopid, noticeid }: Props) {
     try {
       const res = await instance.get(`/users/${userId}`);
       const profileData: ProfileData = res.data.item;
-      // 만약 받아온 프로필 정보에 name,phone,address,bio가 없으면 프로필여부를 true와 false로 지정
+      // 만약 받아온 프로필 정보에 name,phone,address,bio가 없으면 프로필상태를 false로 있으면 true로 반환
       if (
         !profileData.name ||
         !profileData.phone ||
@@ -122,6 +105,39 @@ function DetailPage({ shopid, noticeid }: Props) {
     }
   };
 
+  ///// 유저가 지원한 공고 확인하기
+  const getUserApplications = async (userId: string) => {
+    try {
+      const res = await instance.get(`/users/${userId}/applications`, {
+        headers: {
+          Authorization: `Bearer ${Cookies.get('token')}`,
+        },
+      });
+
+      const userApplications: Application[] = res.data.items; // response로 유저가 지원한 공고를 가져와서 저장(배열로 되어있음)
+      let applicationId: string = ''; // response로 받은 공고들 중에 조건에 만족하는 applicationId를 저장하기 위해 선언함
+
+      for (let i = 0; i < userApplications.length; i++) {
+        const application = userApplications[i].item;
+        if (
+          application.notice.item.id === noticeid &&
+          application.status === 'pending'
+        ) {
+          applicationId = application.id; // 위에 조건을 해당하면 그 데이터의 id를 저장하는데 id가 applicationId라고 보면 됨
+          break; // 원하는 지원을 찾았으므로 반복문 종료, 하나만 존재할건데 그래도 혹시나 싶어서 break 줬음
+        }
+      }
+      if (applicationId) {
+        // applicationId이 있다는거는 post 요청을 서버로 보냈다는 뜻이니깐 버튼상태를 true로 반환하고 applicationId을 렌더링될 때 넣어줌
+        // 이렇게 applicationId를 넣어주면 취소하기 클릭할 때 axios 에러가 생기지 않는다.
+        setApplicationId(applicationId);
+        setIsApplied(true);
+      }
+    } catch (error) {
+      console.log('application GET 에러 : ', error);
+    }
+  };
+
   ///// 신청하기 버튼 구현하기
   const handleApply = async () => {
     if (!isLogin) {
@@ -133,17 +149,20 @@ function DetailPage({ shopid, noticeid }: Props) {
     } else {
       if (!isApplied) {
         try {
-          // 일단 shopid와 noticeid를 받아오지 않아서 일단 주석처리 해놓음. 나중에 사용할거면 아래 주석처리 해제하면 된다.
-          // const res = await instance.post(
-          //   `/shops/${shopid}/notices/${noticeid}/applications`,
-          //   {},
-          //   {
-          //     headers: {
-          //       Authorization: `Bearer ${Cookies.get('token')}`,
-          //     },
-          //   },
-          // );
-          console.log('지원완료'); // 토스트 메시지
+          const res = await instance.post(
+            // 일단 shopid와 noticeid를 받아오지 않아서 일단 주석처리 해놓음. 나중에 사용할거면 아래 주석처리 해제하면 된다.
+            // `/shops/${shopid}/notices/${noticeid}/applications`,
+            // 테스트주소
+            `/shops/be05aa78-7d4e-4f17-9b3a-babb41181caf/notices/064f8810-8e63-426f-b12f-e616709561f7/applications`,
+            {},
+            {
+              headers: {
+                Authorization: `Bearer ${Cookies.get('token')}`,
+              },
+            },
+          );
+          console.log('지원완료', res); // 토스트 메시지
+          setApplicationId(res.data.item.id); // 리스폰스로 받은 application_id를 넣는다.
           setIsApplied(true);
         } catch (error) {
           console.log('POST에러', error);
@@ -151,20 +170,21 @@ function DetailPage({ shopid, noticeid }: Props) {
       } else {
         console.log('취소하시겠습니까?'); // 모달창
         try {
-          // `/shops/${shopid}/notices/${noticeid}/applications/${applicationid}`; // 이 주소로 API PUT요청을 보내야한다.
-
-          // const res = await instance.put(
-          //   `/shops/${shopid}/notices/${noticeid}/applications/11111`,
-          //   { status: 'canceled' },
-          //   {
-          //     headers: {
-          //       Authorization: `Bearer ${Cookies.get('token')}`,
-          //       'Content-Type': 'application/json',
-          //     },
-          //   },
-          // );
+          await instance.put(
+            // `/shops/${shopid}/notices/${noticeid}/applications/${applicationid}`; // 이 주소로 API PUT요청을 보내야한다.
+            // 테스트 주소
+            `/shops/be05aa78-7d4e-4f17-9b3a-babb41181caf/notices/064f8810-8e63-426f-b12f-e616709561f7/applications/${applicationId}`,
+            { status: 'canceled' },
+            {
+              headers: {
+                Authorization: `Bearer ${Cookies.get('token')}`,
+                'Content-Type': 'application/json',
+              },
+            },
+          );
           console.log('취소완료');
           setIsApplied(false);
+          setApplicationId('');
         } catch (error) {
           console.log('PUT에러', error);
         }
@@ -176,7 +196,7 @@ function DetailPage({ shopid, noticeid }: Props) {
     try {
       // const res = await instance.get(`/shops/${shopid}/notices/${noticeid}`);
       const res = await instance.get(
-        `/shops/fce32f91-a1aa-4699-a639-ea24a9cd1d12/notices/8c03c152-3d0c-4b78-b873-546318979cfc`,
+        `/shops/be05aa78-7d4e-4f17-9b3a-babb41181caf/notices/064f8810-8e63-426f-b12f-e616709561f7`,
       ); // 샘플 데이터
       const nextData = await res.data;
       setStoreData(nextData);
