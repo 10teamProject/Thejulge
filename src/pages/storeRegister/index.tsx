@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import React, { ChangeEvent, FormEvent, useState } from 'react';
 
 import Modal from '@/components/auth/ErrorModal';
 import Button from '@/components/common/Button';
@@ -141,84 +141,86 @@ export default function StoreRegister() {
     <div className={styles.container}>
       <h2 className={styles.title}>가게 정보</h2>
       <form onSubmit={handleSubmit}>
-        <div className={styles.inputWrapper}>
-          <Input
-            label="가게 이름"
-            name="name"
-            type="text"
-            placeholder="입력"
-            value={formValues.name}
-            onChange={handleInputChange}
-            required
-            error={formErrors.name}
-          />
-        </div>
-        <div className={styles.inputWrapper}>
-          <label htmlFor="category" className={styles.label}>
-            분류
-          </label>
-          <DropDown
-            name="category"
-            value={formValues.category}
-            options={categoryOptions}
-            onChange={handleDropDownChange}
-            placeholder="선택"
-            required
-            error={formErrors.category}
-          />
-        </div>
-        <div className={styles.inputWrapper}>
-          <label htmlFor="address1" className={styles.label}>
-            주소
-          </label>
-          <DropDown
-            name="address1"
-            value={formValues.address1}
-            options={addressOptions}
-            onChange={handleDropDownChange}
-            placeholder="선택"
-            required
-            error={formErrors.address1}
-          />
-        </div>
-        <div className={styles.inputWrapper}>
-          <Input
-            label="상세 주소"
-            name="address2"
-            type="text"
-            placeholder="입력"
-            value={formValues.address2}
-            onChange={handleInputChange}
-            required
-            error={formErrors.address2}
-          />
-        </div>
-        <div className={styles.inputWrapper}>
-          <Input
-            label="기본 시급"
-            name="originalHourlyPay"
-            type="number"
-            placeholder="입력"
-            value={formValues.originalHourlyPay.toString()}
-            onChange={handleInputChange}
-            required
-            error={formErrors.originalHourlyPay}
-          />
-        </div>
-        <div className={styles.inputWrapper}>
-          <label className={styles.label}>가게 이미지</label>
-          <ImageUpload onImageUpload={handleImageUpload} />
-        </div>
-        <div className={styles.inputWrapper}>
-          <Input
-            label="가게 설명"
-            name="description"
-            type="textarea"
-            placeholder="입력"
-            value={formValues.description}
-            onChange={handleInputChange}
-            isTextArea={true}
-          />
+        <div className={styles.formInner}>
+          <div className={`${styles.inputWrapper} ${styles.storeName}`}>
+            <Input
+              label="가게 이름"
+              name="name"
+              type="text"
+              placeholder="입력"
+              value={formValues.name}
+              onChange={handleInputChange}
+              required
+              error={formErrors.name}
+            />
+          </div>
+          <div className={`${styles.inputWrapper} ${styles.category}`}>
+            <label htmlFor="category" className={styles.label}>
+              분류
+            </label>
+            <DropDown
+              name="category"
+              value={formValues.category}
+              options={categoryOptions}
+              onChange={handleDropDownChange}
+              placeholder="선택"
+              required
+              error={formErrors.category}
+            />
+          </div>
+          <div className={`${styles.inputWrapper} ${styles.address1}`}>
+            <label htmlFor="address1" className={styles.label}>
+              주소
+            </label>
+            <DropDown
+              name="address1"
+              value={formValues.address1}
+              options={addressOptions}
+              onChange={handleDropDownChange}
+              placeholder="선택"
+              required
+              error={formErrors.address1}
+            />
+          </div>
+          <div className={`${styles.inputWrapper} ${styles.address2}`}>
+            <Input
+              label="상세 주소"
+              name="address2"
+              type="text"
+              placeholder="입력"
+              value={formValues.address2}
+              onChange={handleInputChange}
+              required
+              error={formErrors.address2}
+            />
+          </div>
+          <div className={`${styles.inputWrapper} ${styles.pay}`}>
+            <Input
+              label="기본 시급"
+              name="originalHourlyPay"
+              type="number"
+              placeholder="입력"
+              value={formValues.originalHourlyPay.toString()}
+              onChange={handleInputChange}
+              required
+              error={formErrors.originalHourlyPay}
+            />
+          </div>
+          <div className={`${styles.inputWrapper} ${styles.storeImage}`}>
+            <label className={styles.label}>가게 이미지</label>
+            <ImageUpload onImageUpload={handleImageUpload} />
+          </div>
+          <div className={`${styles.inputWrapper} ${styles.storeInfo}`}>
+            <Input
+              label="가게 설명"
+              name="description"
+              type="textarea"
+              placeholder="입력"
+              value={formValues.description}
+              onChange={handleInputChange}
+              isTextArea={true}
+            />
+          </div>
         </div>
         <Button
           children="등록하기"

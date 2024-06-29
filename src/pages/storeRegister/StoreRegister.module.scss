@@ -21,12 +21,69 @@
   line-height: 26px;
 }
 
+.formInner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas:
+    'storeName category'
+    'address1 address2'
+    'pay pay'
+    'storeImage storeImage'
+    'storeInfo storeInfo';
+  gap: 10px;
+}
+
+.storeName {
+  grid-area: storeName;
+}
+
+.category {
+  grid-area: category;
+}
+
+.address1 {
+  grid-area: address1;
+}
+
+.address2 {
+  grid-area: address2;
+}
+
+.pay {
+  grid-area: pay;
+  grid-column: span 1;
+}
+
+.storeImage {
+  grid-area: storeImage;
+  width: 49.5%;
+}
+
+.storeInfo {
+  grid-area: storeInfo;
+}
+
 @media (max-width: 767px) {
   .container {
     padding: 40px 12px;
   }
 
   .title {
+    font-size: 20px;
     margin-bottom: 24px;
+  }
+
+  .inputWrapper {
+    margin-bottom: 20px;
+  }
+
+  .formInner {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .storeImage {
+    width: 100%;
   }
 }
