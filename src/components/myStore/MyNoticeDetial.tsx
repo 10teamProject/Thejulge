@@ -37,10 +37,10 @@ const NoticeCard: React.FC<NoticeCardProps> = ({ noticeData }) => {
         <div className={styles.imageContainer}>
           <Image
             className={styles.image}
-            src={Chicken}
+            src={/*item.shop.item.imageUrl*/ Chicken}
             alt={item.shop.item.name}
-            width={100}
-            height={56}
+            width={539}
+            height={308}
             objectFit="cover"
           />
         </div>

@@ -74,9 +74,11 @@ const MyNotice: React.FC<MyNoticeProps> = ({
           >
             <div className={styles.imageContainer}>
               <Image
-                src={Chicken}
+                src={/*imageUrl*/ Chicken}
                 alt="가게 이미지"
                 className={styles.noticeImage}
+                width={280}
+                height={160}
               />
               {notice.closed && (
                 <div className={styles.closedOverlay}>마감 완료</div>
