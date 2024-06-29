@@ -30,7 +30,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
       context.query.sort &&
       ['time', 'pay', 'hour', 'shop'].includes(context.query.sort as string)
         ? (context.query.sort as 'time' | 'pay' | 'hour' | 'shop')
-        : 'time';
+        : 'pay';
 
     const params = {
       sort,
