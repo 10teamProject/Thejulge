@@ -2,11 +2,18 @@
   width: 100%;
   background-color: var(--gray10);
   color: var(--gray50);
+  padding: 37px 0;
+}
+
+.footerContainer {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   grid-template-areas: 'copyright footerInfo snsLinks';
   align-items: center;
-  padding: 37px 0;
+  padding: 0 32px;
 }
 
 .footer div {
@@ -32,13 +39,17 @@
 
 @media (max-width: 768px) {
   .footer {
+    padding: 32px 0;
+    font-size: 14px;
+  }
+
+  .footerContainer {
     grid-template-columns: 1fr 1fr;
     grid-template-areas:
       'footerInfo snsLinks'
       'copyright copyright';
-    padding: 32px 0;
     gap: 40px 0;
-    font-size: 14px;
+    padding: 0 20px;
   }
 
   .footerInfo {
