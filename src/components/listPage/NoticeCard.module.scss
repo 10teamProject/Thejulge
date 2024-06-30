@@ -1,4 +1,5 @@
 .container {
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -9,6 +10,16 @@
   background: #ffffff;
   border: 1px solid #e5e4e7;
   border-radius: 12px;
+  @media (max-width: 1199px) {
+    width: 332px;
+    height: 360px;
+  }
+  @media (max-width: 767px) {
+    width: 170px;
+    height: 260px;
+    padding: 12px;
+    gap: 7px;
+  }
 }
 .storeImage {
   position: relative;
@@ -18,6 +29,14 @@
   border: none;
   background-color: var(--yellow2);
   overflow: hidden;
+  @media (max-width: 1199px) {
+    width: 300px;
+    height: 170px;
+  }
+  @media (max-width: 767px) {
+    width: 147px;
+    height: 84px;
+  }
 }
 .storeName {
   font-family: 'Spoqa Han Sans Neo';
@@ -27,11 +46,40 @@
   line-height: 25px;
   color: #111322;
   margin-top: 10px;
+  @media (max-width: 767px) {
+    font-size: 16px;
+    line-height: 20px;
+  }
 }
 .detailSection {
   display: flex;
   gap: 5px;
   width: 280px;
+  @media (max-width: 1199px) {
+    width: 300px;
+  }
+  @media (max-width: 767px) {
+    width: 170px;
+  }
+}
+.priceSection {
+  display: flex;
+  gap: 5px;
+  width: 280px;
+  @media (max-width: 1199px) {
+    width: 300px;
+    height: 36px;
+  }
+  @media (max-width: 767px) {
+    display: flex;
+    flex-direction: column;
+  }
+}
+.iconImage {
+  @media (max-width: 767px) {
+    width: 16px;
+    height: 16px;
+  }
 }
 .detail {
   font-family: 'Spoqa Han Sans Neo';
@@ -40,17 +88,35 @@
   font-size: 14px;
   line-height: 22px;
   color: #7d7986;
+
+  @media (max-width: 767px) {
+    font-size: 12px;
+    line-height: 16px;
+    display: inline-block;
+    width: 120px;
+  }
 }
+
 .price {
   font-family: 'Spoqa Han Sans Neo';
   font-style: normal;
   font-weight: 700;
   font-size: 24px;
   line-height: 30px;
-  display: flex;
   align-items: center;
   letter-spacing: 0.02em;
   color: #111322;
+  width: 120px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-all;
+  @media (max-width: 767px) {
+    display: flex;
+    font-size: 18px;
+    line-height: 22px;
+    width: 147px;
+  }
 }
 .badge {
   display: flex;
@@ -72,6 +138,44 @@
   text-align: center;
   color: #ffffff;
 
-  overflow: hidden;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-all;
+  @media (max-width: 1199px) {
+    width: 168px;
+    height: 36px;
+  }
+  @media (max-width: 767px) {
+    display: flex;
+    font-size: 12px;
+    line-height: 16px;
+    color: var(--yellow5);
+    width: 150px;
+    height: 18px;
+    margin: 0;
+    background-color: transparent;
+    font-weight: 400;
+    padding: 5px 0;
+    justify-content: flex-start;
+  }
+}
+.increaseRate {
+  max-width: 140px;
+  @media (max-width: 767px) {
+    display: flex;
+    justify-content: flex-start;
+    margin: 0;
+  }
+}
+.arrow {
+  @media (max-width: 767px) {
+    display: none;
+  }
+}
+.yellowArrow {
+  display: none;
+  @media (max-width: 767px) {
+    display: flex;
+  }
 }
