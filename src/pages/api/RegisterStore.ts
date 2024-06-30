@@ -32,6 +32,11 @@ export const registerStore = async (formData: StoreProfileProps) => {
             (axiosError.response.data as { message: string })?.message,
           );
         }
+        if (axiosError.response.status === 400) {
+          throw new Error(
+            (axiosError.response.data as { message: string })?.message,
+          );
+        }
       }
       throw new Error(Messages.REGISTER_FAILED);
     }

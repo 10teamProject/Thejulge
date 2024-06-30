@@ -11,6 +11,7 @@ interface ButtonProps {
   size?: 'full' | 'large' | 'medium' | 'small';
   position?: 'left' | 'center' | 'right';
   bordered?: boolean;
+  onClick?: () => void;
 }
 
 const Button = ({
