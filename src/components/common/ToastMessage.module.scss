@@ -14,4 +14,20 @@
   font-size: 16px;
   font-weight: 400;
   border-radius: 5px;
+  line-height: 26px;
+  opacity: 0;
+  /* 나타날 때의 애니메이션 설정 */
+  animation: toast 4s ease;
+}
+
+@keyframes toast {
+  0% {
+    opacity: 0; /* 처음에는 투명 */
+  }
+  50% {
+    opacity: 1; /* 반투명에서 완전 불투명으로 */
+  }
+  100% {
+    opacity: 0; /* 다시 투명 */
+  }
 }
