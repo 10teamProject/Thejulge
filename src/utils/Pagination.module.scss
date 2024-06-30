@@ -4,6 +4,11 @@
   list-style: none;
   padding: 0;
   margin-top: 30px;
+  @media (max-width: 767px) {
+    margin: 30px auto 0;
+    width: 328px;
+    font-size: 12px;
+  }
 }
 
 .page-item {
@@ -11,6 +16,9 @@
 
   &:hover .page-link {
     background-color: #f0f0f0;
+  }
+  @media (max-width: 767px) {
+    margin: 0 3px;
   }
 }
 
@@ -29,6 +37,6 @@
 
 .active .page-link {
   color: #fff;
-  background-color: var(--yellow5);
-  border-color: var(--yellow5);
+  background-color: var(--yellow4);
+  border-color: var(--yellow4);
 }
