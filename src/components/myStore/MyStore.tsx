@@ -15,7 +15,7 @@ const StoreCard: React.FC<StoreCardProps> = ({ storeData }) => (
     <div className={styles.imageContainer}>
       {storeData.imageUrl && (
         <Image
-          src={/*storeData.imageUrl*/ chickenImage}
+          src={storeData.imageUrl}
           alt={storeData.name}
           className={styles.image}
           width={539}

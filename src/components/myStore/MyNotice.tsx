@@ -74,7 +74,7 @@ const MyNotice: React.FC<MyNoticeProps> = ({
           >
             <div className={styles.imageContainer}>
               <Image
-                src={/*imageUrl*/ Chicken}
+                src={imageUrl}
                 alt="가게 이미지"
                 className={styles.noticeImage}
                 width={280}
