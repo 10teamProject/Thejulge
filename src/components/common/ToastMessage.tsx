@@ -24,16 +24,14 @@ interface ToastProps {
  */
 
 function Toast({ isOpen, message, onClose }: ToastProps) {
-  if (!isOpen) {
-    return;
-  }
   useEffect(() => {
     const timer = setTimeout(() => {
       onClose();
-    }, 4000);
-
+    }, 3000);
     return () => clearTimeout(timer);
-  }, []);
+  }, [onClose]);
+
+  if (!isOpen) return null;
   return (
     <div className={styles.messageCotainer}>
       <div className={styles.messageBox}>{message}</div>
