@@ -1,4 +1,5 @@
 import axios, { AxiosError } from 'axios';
+import { useRouter } from 'next/router'; // Next.js의 useRouter 임포트
 import React, { useEffect, useRef, useState } from 'react';
 
 import Modal from '@/components/common/ConfirmModal'; // Modal 컴포넌트 import
@@ -41,6 +42,8 @@ function PostMyPage() {
   const nameRef = useRef<HTMLInputElement>(null);
   const telRef = useRef<HTMLInputElement>(null);
   const introRef = useRef<HTMLTextAreaElement>(null);
+
+  const router = useRouter(); // useRouter 훅을 이용해 라우터 객체 가져오기
 
   useEffect(() => {
     const storedUserId = getUserIdFromSessionStorage(); // 세션 스토리지에서 ID 가져옴
@@ -189,7 +192,10 @@ function PostMyPage() {
           buttons={[
             {
               text: "확인",
-              onClick: () => setProfileUpdated(false),
+              onClick: () => {
+                setProfileUpdated(false); 
+                router.push("../DetailedMyPageUpdate"); // 다음 페이지로 이동
+              },
               variant: "primary"
             }
           ]}
