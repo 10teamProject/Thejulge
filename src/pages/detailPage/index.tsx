@@ -57,43 +57,65 @@ function DetailPage({ shopid, noticeid }: Props) {
   const { hourlyPay, startsAt, workhour, description } = storeData.item; //description은 이름이 겹쳐서 공고 description만 변수선언
   const { category, name, imageUrl, address1, originalHourlyPay } =
     storeData.item.shop.item;
-  // console.log('PagestoreData : ', storeData);
-
-  const [isApplied, setIsApplied] = useState(false);
-  const [recentNotices, setRecentNotices] = useState<Notice[]>([]); // 로컬스토리지 담을 변수
-  // console.log(recentNotices);
 
   const increaseRate = calculateHourlyPayIncrease(originalHourlyPay, hourlyPay);
   const startTime = formatDate(startsAt);
   const endTime = calculateEndTime(startsAt, workhour);
 
+  const [isApplied, setIsApplied] = useState(false);
+  const [recentNotices, setRecentNotices] = useState<Notice[]>([]); // 로컬스토리지 담을 변수
+
   const handleApply = () => {
     setIsApplied(!isApplied);
   };
+
   async function getData() {
     try {
       // const res = await instance.get(`/shops/${shopid}/notices/${noticeid}`);
       const res = await instance.get(
-        `/shops/fce32f91-a1aa-4699-a639-ea24a9cd1d12/notices/8c03c152-3d0c-4b78-b873-546318979cfc`,
-      ); // 샘플 데이터 주소
-      const nextRes = await res.data;
-      setStoreData(nextRes);
+        `/shops/63fcc375-5d0a-4ba4-ac5b-101b03973c74/notices/3ddb7188-8ced-4021-9d07-663f98b5411b`,
+      ); // 샘플 데이터 주
+      const nextData = await res.data;
+      setStoreData(nextData);
+      localStorageUpdata(nextData.item);
     } catch (error) {
       console.log(error);
     }
   }
 
-  //// 받아오는 로컬 스토리지 구현
-  const getLocalStorageData = () => {
+  const localStorageUpdata = (storeData: Notice) => {
+    // 로컬 스토리지에 똑같은 key값으로 데이터를 저장할려면 로컬스토리지에 있는 데이터를 가져와서 병합해서 다시 넣어야한다.
     const localData = localStorage.getItem('RECENT_NOTICES');
-    const recentLocalData = localData ? JSON.parse(localData) : [];
-    setRecentNotices(recentLocalData);
-    // console.log(recentLocalData);
+    const recentLocalData: Notice[] = localData ? JSON.parse(localData) : [];
+
+    // 로컬 스토리지에 있는 데이터랑 storeData랑 똑같은지 확인하는 코드, 존재하지 않는 데이터는 -1을 반환한다. 객체로 이뤄진 배열에서는 findIndex가 유용
+    const existId = recentLocalData.findIndex(
+      (StorageData) => StorageData.id === storeData.id,
+    );
+
+    // 존재하지 않는 데이터는 -1을 반환하는데 -1이 아니라면 존재한다는 뜻
+    // 이미 존재하는 데이터는 splice함수를 사용해서 해당위치의 데이터를 제거하고 제거한 항목의 첫번째[0]을 사용해서 existNotice에 변수에 넣어준다.
+    // unshift를 사용해서 배열의 맨앞으로 이동시킴
+    if (existId !== -1) {
+      const existNotice = recentLocalData.splice(existId, 1)[0];
+      recentLocalData.unshift(existNotice);
+    } else {
+      // 동일한 id를 가진 데이터가 없으면 storeData를 배열의 제일 앞으로 추가한다
+      recentLocalData.unshift(storeData);
+    }
+
+    // 로컬 스토리지에 넣을 데이터의 길이가 6이상이면 맨 끝의 값을 제거함.
+    if (recentLocalData.length > 6) {
+      recentLocalData.pop();
+    }
+
+    // 로컬 스토리지에 데이터를 넣을때는 JSON으로 변환해서 넣어야한다.
+    localStorage.setItem('RECENT_NOTICES', JSON.stringify(recentLocalData));
+    setRecentNotices(recentLocalData); // 카드 컴포넌트로 넘겨줄 데이터를 setter함수를 이용해 넣어준다.
   };
 
   useEffect(() => {
     getData();
-    getLocalStorageData();
   }, []);
 
   return (
@@ -154,7 +176,6 @@ function DetailPage({ shopid, noticeid }: Props) {
             <Card
               key={recentNoticeData.id}
               recentNoticeData={recentNoticeData}
-              storeData={storeData.item}
             />
           ))}
         </div>

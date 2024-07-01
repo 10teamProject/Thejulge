@@ -1,0 +1,141 @@
+.tableWrapper {
+  margin-top: 32px;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-top: 32px;
+
+  th,
+  td {
+    padding: 20px;
+    text-align: left;
+    vertical-align: middle;
+  }
+
+  th {
+    background-color: #fefad8;
+    color: #333;
+    font-weight: bold;
+  }
+
+  td {
+    border-top: 1px solid #eeeeee89;
+  }
+
+  th:nth-child(1),
+  td:nth-child(1) {
+    width: 20%;
+  } // 신청자
+  th:nth-child(2),
+  td:nth-child(2) {
+    width: 30%;
+  } // 소개
+  th:nth-child(3),
+  td:nth-child(3) {
+    width: 20%;
+  } // 전화번호
+  th:nth-child(4),
+  td:nth-child(4) {
+    width: 20%;
+  } // 상태
+
+  td:last-child {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    height: 100%;
+  }
+}
+
+.button {
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 5px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  min-width: 80px;
+
+  &.reject {
+    border: 1px solid #ff6b6b;
+    background-color: #fff;
+    color: #ff6b6b;
+  }
+
+  &.approve {
+    border: 1px solid #4dabf7;
+    background-color: #fff;
+    color: #4dabf7;
+  }
+}
+
+.statusCell {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 5px;
+}
+
+.statusBadge {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  &.rejected {
+    background-color: #ffe3e3;
+    color: #fa5252;
+  }
+
+  &.accepted {
+    background-color: #e3fafc;
+    color: #1098ad;
+  }
+
+  &.pending {
+    background-color: #e9ecef;
+    color: #495057;
+  }
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+
+  .pageButton {
+    padding: 6px 12px;
+    margin: 0 2px;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    color: #333;
+    cursor: pointer;
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    &.active {
+      background-color: var(--yellow4);
+      color: #fff;
+    }
+  }
+}
+
+.introText {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-word;
+  line-height: 1.5;
+}

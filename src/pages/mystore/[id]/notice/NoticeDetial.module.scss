@@ -1,0 +1,44 @@
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+
+  @media (max-width: 768px) {
+    padding: 10px;
+  }
+
+  min-height: 100vh;
+}
+.applicantTitle {
+  font-family: Spoqa Han Sans Neo;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 33.6px;
+  letter-spacing: 0.02em;
+  text-align: left;
+  margin-top: 32px;
+}
+.labelContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+.title {
+  font-family: Spoqa Han Sans Neo;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 20px;
+  text-align: left;
+  color: var(--yellow5);
+  margin-bottom: 8px;
+}
+
+.shopName {
+  font-family: Spoqa Han Sans Neo;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 33.6px;
+  letter-spacing: 0.02em;
+  text-align: left;
+}

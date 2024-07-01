@@ -60,12 +60,16 @@
   border: 1px solid #CBC9CF;
   border-radius: 6px;
   margin-top: 8px;
-  color: #A4A1A4;
+  color: #111322;
   font-family: 'Spoqa Han Sans Neo', sans-serif;
   font-weight: 400;
   font-size: 16px;
   line-height: 26px;
   padding-left : 20px;
+
+   &::placeholder {
+    color: #A4A1A4;
+   }
 }
 
 .input:focus {
@@ -155,17 +159,22 @@
 }
 
 .inputBoard {
+  font-family: 'Spoqa Han Sans Neo', sans-serif;
   width: 964px;
   height: 153px;
   border-radius: 5px;
   border-color: #CBC9CF;
-  color: #A4A1A4;
+  color: #111322;
   font-weight: 400;
   font-size: 16px;
   line-height: 26px;
   margin-top: 8px;
   padding-left : 20px;
   padding-top: 16px;
+
+  &::placeholder {
+    color: #A4A1A4;
+   }
 }
 
 .inputBoard:focus {

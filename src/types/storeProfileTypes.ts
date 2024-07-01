@@ -7,3 +7,24 @@ export interface StoreProfileProps {
   description: string;
   imageUrl: string;
 }
+
+export interface StoreProfileResponse {
+  item: {
+    id: string;
+    StoreProfile: StoreProfileProps[];
+    user: {
+      item: User[];
+    };
+    href: string;
+  };
+  links: [];
+}
+
+export interface User {
+  email: string;
+  type: 'employer' | 'employee';
+  name?: string;
+  phone?: string;
+  address?: string;
+  bio?: string;
+}
