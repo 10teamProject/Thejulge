@@ -68,7 +68,7 @@ function SignUpForm() {
   const handleModalClose = () => {
     setIsModalOpen(false);
     if (modalMessage.includes('자동으로 로그인됩니다')) {
-      router.push('/');
+      router.push('/listPage');
     }
   };
 
