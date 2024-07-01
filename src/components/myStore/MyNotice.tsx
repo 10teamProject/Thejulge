@@ -50,6 +50,10 @@ const MyNotice: React.FC<MyNoticeProps> = ({
     return <NoNotice />;
   }
 
+  if (notices.length === 0) {
+    return <NoNotice />;
+  }
+
   const formatTime = (date: Date): string => {
     return date.toLocaleTimeString('ko-KR', {
       hour: '2-digit',
@@ -79,7 +83,7 @@ const MyNotice: React.FC<MyNoticeProps> = ({
           >
             <div className={styles.imageContainer}>
               <Image
-                src={chickenImage}
+                src={imageUrl}
                 alt="가게 이미지"
                 className={styles.noticeImage}
                 width={280}
