@@ -47,11 +47,11 @@ const MyNotice: React.FC<MyNoticeProps> = ({
   }
 
   if (notices.length === 0) {
-    return <NoNotice />;
+    return <NoNotice shopId={shop_id} />;
   }
 
   if (notices.length === 0) {
-    return <NoNotice />;
+    return <NoNotice shopId={shop_id} />;
   }
 
   const formatTime = (date: Date): string => {

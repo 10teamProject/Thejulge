@@ -30,7 +30,7 @@ const Header: React.FC = () => {
   return (
     <header className={styles.header}>
       <div className={styles.headerContainer}>
-        <Link href="/" className={styles.logo}>
+        <Link href="/listPage" className={styles.logo}>
           +HE JULGE
         </Link>
         <div className={styles.searchBar}>
