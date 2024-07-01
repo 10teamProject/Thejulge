@@ -1,6 +1,11 @@
 import { useEffect, useState } from 'react';
 
-import { GetApplicantList, Item } from '@/pages/api/GetApplitcantList';
+import { updateApplicationStatus } from '@/pages/api/ApplicationStatus';
+import {
+  GetApplicantList,
+  Item,
+  ResponseType,
+} from '@/pages/api/GetApplitcantList';
 
 export const useApplicants = (shop_id: string, notice_id: string) => {
   const [applicants, setApplicants] = useState<Item[]>([]);
@@ -11,12 +16,16 @@ export const useApplicants = (shop_id: string, notice_id: string) => {
   useEffect(() => {
     const fetchApplicants = async () => {
       try {
-        const response = await GetApplicantList(shop_id, notice_id, {
+        const response: ResponseType = await GetApplicantList(
           shop_id,
           notice_id,
-          offset: (currentPage - 1) * ITEMS_PER_PAGE,
-          limit: ITEMS_PER_PAGE,
-        });
+          {
+            shop_id,
+            notice_id,
+            offset: (currentPage - 1) * ITEMS_PER_PAGE,
+            limit: ITEMS_PER_PAGE,
+          },
+        );
         setApplicants(response.items.map((item) => item.item));
         setTotalPages(Math.ceil(response.count / ITEMS_PER_PAGE));
       } catch (error) {
@@ -27,12 +36,25 @@ export const useApplicants = (shop_id: string, notice_id: string) => {
     fetchApplicants();
   }, [currentPage, shop_id, notice_id]);
 
-  const handleStatusChange = (
+  const handleStatusChange = async (
     id: string,
     newStatus: 'accepted' | 'rejected',
   ) => {
-    console.log(`Changing status of applicant ${id} to ${newStatus}`);
-    // @Todo 실제로 변경되게 구현
+    try {
+      await updateApplicationStatus(shop_id, notice_id, id, newStatus);
+
+      setApplicants((prevApplicants) =>
+        prevApplicants.map((applicant) =>
+          applicant.id === id ? { ...applicant, status: newStatus } : applicant,
+        ),
+      );
+
+      console.log(
+        `Successfully changed status of applicant ${id} to ${newStatus}`,
+      );
+    } catch (error) {
+      console.error('Error updating applicant status:', error);
+    }
   };
 
   return {
