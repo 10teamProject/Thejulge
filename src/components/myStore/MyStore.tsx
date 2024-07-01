@@ -2,7 +2,6 @@ import Image from 'next/image';
 
 import { StoreInfo } from '@/pages/api/getMystore';
 import locationIcon from '@/public/assets/icon/location.svg';
-import chickenImage from '@/public/assets/images/chicken.jpg';
 
 import styles from './MyStore.module.scss';
 
