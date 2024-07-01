@@ -16,6 +16,7 @@ export interface InputProps {
   isTextArea?: boolean;
   required?: boolean;
   error?: string;
+  autoComplete?: string;
 }
 
 const Input: React.FC<InputProps> = ({
@@ -30,6 +31,7 @@ const Input: React.FC<InputProps> = ({
   isTextArea,
   required,
   error,
+  autoComplete = 'off',
 }) => {
   return (
     <div className={styles.inputGroup}>
@@ -58,6 +60,7 @@ const Input: React.FC<InputProps> = ({
           onChange={onChange}
           onKeyDown={onKeyDown}
           onBlur={onBlur}
+          autoComplete={autoComplete}
         />
       )}
       {required && error && (

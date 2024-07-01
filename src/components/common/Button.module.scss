@@ -44,4 +44,16 @@
     border: 1px solid var(--yellow4);
     color: var(--yellow5);
   }
+
+  &.left {
+    margin-right: auto;
+  }
+
+  &.center {
+    margin: auto;
+  }
+
+  &.right {
+    margin-left: auto;
+  }
 }
