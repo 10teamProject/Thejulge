@@ -44,3 +44,17 @@ export interface Application {
     };
   };
 }
+
+export interface ButtonProps {
+  text: string;
+  onClick: () => void;
+  variant?: 'primary' | 'secondary';
+}
+
+export interface ModalIcon {
+  src: string;
+  height: number;
+  width: number;
+  blurWidth?: number;
+  blurHeight?: number;
+}
