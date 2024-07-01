@@ -2,11 +2,11 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
+import NoNotice from '@/components/myStore/NoNotice';
 import { GetMyNotice } from '@/pages/api/GetMyNotice';
 import locationIcon from '@/public/assets/icon/location.svg';
 import timeIcon from '@/public/assets/icon/timer.svg';
 import arrowIcon from '@/public/assets/icon/up_icon.svg';
-import Chicken from '@/public/assets/images/chicken.jpg';
 import { Item, RequestParams } from '@/types/myStoreType';
 
 import styles from './MyNotice.module.scss';
@@ -43,6 +43,10 @@ const MyNotice: React.FC<MyNoticeProps> = ({
 
   if (loading) {
     return <div>로딩 중...</div>;
+  }
+
+  if (notices.length === 0) {
+    return <NoNotice />;
   }
 
   const formatTime = (date: Date): string => {
