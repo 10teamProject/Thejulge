@@ -4,6 +4,8 @@ import yellowarrow from '@/public/assets/icon/arrow_yellow.svg';
 import location from '@/public/assets/icon/location.svg';
 import timer from '@/public/assets/icon/timer.svg';
 import arrow from '@/public/assets/images/arrow.png';
+import grayLocation from '@/public/assets/images/location_gray.png';
+import grayTimer from '@/public/assets/images/timer_gray.png';
 import {
   calculateEndTime,
   calculateHourlyPayIncrease,
@@ -26,6 +28,7 @@ const NoticeCard: React.FC<NoticeCardProps> = ({ notice }) => {
   const formattedStartTime = formatDate(startsAt);
   const endTime = calculateEndTime(startsAt, workhour);
 
+  const formattedPay = hourlyPay.toLocaleString();
   const backgroundClass = (() => {
     if (roundedIncreaseRate >= 50) {
       return styles.yellow5;
@@ -57,7 +60,11 @@ const NoticeCard: React.FC<NoticeCardProps> = ({ notice }) => {
       <div
         className={`${styles.detailSection} ${closed ? styles.closedText : ''}`}
       >
-        <Image src={timer} alt="시간" className={styles.iconImage} />
+        {closed ? (
+          <Image src={grayTimer} alt="시간" className={styles.iconImage} />
+        ) : (
+          <Image src={timer} alt="시간" className={styles.iconImage} />
+        )}
         <p className={`${styles.detail} ${closed ? styles.closedText : ''}`}>
           {formattedStartTime} ~ {endTime} ({workhour}시간)
         </p>
@@ -65,14 +72,18 @@ const NoticeCard: React.FC<NoticeCardProps> = ({ notice }) => {
       <div
         className={`${styles.detailSection} ${closed ? styles.closedText : ''}`}
       >
-        <Image src={location} alt="장소" className={styles.iconImage} />
+        {closed ? (
+          <Image src={grayLocation} alt="장소" className={styles.iconImage} />
+        ) : (
+          <Image src={location} alt="장소" className={styles.iconImage} />
+        )}
         <p className={`${styles.detail} ${closed ? styles.closedText : ''}`}>
           {address1}
         </p>
       </div>
       <div className={styles.priceSection}>
         <p className={`${styles.price} ${closed ? styles.closedText : ''}`}>
-          {hourlyPay}원
+          {formattedPay}원
         </p>
         <div
           className={`${styles.badge} ${backgroundClass} ${closed ? styles.hidden : ''}`}
@@ -86,6 +97,10 @@ const NoticeCard: React.FC<NoticeCardProps> = ({ notice }) => {
             alt="화살표"
             className={styles.yellowArrow}
           />
+        </div>
+        <div className={styles.hoverDetails}>
+          <p>{formattedPay}원</p>
+          <p>기존 시급보다 {roundedIncreaseRate}%</p>
         </div>
       </div>
     </div>
