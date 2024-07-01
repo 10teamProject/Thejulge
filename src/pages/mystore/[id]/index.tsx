@@ -20,14 +20,13 @@ const MyStore: NextPage<MyStoreProps> = ({ storeData, shop_id }) => {
     <div className={styles.container}>
       <h1 className={styles.title}>내 가게</h1>
       <StoreCard storeData={storeData} />
-      <h1 className={styles.title}>내가 등록한 공고</h1>
+      <h1 className={styles.title}>등록한 공고</h1>
       <MyNotice
         shop_id={shop_id}
         imageUrl={storeData.imageUrl}
         address1={storeData.address1}
         originalHourlyPay={storeData.originalHourlyPay}
       />
-      <div />
     </div>
   );
 };
@@ -49,7 +48,7 @@ export const getServerSideProps: GetServerSideProps<MyStoreProps> = async (
       props: { storeData, shop_id: id },
     };
   } catch (error) {
-    console.error('Error fetching store data:', error);
+    console.error('데이터를 불러오는데 실패:', error);
     return {
       props: { storeData: null, shop_id: id },
     };

@@ -18,12 +18,16 @@
   gap: 12px;
   font-size: 16px;
   cursor: pointer;
-  background-color: #f2f2f3;
-  border: 1px solid #cbc9cf;
-  color: #a4a1aa;
-  font-weight: 700;
+  background-color: var(--gray10);
+  border: 1px solid var(--gray30);
+  color: var(--gray40);
+  font-weight: 500;
   position: relative;
   overflow: hidden;
+
+  &:hover {
+    border-color: #ffe854;
+  }
 }
 
 .hiddenFileInput {

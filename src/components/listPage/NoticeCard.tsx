@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
+import yellowarrow from '@/public/assets/icon/arrow_yellow.svg';
 import location from '@/public/assets/icon/location.svg';
 import timer from '@/public/assets/icon/timer.svg';
 import arrow from '@/public/assets/images/arrow.png';
@@ -41,20 +42,27 @@ const NoticeCard: React.FC<NoticeCardProps> = ({ notice }) => {
         </div>
         <h3 className={styles.storeName}>{name}</h3>
         <div className={styles.detailSection}>
-          <Image src={timer} alt="시간" />
+          <Image src={timer} alt="시간" className={styles.iconImage} />
           <p className={styles.detail}>
             {formattedStartTime} ~ {endTime} ({workhour}시간)
           </p>
         </div>
         <div className={styles.detailSection}>
-          <Image src={location} alt="장소" style={{ margin: '0 2px 0 2px' }} />
+          <Image src={location} alt="장소" className={styles.iconImage} />
           <p className={styles.detail}>{address1}</p>
         </div>
-        <div className={styles.detailSection}>
+        <div className={styles.priceSection}>
           <p className={styles.price}>{hourlyPay}원</p>
           <div className={styles.badge}>
-            기존 시급보다 {roundedIncreaseRate}%️️
-            <Image src={arrow} alt="화살표" />
+            <p className={styles.increaseRate}>
+              기존 시급보다 {roundedIncreaseRate}%️️
+            </p>
+            <Image src={arrow} alt="화살표" className={styles.arrow} />
+            <Image
+              src={yellowarrow}
+              alt="화살표"
+              className={styles.yellowArrow}
+            />
           </div>
         </div>
       </div>

@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { Pagination } from '@/components/common/PageNation';
 import { useApplicants } from '@/hooks/useApplicants';
 

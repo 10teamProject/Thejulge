@@ -2,11 +2,11 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
+import NoNotice from '@/components/myStore/NoNotice';
 import { GetMyNotice } from '@/pages/api/GetMyNotice';
 import locationIcon from '@/public/assets/icon/location.svg';
 import timeIcon from '@/public/assets/icon/timer.svg';
 import arrowIcon from '@/public/assets/icon/up_icon.svg';
-import Chicken from '@/public/assets/images/chicken.jpg';
 import { Item, RequestParams } from '@/types/myStoreType';
 
 import styles from './MyNotice.module.scss';
@@ -45,6 +45,10 @@ const MyNotice: React.FC<MyNoticeProps> = ({
     return <div>로딩 중...</div>;
   }
 
+  if (notices.length === 0) {
+    return <NoNotice />;
+  }
+
   const formatTime = (date: Date): string => {
     return date.toLocaleTimeString('ko-KR', {
       hour: '2-digit',
@@ -74,9 +78,11 @@ const MyNotice: React.FC<MyNoticeProps> = ({
           >
             <div className={styles.imageContainer}>
               <Image
-                src={Chicken}
+                src={imageUrl}
                 alt="가게 이미지"
                 className={styles.noticeImage}
+                width={280}
+                height={160}
               />
               {notice.closed && (
                 <div className={styles.closedOverlay}>마감 완료</div>

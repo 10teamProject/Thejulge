@@ -43,7 +43,6 @@ export const getServerSideProps: GetServerSideProps<NoticeDetailProps> = async (
 
   try {
     const noticeData = await GetMyNoticeDetail(id, notice_id);
-    console.log('Received notice data:', JSON.stringify(noticeData, null, 2));
     return {
       props: { noticeData },
     };

@@ -3,7 +3,6 @@ import Image from 'next/image';
 import locationIcon from '@/public/assets/icon/location.svg';
 import timerIcon from '@/public/assets/icon/timer.svg';
 import arrowIcon from '@/public/assets/images/arrow.png';
-import Chicken from '@/public/assets/images/chicken.jpg';
 import { JobResponse } from '@/types/myStoreType';
 
 import styles from './MyNoticeDetail.module.scss';
@@ -37,10 +36,10 @@ const NoticeCard: React.FC<NoticeCardProps> = ({ noticeData }) => {
         <div className={styles.imageContainer}>
           <Image
             className={styles.image}
-            src={Chicken}
+            src={item.shop.item.imageUrl}
             alt={item.shop.item.name}
-            width={100}
-            height={56}
+            width={539}
+            height={308}
             objectFit="cover"
           />
         </div>

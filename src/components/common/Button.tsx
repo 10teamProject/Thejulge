@@ -9,7 +9,9 @@ interface ButtonProps {
   as?: React.ElementType;
   href?: string;
   size?: 'full' | 'large' | 'medium' | 'small';
+  position?: 'left' | 'center' | 'right';
   bordered?: boolean;
+  onClick?: () => void;
 }
 
 const Button = ({
@@ -19,12 +21,14 @@ const Button = ({
   as: Component = 'button',
   href,
   size = 'large',
+  position = 'center',
   bordered = false,
   ...rest
 }: ButtonProps) => {
   const buttonClasses = [
     styles.button,
     styles[size],
+    styles[position],
     bordered && styles.borderStyle,
     disabled && styles.disabled,
     className,
