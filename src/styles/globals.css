@@ -19,7 +19,8 @@ body {
 html,
 body,
 input,
-textarea {
+textarea,
+button {
   font-family: 'Spoqa Han Sans Neo', 'Pretendard', sans-serif;
 }
 

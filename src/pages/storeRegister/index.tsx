@@ -1,3 +1,5 @@
+import { GetServerSideProps } from 'next';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { ChangeEvent, FormEvent, useState } from 'react';
 
@@ -7,13 +9,23 @@ import Input from '@/components/common/InputComponent';
 import DropDown from '@/components/dropDown/DropDown';
 import ImageUpload from '@/components/storeRegister/ImageUpload';
 import useWindowSize from '@/hooks/useWindowSize';
+import cameraImg from '@/public/assets/icon/icon_camera_white.svg';
+import closeImg from '@/public/assets/images/black_x.png';
 import { StoreProfileProps } from '@/types/storeProfileTypes';
 import { addressOptions, categoryOptions } from '@/utils/Options';
 import Messages from '@/utils/validation/Message';
 
+import { GetMyStore } from '../api/getMystore';
 import { GetUserInfo } from '../api/GetUserInfo';
 import { registerStore } from '../api/RegisterStore';
+import { updateStore } from '../api/UpdateStore';
 import styles from './StoreRegister.module.scss';
+
+interface StoreRegisterProps {
+  shop_id: string;
+  formData: StoreProfileProps | null;
+  isEditing: boolean;
+}
 
 const initialFormValues: StoreProfileProps = {
   name: '',
@@ -25,8 +37,12 @@ const initialFormValues: StoreProfileProps = {
   originalHourlyPay: 0,
 };
 
-export default function StoreRegister() {
-  const [formValues, setFormValues] = useState(initialFormValues);
+export default function StoreRegister({
+  shop_id,
+  formData,
+  isEditing,
+}: StoreRegisterProps) {
+  const [formValues, setFormValues] = useState(formData || initialFormValues);
   const [formErrors, setFormErrors] = useState({
     name: '',
     category: '',
@@ -103,8 +119,13 @@ export default function StoreRegister() {
     }
 
     try {
-      await registerStore(formValues);
-      setModalMessage('등록이 완료되었습니다.');
+      if (isEditing) {
+        await updateStore(shop_id, formValues);
+        setModalMessage('수정이 완료되었습니다.');
+      } else {
+        await registerStore(formValues);
+        setModalMessage('등록이 완료되었습니다.');
+      }
     } catch (error) {
       if (error instanceof Error) {
         if (error.message === Messages.NETWORK_ERROR) {
@@ -137,102 +158,140 @@ export default function StoreRegister() {
     return width <= 767 ? 'full' : 'large';
   };
 
+  const imageUrl = formValues.imageUrl || initialFormValues.imageUrl;
+
+  const handleGoBack = () => {
+    router.back();
+  };
+
   return (
-    <div className={styles.container}>
-      <h2 className={styles.title}>가게 정보</h2>
-      <form onSubmit={handleSubmit}>
-        <div className={styles.formInner}>
-          <div className={`${styles.inputWrapper} ${styles.storeName}`}>
-            <Input
-              label="가게 이름"
-              name="name"
-              type="text"
-              placeholder="입력"
-              value={formValues.name}
-              onChange={handleInputChange}
-              required
-              error={formErrors.name}
-            />
+    <div className={styles.containerWrapper}>
+      <div className={styles.container}>
+        <h2 className={styles.title}>가게 정보</h2>
+        <form onSubmit={handleSubmit}>
+          <div className={styles.formInner}>
+            <div className={`${styles.inputWrapper} ${styles.storeName}`}>
+              <Input
+                label="가게 이름"
+                name="name"
+                type="text"
+                placeholder="입력"
+                value={formValues.name}
+                onChange={handleInputChange}
+                required
+                error={formErrors.name}
+              />
+            </div>
+            <div className={`${styles.inputWrapper} ${styles.category}`}>
+              <label htmlFor="category" className={styles.label}>
+                분류
+              </label>
+              <DropDown
+                name="category"
+                value={formValues.category}
+                options={categoryOptions}
+                onChange={handleDropDownChange}
+                placeholder="선택"
+                required
+                error={formErrors.category}
+              />
+            </div>
+            <div className={`${styles.inputWrapper} ${styles.address1}`}>
+              <label htmlFor="address1" className={styles.label}>
+                주소
+              </label>
+              <DropDown
+                name="address1"
+                value={formValues.address1}
+                options={addressOptions}
+                onChange={handleDropDownChange}
+                placeholder="선택"
+                required
+                error={formErrors.address1}
+              />
+            </div>
+            <div className={`${styles.inputWrapper} ${styles.address2}`}>
+              <Input
+                label="상세 주소"
+                name="address2"
+                type="text"
+                placeholder="입력"
+                value={formValues.address2}
+                onChange={handleInputChange}
+                required
+                error={formErrors.address2}
+              />
+            </div>
+            <div className={`${styles.inputWrapper} ${styles.pay}`}>
+              <Input
+                label="기본 시급"
+                name="originalHourlyPay"
+                type="number"
+                placeholder="입력"
+                value={formValues.originalHourlyPay.toString()}
+                onChange={handleInputChange}
+                required
+                error={formErrors.originalHourlyPay}
+              />
+            </div>
+            <div className={`${styles.inputWrapper} ${styles.storeImage}`}>
+              <label className={styles.label}>가게 이미지</label>
+              <div className={styles.imageWrapper}>
+                {isEditing && (
+                  <div className={styles.imageEditCover}>
+                    <Image src={cameraImg} alt="카메라 이미지" />
+                    이미지 변경하기
+                  </div>
+                )}
+                <ImageUpload
+                  onImageUpload={handleImageUpload}
+                  initialImageUrl={imageUrl}
+                />
+              </div>
+            </div>
+            <div className={`${styles.inputWrapper} ${styles.storeInfo}`}>
+              <Input
+                label="가게 설명"
+                name="description"
+                type="textarea"
+                placeholder="입력"
+                value={formValues.description}
+                onChange={handleInputChange}
+                isTextArea={true}
+              />
+            </div>
           </div>
-          <div className={`${styles.inputWrapper} ${styles.category}`}>
-            <label htmlFor="category" className={styles.label}>
-              분류
-            </label>
-            <DropDown
-              name="category"
-              value={formValues.category}
-              options={categoryOptions}
-              onChange={handleDropDownChange}
-              placeholder="선택"
-              required
-              error={formErrors.category}
-            />
-          </div>
-          <div className={`${styles.inputWrapper} ${styles.address1}`}>
-            <label htmlFor="address1" className={styles.label}>
-              주소
-            </label>
-            <DropDown
-              name="address1"
-              value={formValues.address1}
-              options={addressOptions}
-              onChange={handleDropDownChange}
-              placeholder="선택"
-              required
-              error={formErrors.address1}
-            />
-          </div>
-          <div className={`${styles.inputWrapper} ${styles.address2}`}>
-            <Input
-              label="상세 주소"
-              name="address2"
-              type="text"
-              placeholder="입력"
-              value={formValues.address2}
-              onChange={handleInputChange}
-              required
-              error={formErrors.address2}
-            />
-          </div>
-          <div className={`${styles.inputWrapper} ${styles.pay}`}>
-            <Input
-              label="기본 시급"
-              name="originalHourlyPay"
-              type="number"
-              placeholder="입력"
-              value={formValues.originalHourlyPay.toString()}
-              onChange={handleInputChange}
-              required
-              error={formErrors.originalHourlyPay}
-            />
-          </div>
-          <div className={`${styles.inputWrapper} ${styles.storeImage}`}>
-            <label className={styles.label}>가게 이미지</label>
-            <ImageUpload onImageUpload={handleImageUpload} />
-          </div>
-          <div className={`${styles.inputWrapper} ${styles.storeInfo}`}>
-            <Input
-              label="가게 설명"
-              name="description"
-              type="textarea"
-              placeholder="입력"
-              value={formValues.description}
-              onChange={handleInputChange}
-              isTextArea={true}
-            />
-          </div>
-        </div>
-        <Button
-          children="등록하기"
-          disabled={isFilled}
-          size={getWindowSize()}
+          <Button
+            children={!isEditing ? '등록하기' : '완료하기'}
+            disabled={isFilled}
+            size={getWindowSize()}
+          />
+        </form>
+        <Modal
+          isOpen={isModalOpen}
+          onClose={handleModalClose}
+          message={modalMessage}
         />
-      </form>
-      <Modal
-        isOpen={isModalOpen}
-        onClose={handleModalClose}
-        message={modalMessage}
-      />
+      </div>
+      <button onClick={handleGoBack}>
+        <Image src={closeImg} alt="X" className={styles.closeImg} />
+      </button>
     </div>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { shop_id } = context.query;
+
+  if (typeof shop_id !== 'string') {
+    return {
+      props: { shop_id: '', formData: null, isEditing: false },
+    };
+  }
+
+  const storeData = await GetMyStore(shop_id);
+
+  return {
+    props: { shop_id, formData: storeData, isEditing: true },
+  };
+};
