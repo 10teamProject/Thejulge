@@ -11,17 +11,15 @@ import logo from '@/public/assets/images/biglogo.png';
 import location from '@/public/assets/images/location.png';
 import time from '@/public/assets/images/timers.png';
 import {
-  Application,
   ButtonProps,
   ModalIcon,
-  Props,
+  StoreNoticeProps,
 } from '@/types/detailPageType';
 import {
   calculateEndTime,
   calculateHourlyPayIncrease,
   formatDate,
 } from '@/utils/NoticeCard/CalculateThings';
-import { NoticeItem } from '@/utils/NoticeCard/NoticesType';
 
 import Modal from '../common/ConfirmModal';
 import Toast from '../common/ToastMessage';
@@ -32,17 +30,6 @@ const Icon: ModalIcon = {
   height: 0,
   width: 0,
 };
-
-interface StoreNoticeProps {
-  shopid?: string;
-  noticeid?: string;
-  storeData: NoticeItem;
-  isLogin: boolean;
-  isProfile: boolean;
-  userType: string;
-  applicationId: string;
-  setApplicationId: (id: string) => void;
-}
 
 function StoreNotice({
   shopid,
@@ -134,7 +121,7 @@ function StoreNotice({
           variant: 'primary',
         },
       ]);
-    } else if (isProfile) {
+    } else if (!isProfile) {
       // 알바생으로 로그인은 했지만 프로필을 작성하지 않은 경우
       setIsModalOpen(true);
       setModalIcon(danger);

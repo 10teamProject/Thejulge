@@ -166,7 +166,7 @@ function DetailPage({
   useEffect(() => {
     getData();
     getSesstionStorageData();
-  }, []);
+  }, [shopid, noticeid]);
 
   return (
     <>
@@ -195,6 +195,7 @@ function DetailPage({
     </>
   );
 }
+export default DetailPage;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { shop_id, notice_id } = context.query;
@@ -206,5 +207,3 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
   return { props: { shopid: shop_id, noticeid: notice_id } };
 };
-
-export default DetailPage;

@@ -1,3 +1,5 @@
+import { NoticeItem } from '@/utils/NoticeCard/NoticesType';
+
 export interface Props {
   shopid: string;
   noticeid: string;
@@ -57,4 +59,15 @@ export interface ModalIcon {
   width: number;
   blurWidth?: number;
   blurHeight?: number;
+}
+
+export interface StoreNoticeProps {
+  shopid: string;
+  noticeid: string;
+  storeData: NoticeItem;
+  isLogin: boolean;
+  isProfile: boolean;
+  userType: string;
+  applicationId: string;
+  setApplicationId: (id: string) => void;
 }
