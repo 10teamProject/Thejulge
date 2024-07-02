@@ -1,8 +1,8 @@
 import axios, { AxiosError } from 'axios';
-import { useRouter } from 'next/router'; // Next.js의 useRouter 임포트
+import { useRouter } from 'next/router';
 import React, { useEffect, useRef, useState } from 'react';
 
-import Modal from '@/components/common/ConfirmModal'; // Modal 컴포넌트 import
+import Modal from '@/components/common/ConfirmModal';
 
 import { addressOptions } from '../../utils/Options';
 import { updateUserProfile } from '../api/ProfilePost';
@@ -81,7 +81,7 @@ function PostMyPage() {
     const address = selectedOption;
 
     if (!userId) {
-      alert('사용자 ID를 찾을 수 없습니다.');
+      alert('로그인 후 작성해주세요.');
       return;
     }
 
@@ -98,7 +98,7 @@ function PostMyPage() {
       if (response && 'item' in response) {
         setProfileUpdated(true); // 프로필 업데이트 성공 시 상태 변경
       } else {
-        alert('프로필 업데이트에 실패했습니다.');
+        alert('프로필 등록에 실패했습니다.');
       }
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
@@ -112,7 +112,7 @@ function PostMyPage() {
           } else if (axiosError.response.status === 404) {
             alert('존재하지 않는 사용자입니다.');
           } else {
-            alert('프로필 업데이트 중 오류가 발생했습니다.');
+            alert('프로필 등록 중 오류가 발생했습니다.');
           }
         } else if (axiosError.request) {
           alert('서버로의 요청 실패');
@@ -120,7 +120,7 @@ function PostMyPage() {
           alert('네트워크 오류');
         }
       } else {
-        alert('프로필 업데이트 중 오류가 발생했습니다.');
+        alert('전화번호를 양식에 맞게 작성하세요.');
       }
     }
   };
@@ -137,7 +137,7 @@ function PostMyPage() {
             </div>
 
             <div className={styles.inputSize}>
-              <label htmlFor="tel" className={styles.inputFont}>연락처*</label>
+              <label htmlFor="tel" className={styles.inputFont}>연락처(-)*</label>
               <div><input className={styles.input} type="tel" id="tel" name="tel" placeholder="입력" ref={telRef} required /></div>
             </div>
 
@@ -194,7 +194,7 @@ function PostMyPage() {
               text: "확인",
               onClick: () => {
                 setProfileUpdated(false); 
-                router.push("../DetailedMyPageUpdate"); // 다음 페이지로 이동
+                router.push("../DetailedMyPage"); // 다음 페이지로 이동
               },
               variant: "primary"
             }

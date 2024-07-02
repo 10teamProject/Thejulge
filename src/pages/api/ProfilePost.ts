@@ -1,7 +1,7 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import Cookies from 'js-cookie';
 
-const apiUrl = process.env.NEXT_PUBLIC_BASE_URL;
+import { instance } from './AxiosInstance';
 
 interface UpdateUserRequestBody {
   name?: string;
@@ -51,7 +51,7 @@ export async function updateUserProfile(userId: string, userProfile: UpdateUserR
   }
 
   try {
-    const response: AxiosResponse<UpdateUserResponse> = await axios.put(`${apiUrl}/users/${userId}`, userProfile, {
+    const response: AxiosResponse<UpdateUserResponse> = await instance.put(`/users/${userId}`, userProfile, {
       headers: {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json',
