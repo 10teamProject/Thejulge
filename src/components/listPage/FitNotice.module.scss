@@ -34,19 +34,6 @@
     margin-bottom: 10px;
   }
 }
-.fitNotice {
-  display: flex;
-  gap: 10px;
-}
 .carousel {
   display: flex;
-}
-.carouselContainer {
-  display: flex;
-  transition: transform 0.5s ease;
-  gap: 10px;
-}
-.carousel > * {
-  box-sizing: border-box;
-  margin-right: 10px;
 }
