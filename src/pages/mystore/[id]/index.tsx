@@ -11,7 +11,7 @@ interface MyStoreProps {
   shop_id: string;
 }
 
-const MyStore: NextPage<MyStoreProps> = ({ storeData, shop_id }) => {
+const MyStore: NextPage<MyStoreProps> = ({ storeData }) => {
   if (!storeData) {
     return <div>Store not found</div>;
   }
@@ -21,12 +21,7 @@ const MyStore: NextPage<MyStoreProps> = ({ storeData, shop_id }) => {
       <h1 className={styles.title}>내 가게</h1>
       <StoreCard storeData={storeData} />
       <h1 className={styles.title}>등록한 공고</h1>
-      <MyNotice
-        shop_id={shop_id}
-        imageUrl={storeData.imageUrl}
-        address1={storeData.address1}
-        originalHourlyPay={storeData.originalHourlyPay}
-      />
+      <MyNotice shop={storeData} />
     </div>
   );
 };
@@ -38,19 +33,24 @@ export const getServerSideProps: GetServerSideProps<MyStoreProps> = async (
 
   if (typeof id !== 'string') {
     return {
-      props: { storeData: null, shop_id: '' },
+      notFound: true,
     };
   }
 
   try {
     const storeData = await GetMyStore(id);
+    if (!storeData) {
+      return {
+        notFound: true,
+      };
+    }
     return {
       props: { storeData, shop_id: id },
     };
   } catch (error) {
     console.error('데이터를 불러오는데 실패:', error);
     return {
-      props: { storeData: null, shop_id: id },
+      notFound: true,
     };
   }
 };

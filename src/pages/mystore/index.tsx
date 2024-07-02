@@ -12,7 +12,7 @@ interface MyStoreProps {
   shop_id: string;
 }
 
-export default function MyStorePage({ storeData, shop_id }: MyStoreProps) {
+export default function MyStorePage({ storeData }: MyStoreProps) {
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>내 가게</h1>
@@ -20,12 +20,7 @@ export default function MyStorePage({ storeData, shop_id }: MyStoreProps) {
         <>
           <StoreCard storeData={storeData} />
           <h1 className={styles.title}>내가 등록한 공고</h1>
-          <MyNotice
-            shop_id={shop_id}
-            imageUrl={storeData.imageUrl}
-            address1={storeData.address1}
-            originalHourlyPay={storeData.originalHourlyPay}
-          />
+          <MyNotice shop={storeData} />
           <div />
         </>
       ) : (
