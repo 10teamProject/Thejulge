@@ -65,7 +65,6 @@ const MyNotice: React.FC<MyNoticeProps> = ({ shop }) => {
           <div
             key={notice.id}
             className={`${styles.noticeCard} ${notice.closed ? styles.closed : ''}`}
-            className={`${styles.noticeCard} ${notice.closed ? styles.closed : ''}`}
             onClick={() => handleNoticeClick(notice.id)}
             style={{ cursor: 'pointer' }}
           >
