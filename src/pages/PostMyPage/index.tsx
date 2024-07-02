@@ -15,7 +15,7 @@ interface Option {
 interface UpdateUserRequestBody {
   name?: string;
   phone?: string;
-  address: string;
+  address?: string;
   bio?: string;
 }
 
@@ -43,7 +43,7 @@ function PostMyPage() {
   const telRef = useRef<HTMLInputElement>(null);
   const introRef = useRef<HTMLTextAreaElement>(null);
 
-  const router = useRouter(); // useRouter 훅을 이용해 라우터 객체 가져오기
+  const router = useRouter();
 
   useEffect(() => {
     const storedUserId = getUserIdFromSessionStorage(); // 세션 스토리지에서 ID 가져옴
