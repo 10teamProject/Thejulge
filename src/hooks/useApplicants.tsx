@@ -38,7 +38,7 @@ export const useApplicants = (shop_id: string, notice_id: string) => {
 
   const handleStatusChange = async (
     id: string,
-    newStatus: 'accepted' | 'rejected',
+    newStatus: 'accepted' | 'rejected' | 'canceled',
   ) => {
     try {
       await updateApplicationStatus(shop_id, notice_id, id, newStatus);
