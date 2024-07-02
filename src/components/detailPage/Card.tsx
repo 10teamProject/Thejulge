@@ -48,7 +48,7 @@ const Card: React.FC<DetailCardProps> = ({ recentNoticeData }) => {
             </div>
           </div>
           <div className={styles.hourlPay}>
-            {hourlyPay}원
+            {hourlyPay.toLocaleString('ko-KR')}원
             {originalHourlyPay < hourlyPay && (
               <span>
                 기존 시급보다 {increaseRate}%

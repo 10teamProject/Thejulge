@@ -1,0 +1,22 @@
+// 여기서부턴 "최근에 본 공고" 스타일
+.notice_container {
+  width: 968px;
+  margin: 0 auto;
+  padding: 60px 0;
+}
+
+.notice_container > h1 {
+  font-size: 28px;
+  font-weight: 700;
+  padding-bottom: 32px;
+}
+
+.card_container {
+  display: grid;
+  grid-template-columns: repeat(3, 312px);
+  gap: 32px 14px;
+
+  @media (max-width: 1028px) {
+    grid-template-columns: repeat(2, 312px);
+  }
+}
