@@ -86,6 +86,17 @@
   margin: 0;
 }
 
+.logoutContainer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
+}
+
+.iconContainer {
+  margin-top: 2px;
+}
+
 @media (max-width: 767px) {
   .header {
     padding: 15px 0;

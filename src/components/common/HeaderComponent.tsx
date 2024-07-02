@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import React from 'react';
 
+import UserNotification from '@/components/userNofication/UserNofication';
 import { useAuth } from '@/contexts/AuthProvider';
 import { GetUserInfo } from '@/pages/api/GetUserInfo';
 
@@ -19,7 +19,6 @@ const Header: React.FC = () => {
   const handleMyStoreClick = async () => {
     const userInfo = await GetUserInfo();
     if (userInfo && userInfo.type === 'employer' && userInfo.shop?.item?.id) {
-      console.log('Navigating to store page with ID:', userInfo.shop.item.id);
       router.push(`/mystore/${userInfo.shop.item.id}`);
     } else {
       console.log('ID가 없습니다');
@@ -45,18 +44,24 @@ const Header: React.FC = () => {
           ) : user.type === 'employee' ? (
             <>
               <Link href="/profile">내 프로필</Link>
-              <button onClick={handleLogout} className={styles.logoutButton}>
-                로그아웃
-              </button>
+              <div className={styles.logoutContainer}>
+                <button onClick={handleLogout} className={styles.logoutButton}>
+                  로그아웃
+                </button>
+                <UserNotification />
+              </div>
             </>
           ) : user.type === 'employer' ? (
             <>
               <button onClick={handleMyStoreClick} className={styles.navButton}>
                 내 가게
               </button>
-              <button onClick={handleLogout} className={styles.logoutButton}>
-                로그아웃
-              </button>
+              <div className={styles.logoutContainer}>
+                <button onClick={handleLogout} className={styles.logoutButton}>
+                  로그아웃
+                </button>
+                <UserNotification />
+              </div>
             </>
           ) : null}
         </nav>

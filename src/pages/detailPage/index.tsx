@@ -153,9 +153,6 @@ function DetailPage({
       if (!isApplied) {
         try {
           const res = await instance.post(
-            // 일단 shopid와 noticeid를 받아오지 않아서 일단 주석처리 해놓음. 나중에 사용할거면 아래 주석처리 해제하면 된다.
-            // `/shops/${shopid}/notices/${noticeid}/applications`,
-            // 테스트주소
             `/shops/be05aa78-7d4e-4f17-9b3a-babb41181caf/notices/064f8810-8e63-426f-b12f-e616709561f7/applications`,
             {},
             {
