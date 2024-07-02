@@ -40,13 +40,12 @@ function StoreNotice({
   applicationId,
   setApplicationId,
 }: StoreNoticeProps) {
-  const { hourlyPay, startsAt, workhour, description } = storeData.item; //description은 이름이 겹쳐서 공고 description만 변수선언
+  const { hourlyPay, startsAt, workhour, description, closed } = storeData.item; //description은 이름이 겹쳐서 공고 description만 변수선언
   const { category, name, imageUrl, address1, originalHourlyPay } =
     storeData.item.shop.item;
   const increaseRate = calculateHourlyPayIncrease(originalHourlyPay, hourlyPay);
   const startTime = formatDate(startsAt);
   const endTime = calculateEndTime(startsAt, workhour);
-
   const [isApplied, setIsApplied] = useState<boolean>(false); // 신청하기 버튼 상태관리변수
 
   ///// 모달창과 관련된 변수들
@@ -192,6 +191,7 @@ function StoreNotice({
 
           <div className={styles.shop_info}>
             <div className={styles.shop_img_box}>
+              {closed && <div className={styles.img_closed}>마감 완료</div>}
               <Image
                 src={imageUrl}
                 alt="가게이미지"
@@ -221,10 +221,11 @@ function StoreNotice({
               <p>{storeData.item.shop.item.description}</p>
               <div>
                 <button
-                  className={`${styles.button} ${isApplied ? styles.true : styles.false}`}
+                  className={`${styles.button} ${isApplied ? styles.true : styles.false} ${closed ? styles.closed : ''}`}
                   onClick={handleApply}
+                  disabled={closed}
                 >
-                  {isApplied ? '취소하기' : '신청하기'}
+                  {closed ? '신청불가' : isApplied ? '취소하기' : '신청하기'}
                 </button>
                 <Modal
                   isOpen={isModalOpen}

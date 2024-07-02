@@ -19,7 +19,7 @@ interface DetailCardProps {
 }
 
 const Card: React.FC<DetailCardProps> = ({ recentNoticeData }) => {
-  const { hourlyPay, startsAt, workhour } = recentNoticeData;
+  const { hourlyPay, startsAt, workhour, closed } = recentNoticeData;
   const { name, imageUrl, address1, originalHourlyPay } =
     recentNoticeData.shop.item;
   const increaseRate = calculateHourlyPayIncrease(originalHourlyPay, hourlyPay);
@@ -28,12 +28,16 @@ const Card: React.FC<DetailCardProps> = ({ recentNoticeData }) => {
 
   const shopid = recentNoticeData.shop.item.id;
   const noticeid = recentNoticeData.id;
+  console.log(recentNoticeData);
 
   return (
     <>
       <Link href={`/detailPage/${shopid}/${noticeid}`}>
-        <div className={styles.card_container}>
+        <div
+          className={`${styles.card_container} ${closed ? styles.card_closed : ''}`}
+        >
           <div className={styles.img_box}>
+            {closed && <div className={styles.img_closed}> 마감완료</div>}
             <Image
               src={imageUrl}
               fill

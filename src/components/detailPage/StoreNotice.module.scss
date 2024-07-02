@@ -48,6 +48,23 @@
   object-fit: cover;
 }
 
+.img_closed {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-size: 24px;
+  font-weight: bold;
+  border-radius: 12px;
+  z-index: 10;
+}
+
 .shop_contents {
   padding-top: 16px;
   display: flex;
@@ -127,6 +144,14 @@
     background-color: #ffd43b;
     color: #ffffff;
     border: 1px solid #ffffff; // 하얀 테두리를 넣은 이유 : 테두리를 안넣으니 화면이 움직임
+  }
+
+  &.closed {
+    background-color: #7d7986;
+    color: #ffffff;
+    border: 1px solid #7d7986; // 하얀 테두리를 넣은 이유 : 테두리를 안넣으니 화면이 움직임
+
+    cursor: auto;
   }
 }
 
