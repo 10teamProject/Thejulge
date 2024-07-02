@@ -33,7 +33,7 @@ const StoreCard: React.FC<StoreCardProps> = ({ storeData }) => (
       </p>
       <p className={styles.description}>{storeData.description}</p>
       <div className={styles.buttonContainer}>
-        {/* 편집 버튼 */}
+        {/* 편집 버튼 수정 */}
         <Button
           className={styles.editButton}
           children="편집하기"
