@@ -13,19 +13,32 @@ interface MyStoreProps {
 }
 
 export default function MyStorePage({ storeData }: MyStoreProps) {
+export default function MyStorePage() {
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const checkUserInfo = async () => {
+      const userInfo = await GetUserInfo();
+
+      if (userInfo && userInfo.type === 'employer' && userInfo.shop?.item?.id) {
+        router.replace(`/mystore/${userInfo.shop.item.id}`);
+      } else {
+        setIsLoading(false);
+      }
+    };
+
+    checkUserInfo();
+  }, [router]);
+
+  if (isLoading) {
+    return <div className={styles.loading}>로딩 중...</div>;
+  }
+
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>내 가게</h1>
-      {storeData ? (
-        <>
-          <StoreCard storeData={storeData} />
-          <h1 className={styles.title}>내가 등록한 공고</h1>
-          <MyNotice shop={storeData} />
-          <div />
-        </>
-      ) : (
-        <StoreRegistration />
-      )}
+      <StoreRegistration />
     </div>
   );
 }

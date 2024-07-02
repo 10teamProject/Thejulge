@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
+import Search from '@/components/listPage/Search';
 import UserNotification from '@/components/userNofication/UserNofication';
 import { useAuth } from '@/contexts/AuthProvider';
 import { GetUserInfo } from '@/pages/api/GetUserInfo';
@@ -32,9 +33,7 @@ const Header: React.FC = () => {
         <Link href="/listPage" className={styles.logo}>
           +HE JULGE
         </Link>
-        <div className={styles.searchBar}>
-          <input type="text" placeholder="가게 이름으로 찾아보세요" />
-        </div>
+        <Search />
         <nav className={styles.nav}>
           {!user ? (
             <>

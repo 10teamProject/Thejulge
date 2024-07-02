@@ -1,4 +1,5 @@
 import { GetServerSideProps } from 'next';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import Pagination from 'react-js-pagination';
 
@@ -16,24 +17,27 @@ type Props = {
   totalCount: number;
   currentPage: number;
   sort: 'time' | 'pay' | 'hour' | 'shop';
+  keyword?: string;
 };
 
 export const getServerSideProps: GetServerSideProps<Props> = async (
   context,
 ) => {
-  const currentPage = context.query.page
-    ? parseInt(context.query.page as string, 10)
-    : 1;
+  const { query } = context;
+  const currentPage = query.page ? parseInt(query.page as string, 10) : 1;
+  const keyword = query.keyword as string;
 
   try {
     const sort =
-      context.query.sort &&
-      ['time', 'pay', 'hour', 'shop'].includes(context.query.sort as string)
-        ? (context.query.sort as 'time' | 'pay' | 'hour' | 'shop')
+      query.sort &&
+      ['time', 'pay', 'hour', 'shop'].includes(query.sort as string)
+        ? (query.sort as 'time' | 'pay' | 'hour' | 'shop')
         : 'pay';
 
     const params = {
+      ...query, // Include any other query parameters for filtering
       sort,
+      page: currentPage, // Ensure correct pagination
     };
 
     const data = await getNotices(params);
@@ -46,6 +50,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
         totalCount,
         currentPage,
         sort,
+        keyword: keyword || '',
       },
     };
   } catch (error) {
@@ -56,6 +61,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
         totalCount: 0,
         currentPage,
         sort: 'time',
+        keyword: keyword || '',
       },
     };
   }
@@ -66,6 +72,7 @@ const ListPage: React.FC<Props> = ({
   totalCount,
   currentPage,
   sort: initialSort,
+  keyword,
 }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -97,19 +104,20 @@ const ListPage: React.FC<Props> = ({
         address: locations,
         startsAtGte: startDate,
         hourlyPayGte: hourlyPay,
+        keyword,
       };
 
       try {
         const data = await getNotices(params);
         setNotices(data.items.map((item) => item.item));
-        setTotalNoticesCount(data.count); // 총 개수 업데이트
+        setTotalNoticesCount(data.count); // 총 개수 계산
       } catch (error) {
         console.error(error);
       }
     };
 
     fetchNotices(page, sort, selectedLocations, startDate, hourlyPay);
-  }, [page, sort, selectedLocations, startDate, hourlyPay]);
+  }, [page, sort, selectedLocations, startDate, hourlyPay, keyword]);
 
   const sortOptions: {
     key: 'time' | 'pay' | 'hour' | 'shop';
@@ -128,11 +136,13 @@ const ListPage: React.FC<Props> = ({
     setSort(newSortBy);
     setLabel(newLabel);
     setIsDropdownOpen(false);
+    setPage(1);
   };
 
   const handlePageChange = (pageNumber: number) => {
     setPage(pageNumber);
   };
+
   const handleFilterApply = (
     locations: string[],
     startDate: string,
@@ -142,21 +152,25 @@ const ListPage: React.FC<Props> = ({
     setStartDate(startDate);
     setHourlyPay(hourlyPay);
     setIsFilterOpen(false);
+    setPage(1);
   };
 
   return (
     <>
-      <div className={styles.customContainer}>
-        <div className={styles.customSection}>
-          <h2 className={styles.title}>맞춤 공고</h2>
-          <div className={styles.fitNotice}>
-            <FitNotice initialNotices={initialNotices} />
-          </div>
-        </div>
-      </div>
+      {!keyword && <FitNotice initialNotices={initialNotices} />}
+
       <div className={styles.container}>
         <div className={styles.titleSection}>
-          <h2 className={styles.title}>전체 공고</h2>
+          <h2 className={styles.title}>
+            {keyword ? (
+              <>
+                <span className={styles.keyword}>{keyword}</span> 에 대한 공고
+                목록
+              </>
+            ) : (
+              '전체 공고'
+            )}
+          </h2>
           <div className={styles.dropdownGroup}>
             <div
               className={styles.sortDropdown}

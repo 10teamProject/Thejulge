@@ -3,12 +3,22 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
 
+import Modal from '@/components/common/ConfirmModal';
 import Card from '@/components/detailPage/Card';
+import check from '@/public/assets/icon/check_Icon.svg';
+import danger from '@/public/assets/icon/danger_mark.svg';
 import arrow from '@/public/assets/images/arrow.png';
 import logo from '@/public/assets/images/biglogo.png';
 import location from '@/public/assets/images/location.png';
 import time from '@/public/assets/images/timers.png';
-import { Application, ProfileData, Props, User } from '@/types/detailPageType';
+import {
+  Application,
+  ButtonProps,
+  ModalIcon,
+  ProfileData,
+  Props,
+  User,
+} from '@/types/detailPageType';
 import {
   calculateEndTime,
   calculateHourlyPayIncrease,
@@ -50,6 +60,12 @@ const initialStoreData: NoticeItem = {
   ],
 };
 
+const Icon: ModalIcon = {
+  src: '',
+  height: 0,
+  width: 0,
+};
+
 function DetailPage({
   shopid,
   noticeid = '064f8810-8e63-426f-b12f-e616709561f7', // 테스트한다고 임의로 값을 넣음. 나중에 지워줘야한다
@@ -70,9 +86,15 @@ function DetailPage({
   const [isProfile, setIsProfile] = useState<boolean>(false); // 프로필 여부를 확인
   const [userType, setUserType] = useState<string>(''); // user가 알바생인지 사장님인지 확인
   const [applicationId, setApplicationId] = useState<string>(''); // applicaionId를 담는 변수인데 "신청하기" 버튼을 누르면 값이 담김
-  const router = useRouter();
 
-  ////// 세션 스토리지에서 데이터 가져오기 구현
+  ///// 모달창과 관련된 변수들
+  const router = useRouter();
+  const [isModalOpen, setIsModalOpen] = useState(false); // 모달창 상태여부
+  const [modalMessage, setModalMessage] = useState(''); // 모달창에 내려줄 메시지 관리
+  const [modalButton, setModalbutton] = useState<ButtonProps[]>([]); // 모달창에 내려줄 버튼 관리
+  const [modalIcon, setModalIcon] = useState<ModalIcon>(Icon); // 모달창에 내려줄 아이콘
+
+  /// 세션 스토리지에서 데이터 가져오기 구현
   const getSesstionStorageData = () => {
     const sessionStorageData = sessionStorage.getItem('user');
     if (sessionStorageData) {
@@ -85,7 +107,7 @@ function DetailPage({
     }
   };
 
-  ///// 프로필 API로 요청을 보내서 프로필 여부를 확인하기
+  /// 프로필 API로 요청을 보내서 프로필 여부를 확인하기
   const getCheckProfile = async (userId: string) => {
     try {
       const res = await instance.get(`/users/${userId}`);
@@ -139,18 +161,81 @@ function DetailPage({
     }
   };
 
+  // 로그인 페이지로 이동하는 이벤트
+  const onClickLoginPage = () => {
+    router.push('/login');
+  };
+
+  // 프로필 페이지로 이동하는 이벤트
+  const onClickProfilePage = () => {
+    router.push('/DetailedMyPage');
+  };
+
+  // 취소하기 버튼 클릭시 PUT 요청 보내는 이벤트
+  const onClickPutRequest = async () => {
+    try {
+      await instance.put(
+        // `/shops/${shopid}/notices/${noticeid}/applications/${applicationid}`; // 이 주소로 API PUT요청을 보내야한다.
+        // 테스트 주소
+        `/shops/be05aa78-7d4e-4f17-9b3a-babb41181caf/notices/064f8810-8e63-426f-b12f-e616709561f7/applications/${applicationId}`,
+        { status: 'canceled' },
+        {
+          headers: {
+            Authorization: `Bearer ${Cookies.get('token')}`,
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+      setIsApplied(false);
+      setIsModalOpen(false);
+      setApplicationId('');
+      // 신청완료 토스트 메시지도 추가해야함
+    } catch (error) {
+      console.log('PUT 요청에러', error);
+    }
+  };
+
   ///// 신청하기 버튼 구현하기
   const handleApply = async () => {
     if (!isLogin) {
-      router.push('/login');
-      console.log('로그인이 필요합니다'); // 모달창과 함께 로그인페이지로 이동
+      // 로그인이 되지 않은 경우
+      setIsModalOpen(true);
+      setModalIcon(danger);
+      setModalMessage('로그인이 필요합니다');
+      setModalbutton([
+        {
+          text: '확인',
+          onClick: onClickLoginPage,
+          variant: 'primary',
+        },
+      ]);
     } else if (userType === 'employer') {
-      console.log('사장님은 신청하지 못합니다.'); // 모달창
-    } else if (!isProfile) {
-      router.push('/DetailedMyPage');
-      console.log('프로필을 작성해주세요'); // 모달창과 함께 프로필 페이지로 이동
+      // 사장님으로 로그인한 경우
+      setIsModalOpen(true);
+      setModalIcon(danger);
+      setModalMessage('사장님은 신청할 수 없습니다');
+      setModalbutton([
+        {
+          text: '확인',
+          onClick: () => setIsModalOpen(false),
+          variant: 'primary',
+        },
+      ]);
+    } else if (isProfile) {
+      // 알바생으로 로그인은 했지만 프로필을 작성하지 않은 경우
+      setIsModalOpen(true);
+      setModalIcon(danger);
+      setModalMessage('내 프로필을 먼저 등록해주세요');
+      setModalbutton([
+        {
+          text: '확인',
+          onClick: onClickProfilePage,
+          variant: 'primary',
+        },
+      ]);
     } else {
       if (!isApplied) {
+        // 버튼이 신청하기인 경우
         try {
           const res = await instance.post(
             `/shops/be05aa78-7d4e-4f17-9b3a-babb41181caf/notices/064f8810-8e63-426f-b12f-e616709561f7/applications`,
@@ -161,33 +246,30 @@ function DetailPage({
               },
             },
           );
-          console.log('지원완료', res); // 토스트 메시지
           setApplicationId(res.data.item.id); // 리스폰스로 받은 application_id를 넣는다.
           setIsApplied(true);
+          // 신청완료 토스트 메시지도 추가해야함
         } catch (error) {
           console.log('POST에러', error);
         }
       } else {
-        console.log('취소하시겠습니까?'); // 모달창
-        try {
-          await instance.put(
-            // `/shops/${shopid}/notices/${noticeid}/applications/${applicationid}`; // 이 주소로 API PUT요청을 보내야한다.
-            // 테스트 주소
-            `/shops/be05aa78-7d4e-4f17-9b3a-babb41181caf/notices/064f8810-8e63-426f-b12f-e616709561f7/applications/${applicationId}`,
-            { status: 'canceled' },
-            {
-              headers: {
-                Authorization: `Bearer ${Cookies.get('token')}`,
-                'Content-Type': 'application/json',
-              },
-            },
-          );
-          console.log('취소완료');
-          setIsApplied(false);
-          setApplicationId('');
-        } catch (error) {
-          console.log('PUT에러', error);
-        }
+        // 버튼이 취소하기인 경우
+        setIsModalOpen(true);
+        setModalIcon(check);
+        setModalMessage('신청을 취소하시겠어요?');
+        setModalbutton([
+          {
+            text: '취소',
+            onClick: () => setIsModalOpen(false),
+            variant: 'secondary',
+          },
+
+          {
+            text: '확인',
+            onClick: onClickPutRequest,
+            variant: 'primary',
+          },
+        ]);
       }
     }
   };
@@ -283,6 +365,13 @@ function DetailPage({
                 >
                   {isApplied ? '취소하기' : '신청하기'}
                 </button>
+                <Modal
+                  isOpen={isModalOpen}
+                  onClose={() => setIsModalOpen(false)}
+                  icon={<Image src={modalIcon} alt="모달창이미지" />}
+                  message={modalMessage}
+                  buttons={modalButton}
+                />
               </div>
             </div>
           </div>
