@@ -1,4 +1,5 @@
 import Cookies from 'js-cookie';
+import { GetServerSideProps } from 'next';
 import { useCallback, useEffect, useState } from 'react';
 
 import Card from '@/components/detailPage/Card';
@@ -41,8 +42,8 @@ const initialStoreData: NoticeItem = {
 };
 
 function DetailPage({
-  shopid = 'be05aa78-7d4e-4f17-9b3a-babb41181caf',
-  noticeid = '064f8810-8e63-426f-b12f-e616709561f7', // 테스트한다고 임의로 값을 넣음. 나중에 지워줘야한다
+  shopid,
+  noticeid, // 테스트한다고 임의로 값을 넣음. 나중에 지워줘야한다
 }: Props) {
   const [storeData, setStoreData] = useState<NoticeItem>(initialStoreData);
   const [recentNotices, setRecentNotices] = useState<Notice[]>([]); // 로컬스토리지 담을 변수
@@ -121,10 +122,7 @@ function DetailPage({
 
   async function getData() {
     try {
-      // const res = await instance.get(`/shops/${shopid}/notices/${noticeid}`);
-      const res = await instance.get(
-        `/shops/be05aa78-7d4e-4f17-9b3a-babb41181caf/notices/064f8810-8e63-426f-b12f-e616709561f7`,
-      ); // 샘플 데이터
+      const res = await instance.get(`/shops/${shopid}/notices/${noticeid}`);
       const nextData = await res.data;
       setStoreData(nextData);
       localStorageUpdate(nextData.item);
@@ -197,5 +195,16 @@ function DetailPage({
     </>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { shop_id, notice_id } = context.query;
+
+  if (typeof shop_id !== 'string' || typeof notice_id !== 'string') {
+    return {
+      notFound: true,
+    };
+  }
+  return { props: { shopid: shop_id, noticeid: notice_id } };
+};
 
 export default DetailPage;
