@@ -7,7 +7,6 @@ import { instance } from '@/pages/api/AxiosInstance';
 import check from '@/public/assets/icon/check_Icon.svg';
 import danger from '@/public/assets/icon/danger_mark.svg';
 import arrow from '@/public/assets/images/arrow.png';
-import logo from '@/public/assets/images/biglogo.png';
 import location from '@/public/assets/images/location.png';
 import time from '@/public/assets/images/timers.png';
 import {
@@ -121,7 +120,7 @@ function StoreNotice({
           variant: 'primary',
         },
       ]);
-    } else if (!isProfile) {
+    } else if (isProfile) {
       // 알바생으로 로그인은 했지만 프로필을 작성하지 않은 경우
       setIsModalOpen(true);
       setModalIcon(danger);
@@ -192,8 +191,13 @@ function StoreNotice({
           </div>
 
           <div className={styles.shop_info}>
-            <div>
-              <Image src={logo} className={styles.shop_img} alt="가게이미지" />
+            <div className={styles.shop_img_box}>
+              <Image
+                src={imageUrl}
+                alt="가게이미지"
+                fill
+                className={styles.shop_img}
+              />
             </div>
             <div className={styles.shop_contents}>
               <h1>시급</h1>

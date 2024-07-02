@@ -37,10 +37,15 @@
   border-radius: 12px;
 }
 
-.shop_img {
+.shop_img_box {
+  position: relative;
   width: 539px;
   height: 308px;
+}
+
+.shop_img {
   border-radius: 12px;
+  object-fit: cover;
 }
 
 .shop_contents {
