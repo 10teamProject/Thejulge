@@ -7,24 +7,15 @@ import { GetMyNotice } from '@/pages/api/GetMyNotice';
 import locationIcon from '@/public/assets/icon/location.svg';
 import timeIcon from '@/public/assets/icon/timer.svg';
 import arrowIcon from '@/public/assets/icon/up_icon.svg';
-import chickenImage from '@/public/assets/images/chicken.jpg';
-import { Item, RequestParams } from '@/types/myStoreType';
+import { Item, RequestParams, Shop } from '@/types/myStoreType';
 
 import styles from './MyNotice.module.scss';
 
 interface MyNoticeProps {
-  shop_id: string;
-  imageUrl: string;
-  address1: string;
-  originalHourlyPay: number;
+  shop: Shop;
 }
 
-const MyNotice: React.FC<MyNoticeProps> = ({
-  shop_id,
-  imageUrl,
-  address1,
-  originalHourlyPay,
-}) => {
+const MyNotice: React.FC<MyNoticeProps> = ({ shop }) => {
   const [notices, setNotices] = useState<Item[]>([]);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
@@ -32,7 +23,7 @@ const MyNotice: React.FC<MyNoticeProps> = ({
   useEffect(() => {
     const fetchNotices = async () => {
       const params: RequestParams = { offset: 0, limit: 6 };
-      const response = await GetMyNotice(shop_id, params);
+      const response = await GetMyNotice(shop.id, params);
       if (response) {
         setNotices(response.items.map((item) => item.item));
       }
@@ -40,18 +31,14 @@ const MyNotice: React.FC<MyNoticeProps> = ({
     };
 
     fetchNotices();
-  }, [shop_id]);
+  }, [shop.id]);
 
   if (loading) {
     return <div>로딩 중...</div>;
   }
 
   if (notices.length === 0) {
-    return <NoNotice shopId={shop_id} />;
-  }
-
-  if (notices.length === 0) {
-    return <NoNotice shopId={shop_id} />;
+    return <NoNotice shopId={shop.id} />;
   }
 
   const formatTime = (date: Date): string => {
@@ -63,7 +50,7 @@ const MyNotice: React.FC<MyNoticeProps> = ({
   };
 
   const handleNoticeClick = (noticeId: string) => {
-    router.push(`/mystore/${shop_id}/notice/${noticeId}`);
+    router.push(`/mystore/${shop.id}/notice/${noticeId}`);
   };
 
   return (
@@ -83,7 +70,7 @@ const MyNotice: React.FC<MyNoticeProps> = ({
           >
             <div className={styles.imageContainer}>
               <Image
-                src={imageUrl}
+                src={shop.imageUrl}
                 alt="가게 이미지"
                 className={styles.noticeImage}
                 width={280}
@@ -94,7 +81,7 @@ const MyNotice: React.FC<MyNoticeProps> = ({
               )}
             </div>
             <div className={styles.noticeContent}>
-              <h3 className={styles.noticeTitle}>{notice.description}</h3>
+              <h3 className={styles.noticeTitle}>{shop.name}</h3>
               <div className={styles.noticeInfo}>
                 <span className={styles.noticeTime}>
                   <Image
@@ -118,18 +105,18 @@ const MyNotice: React.FC<MyNoticeProps> = ({
                     width={16}
                     height={16}
                   />
-                  {address1}
+                  {shop.address1}
                 </span>
               </div>
               <div className={styles.noticePay}>
                 <span className={styles.payAmount}>
                   {notice.hourlyPay.toLocaleString()}원
                 </span>
-                {notice.hourlyPay > originalHourlyPay && (
+                {notice.hourlyPay > shop.originalHourlyPay && (
                   <span className={styles.payIncrease}>
                     기존 시급보다{' '}
                     {Math.round(
-                      (notice.hourlyPay / originalHourlyPay - 1) * 100,
+                      (notice.hourlyPay / shop.originalHourlyPay - 1) * 100,
                     )}
                     %
                     <Image
