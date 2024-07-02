@@ -1,8 +1,13 @@
+import Image from 'next/image';
 import { useRouter } from 'next/router';
+import React, { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 import Button from '@/components/common/Button';
+import Modal from '@/components/common/ConfirmModal';
 import { AddNotice, WorkShift } from '@/pages/api/AddNotice';
+import CheckIcon from '@/public/assets/icon/check_Icon.svg';
+import AltIcon from '@/public/assets/icon/danger_mark.svg';
 
 import styles from './AddNotice.module.scss';
 
@@ -12,6 +17,10 @@ interface AddNoticeProps {
 
 function AddNoticeComponent({ shop_id }: AddNoticeProps) {
   const router = useRouter();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
+  const [isSuccess, setIsSuccess] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -28,11 +37,21 @@ function AddNoticeComponent({ shop_id }: AddNoticeProps) {
       };
 
       await AddNotice(shop_id, formattedData);
-      alert('공고가 성공적으로 등록되었습니다.');
-      router.push(`/mystore/${shop_id}`);
+      setModalMessage('공고가 성공적으로 등록되었습니다.');
+      setIsSuccess(true);
+      setIsModalOpen(true);
     } catch (error) {
       console.error('공고 등록 실패:', error);
-      alert('공고 등록에 실패했습니다. 다시 시도해주세요.');
+      setModalMessage('공고 등록에 실패했습니다. 다시 시도해주세요.');
+      setIsSuccess(false);
+      setIsModalOpen(true);
+    }
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+    if (isSuccess) {
+      router.push(`/mystore/${shop_id}`);
     }
   };
 
@@ -116,6 +135,27 @@ function AddNoticeComponent({ shop_id }: AddNoticeProps) {
           등록하기
         </Button>
       </form>
+
+      <Modal
+        isOpen={isModalOpen}
+        onClose={handleModalClose}
+        icon={
+          <Image
+            src={isSuccess ? CheckIcon : AltIcon}
+            alt={isSuccess ? '성공' : '실패'}
+            width={24}
+            height={24}
+          />
+        }
+        message={modalMessage}
+        buttons={[
+          {
+            text: '확인',
+            onClick: handleModalClose,
+            variant: isSuccess ? 'primary' : 'secondary',
+          },
+        ]}
+      />
     </div>
   );
 }
