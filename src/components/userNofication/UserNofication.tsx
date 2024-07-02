@@ -14,15 +14,17 @@ import styles from './UserNofication.module.scss';
 const UserNotification: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [alerts, setAlerts] = useState<AlertItem[]>([]);
-  const [hasUnreadAlerts, setHasUnreadAlerts] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
   const modalRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
 
   const fetchAlerts = async () => {
     try {
       const response: AlertResponse = await getUserAlerts(0, 10);
-      setAlerts(response.items.map((item) => item.item));
-      setHasUnreadAlerts(response.items.some((item) => !item.item.read));
+      const alertItems = response.items.map((item) => item.item);
+      setAlerts(alertItems);
+      const unreadAlerts = alertItems.filter((item) => !item.read);
+      setUnreadCount(unreadAlerts.length);
     } catch (error) {
       console.error('Failed to fetch alerts:', error);
     }
@@ -62,20 +64,23 @@ const UserNotification: React.FC = () => {
         className={styles.notificationButton}
       >
         <Image
-          src={hasUnreadAlerts ? notificationActiveIcon : notificationIcon}
+          src={unreadCount > 0 ? notificationActiveIcon : notificationIcon}
           alt="알림 아이콘"
           width={24}
           height={24}
         />
+        {unreadCount > 0 && (
+          <span className={styles.unreadBadge}>{unreadCount}</span>
+        )}
       </button>
       {isOpen && (
         <div ref={modalRef} className={styles.notificationModal}>
-          <h3>알림 {alerts.length}개</h3>
+          <h3>알림 {unreadCount}개</h3>
           <ul className={styles.alertList}>
             {alerts.map((alert) => (
               <li
                 key={alert.id}
-                className={styles.alertItem}
+                className={`${styles.alertItem} ${alert.read ? styles.readAlert : ''}`}
                 onClick={() => handleReadAlert(alert.id)}
               >
                 <span

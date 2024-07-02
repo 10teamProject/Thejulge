@@ -10,6 +10,23 @@
   padding: 0;
   display: flex;
   align-items: center;
+  position: relative;
+}
+
+.unreadBadge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background-color: #f03e3e;
+  color: white;
+  border-radius: 50%;
+  padding: 2px 5px;
+  font-size: 10px;
+  min-width: 15px;
+  height: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .notificationModal {
@@ -53,6 +70,15 @@
     margin-bottom: 0;
     padding-bottom: 0;
     border-bottom: none;
+  }
+
+  &.readAlert {
+    .alertText,
+    .time,
+    .acceptedText,
+    .rejectedText {
+      color: #a4a1aa;
+    }
   }
 }
 
