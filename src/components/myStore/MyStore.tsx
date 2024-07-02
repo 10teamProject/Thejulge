@@ -4,11 +4,13 @@ import { useRouter } from 'next/router';
 import { StoreInfo } from '@/pages/api/getMystore';
 import locationIcon from '@/public/assets/icon/location.svg';
 
+import Button from '../common/Button';
 import styles from './MyStore.module.scss';
 
 interface StoreCardProps {
   storeData: StoreInfo;
 }
+
 
 const StoreCard: React.FC<StoreCardProps> = ({ storeData }) => {
   const router = useRouter();

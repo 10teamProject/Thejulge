@@ -11,10 +11,16 @@ import styles from './ImageUpload.module.scss';
 
 interface ImageUploadProps {
   onImageUpload: (url: string) => void;
+  initialImageUrl?: string;
 }
 
-export default function ImageUpload({ onImageUpload }: ImageUploadProps) {
-  const [imagePreviewUrl, setImagePreviewUrl] = useState('');
+export default function ImageUpload({
+  onImageUpload,
+  initialImageUrl,
+}: ImageUploadProps) {
+  const [imagePreviewUrl, setImagePreviewUrl] = useState<string | undefined>(
+    initialImageUrl,
+  );
 
   const handleImageChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -22,7 +28,6 @@ export default function ImageUpload({ onImageUpload }: ImageUploadProps) {
       try {
         // presigned Url 생성
         const presignedUrl = await createPresignedURL(file);
-        console.log('createPresignedURL', presignedUrl);
         const imageUrl = presignedUrl.split('?')[0];
 
         // S3에 이미지 업로드
@@ -43,6 +48,10 @@ export default function ImageUpload({ onImageUpload }: ImageUploadProps) {
       }
     };
   }, [imagePreviewUrl]);
+
+  useEffect(() => {
+    setImagePreviewUrl(initialImageUrl || '');
+  }, [initialImageUrl]);
 
   return (
     <>
