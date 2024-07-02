@@ -1,9 +1,11 @@
+// detail.index.tsx
 import Cookies from 'js-cookie';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
 
 import Modal from '@/components/common/ConfirmModal';
+import Toast from '@/components/common/ToastMessage';
 import Card from '@/components/detailPage/Card';
 import check from '@/public/assets/icon/check_Icon.svg';
 import danger from '@/public/assets/icon/danger_mark.svg';
@@ -93,6 +95,10 @@ function DetailPage({
   const [modalMessage, setModalMessage] = useState(''); // 모달창에 내려줄 메시지 관리
   const [modalButton, setModalbutton] = useState<ButtonProps[]>([]); // 모달창에 내려줄 버튼 관리
   const [modalIcon, setModalIcon] = useState<ModalIcon>(Icon); // 모달창에 내려줄 아이콘
+
+  /////토스트 메시지와 관련된 변수들
+  const [isToastMessage, setIsToastMessage] = useState(false); // 토스트 메시지 상태여부
+  const [toastMessage, setToastMessage] = useState(''); // 토스트 메시지 정보
 
   /// 세션 스토리지에서 데이터 가져오기 구현
   const getSesstionStorageData = () => {
@@ -189,7 +195,8 @@ function DetailPage({
       setIsApplied(false);
       setIsModalOpen(false);
       setApplicationId('');
-      // 신청완료 토스트 메시지도 추가해야함
+      setToastMessage('취소완료!');
+      setIsToastMessage(true);
     } catch (error) {
       console.log('PUT 요청에러', error);
     }
@@ -251,7 +258,8 @@ function DetailPage({
           );
           setApplicationId(res.data.item.id); // 리스폰스로 받은 application_id를 넣는다.
           setIsApplied(true);
-          // 신청완료 토스트 메시지도 추가해야함
+          setToastMessage('신청완료!');
+          setIsToastMessage(true);
         } catch (error) {
           console.log('POST에러', error);
         }
@@ -374,6 +382,11 @@ function DetailPage({
                   icon={<Image src={modalIcon} alt="모달창이미지" />}
                   message={modalMessage}
                   buttons={modalButton}
+                />
+                <Toast
+                  isOpen={isToastMessage}
+                  message={toastMessage}
+                  onClose={() => setIsToastMessage(false)}
                 />
               </div>
             </div>
