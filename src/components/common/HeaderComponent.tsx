@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import Search from '@/components/listPage/Search';
 import { useAuth } from '@/contexts/AuthProvider';
 import { GetUserInfo } from '@/pages/api/GetUserInfo';
 
@@ -30,12 +31,10 @@ const Header: React.FC = () => {
   return (
     <header className={styles.header}>
       <div className={styles.headerContainer}>
-        <Link href="/" className={styles.logo}>
+        <Link href="/listPage" className={styles.logo}>
           +HE JULGE
         </Link>
-        <div className={styles.searchBar}>
-          <input type="text" placeholder="가게 이름으로 찾아보세요" />
-        </div>
+        <Search />
         <nav className={styles.nav}>
           {!user ? (
             <>

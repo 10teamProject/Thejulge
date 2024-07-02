@@ -7,6 +7,7 @@ import { GetMyNotice } from '@/pages/api/GetMyNotice';
 import locationIcon from '@/public/assets/icon/location.svg';
 import timeIcon from '@/public/assets/icon/timer.svg';
 import arrowIcon from '@/public/assets/icon/up_icon.svg';
+import chickenImage from '@/public/assets/images/chicken.jpg';
 import { Item, RequestParams } from '@/types/myStoreType';
 
 import styles from './MyNotice.module.scss';
@@ -46,7 +47,11 @@ const MyNotice: React.FC<MyNoticeProps> = ({
   }
 
   if (notices.length === 0) {
-    return <NoNotice />;
+    return <NoNotice shopId={shop_id} />;
+  }
+
+  if (notices.length === 0) {
+    return <NoNotice shopId={shop_id} />;
   }
 
   const formatTime = (date: Date): string => {
@@ -72,7 +77,7 @@ const MyNotice: React.FC<MyNoticeProps> = ({
         return (
           <div
             key={notice.id}
-            className={styles.noticeCard}
+            className={`${styles.noticeCard} ${notice.closed ? styles.closed : ''}`}
             onClick={() => handleNoticeClick(notice.id)}
             style={{ cursor: 'pointer' }}
           >

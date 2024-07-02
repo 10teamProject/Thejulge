@@ -52,6 +52,7 @@
   }
 }
 .detailSection {
+  position: relative;
   display: flex;
   gap: 5px;
   width: 280px;
@@ -63,9 +64,31 @@
   }
 }
 .priceSection {
+  position: relative;
   display: flex;
   gap: 5px;
   width: 280px;
+  .hoverDetails {
+    position: absolute;
+    z-index: 1;
+    bottom: -55px;
+    left: 0;
+    padding: 5px;
+    background-color: rgba(192, 192, 192, 0.7);
+    color: #ffffff;
+    font-size: 14px;
+    line-height: 22px;
+    border-radius: 5px;
+    display: none; /* 기본적으로 숨김 */
+    @media (max-width: 767px) {
+      font-size: 12px;
+      line-height: 16px;
+    }
+  }
+
+  &:hover .hoverDetails {
+    display: block; /* 마우스를 올렸을 때 보이도록 */
+  }
   @media (max-width: 1199px) {
     width: 300px;
     height: 36px;
@@ -73,6 +96,7 @@
   @media (max-width: 767px) {
     display: flex;
     flex-direction: column;
+    height: 50px;
   }
 }
 .iconImage {
@@ -138,10 +162,6 @@
   text-align: center;
   color: #ffffff;
 
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  word-break: break-all;
   @media (max-width: 1199px) {
     width: 168px;
     height: 36px;
@@ -162,11 +182,43 @@
 }
 .increaseRate {
   max-width: 140px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-all;
   @media (max-width: 767px) {
-    display: flex;
+    max-width: 110px;
+
     justify-content: flex-start;
     margin: 0;
   }
+}
+.yellow5 {
+  background: var(--yellow5);
+  @media (max-width: 767px) {
+    color: var(--yellow5);
+    background-color: transparent;
+  }
+}
+
+.yellow4 {
+  background: var(--yellow4);
+  @media (max-width: 767px) {
+    color: var(--yellow4);
+    background-color: transparent;
+  }
+}
+
+.yellow3 {
+  background: var(--yellow3);
+  @media (max-width: 767px) {
+    color: var(--yellow3);
+    background-color: transparent;
+  }
+}
+
+.hidden {
+  display: none;
 }
 .arrow {
   @media (max-width: 767px) {
@@ -178,4 +230,27 @@
   @media (max-width: 767px) {
     display: flex;
   }
+}
+.closedOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* Semi-transparent black overlay */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff; /* White text for "마감완료" */
+  font-size: 24px;
+  font-weight: bold;
+  z-index: 10;
+}
+
+.closedText {
+  color: #cbc9cf;
+}
+
+.closedImage {
+  filter: grayscale(100%);
 }
