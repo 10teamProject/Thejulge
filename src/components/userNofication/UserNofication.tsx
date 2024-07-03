@@ -21,13 +21,13 @@ const UserNotification: React.FC = () => {
 
   const fetchAlerts = async () => {
     try {
-      const response: AlertResponse = await getUserAlerts(0, 10);
+      const response: AlertResponse = await getUserAlerts(0, 7);
       const alertItems = response.items.map((item) => item.item);
       setAlerts(alertItems);
       const newUnreadCount = alertItems.filter((item) => !item.read).length;
       setUnreadCount(newUnreadCount);
 
-      const totalCount = response.count; // 전체 알림 개수
+      const totalCount = response.count;
       const storedCount = sessionStorage.getItem('totalNotificationCount');
       if (storedCount !== null) {
         const prevCount = parseInt(storedCount, 10);
