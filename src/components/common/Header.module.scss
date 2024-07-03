@@ -27,7 +27,7 @@
   margin: 0 2rem;
 
   input {
-    width: 80%;
+    width: 90%;
     padding: 0.5rem 1rem;
     border: 1px solid #ddd;
     border-radius: 10px;
@@ -100,6 +100,7 @@
 @media (max-width: 767px) {
   .header {
     padding: 15px 0;
+    min-width: 375px;
   }
 
   .headerContainer {
@@ -112,7 +113,6 @@
     order: 3;
     margin: 0 auto;
     margin-top: 20px;
-
     input {
       width: 100%;
     }

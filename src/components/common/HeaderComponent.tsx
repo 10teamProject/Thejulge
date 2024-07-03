@@ -14,7 +14,7 @@ const Header: React.FC = () => {
 
   const handleLogout = () => {
     logout();
-    router.push('/');
+    router.push('/login');
   };
 
   const handleMyStoreClick = async () => {
@@ -33,7 +33,9 @@ const Header: React.FC = () => {
         <Link href="/listPage" className={styles.logo}>
           +HE JULGE
         </Link>
-        <Search />
+        <div className={styles.searchBar}>
+          <Search />
+        </div>
         <nav className={styles.nav}>
           {!user ? (
             <>
