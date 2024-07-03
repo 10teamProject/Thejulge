@@ -10,7 +10,6 @@ interface DetailCardProps {
 }
 
 
-
 const DetailCard: React.FC<DetailCardProps> = ({ title, content, buttonText }) => {
   const router = useRouter();
 

@@ -45,6 +45,7 @@ function PostMyPage() {
 
   const router = useRouter();
 
+
   useEffect(() => {
     const storedUserId = getUserIdFromSessionStorage(); // 세션 스토리지에서 ID 가져옴
     if (storedUserId) {

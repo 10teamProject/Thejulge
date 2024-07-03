@@ -1,16 +1,15 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 import { StoreInfo } from '@/pages/api/getMystore';
 import locationIcon from '@/public/assets/icon/location.svg';
 
-import Button from '../common/Button';
 import styles from './MyStore.module.scss';
 
 interface StoreCardProps {
   storeData: StoreInfo;
 }
-
 
 const StoreCard: React.FC<StoreCardProps> = ({ storeData }) => {
   const router = useRouter();
@@ -41,7 +40,12 @@ const StoreCard: React.FC<StoreCardProps> = ({ storeData }) => {
         </p>
         <p className={styles.description}>{storeData.description}</p>
         <div className={styles.buttonContainer}>
-          <button className={styles.editButton}>편집하기</button>
+          <Link
+            href={`/storeRegister?shop_id=${storeData.id}`}
+            className={styles.editButton}
+          >
+            편집하기
+          </Link>
           <button className={styles.shareButton} onClick={handleAddNotice}>
             공고 등록하기
           </button>
