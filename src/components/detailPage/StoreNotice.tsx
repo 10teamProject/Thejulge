@@ -119,7 +119,7 @@ function StoreNotice({
           variant: 'primary',
         },
       ]);
-    } else if (isProfile) {
+    } else if (!isProfile) {
       // 알바생으로 로그인은 했지만 프로필을 작성하지 않은 경우
       setIsModalOpen(true);
       setModalIcon(danger);

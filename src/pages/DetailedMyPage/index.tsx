@@ -1,8 +1,8 @@
 import Image from 'next/image';
 import React from 'react';
 
-import location from '@/public/assets/images/loacation.svg'
-import phoneIcon from '@/public/assets/images/phone.svg'
+import location from '@/public/assets/icon/location.svg'
+import phoneIcon from '@/public/assets/icon/phone.svg'
 
 import DetailCard from '../../components/detail_Profile/Detailcard';
 import styles from './MyPage.module.scss'
