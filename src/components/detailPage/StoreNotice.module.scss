@@ -37,10 +37,32 @@
   border-radius: 12px;
 }
 
-.shop_img {
+.shop_img_box {
+  position: relative;
   width: 539px;
   height: 308px;
+}
+
+.shop_img {
   border-radius: 12px;
+  object-fit: cover;
+}
+
+.img_closed {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-size: 24px;
+  font-weight: bold;
+  border-radius: 12px;
+  z-index: 10;
 }
 
 .shop_contents {
@@ -69,7 +91,7 @@
 .shop_contents span {
   background-color: #ffd43b;
   border-radius: 20px;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 700;
   line-height: 17px;
   color: #ffffff;
@@ -123,6 +145,14 @@
     color: #ffffff;
     border: 1px solid #ffffff; // 하얀 테두리를 넣은 이유 : 테두리를 안넣으니 화면이 움직임
   }
+
+  &.closed {
+    background-color: #7d7986;
+    color: #ffffff;
+    border: 1px solid #7d7986; // 하얀 테두리를 넣은 이유 : 테두리를 안넣으니 화면이 움직임
+
+    cursor: auto;
+  }
 }
 
 .notice_description {
@@ -144,27 +174,4 @@
   font-size: 16px;
   font-weight: 400;
   line-height: 26px;
-}
-
-// 여기서부턴 "최근에 본 공고" 스타일
-.notice_container {
-  width: 968px;
-  margin: 0 auto;
-  padding: 60px 0;
-}
-
-.notice_container > h1 {
-  font-size: 28px;
-  font-weight: 700;
-  padding-bottom: 32px;
-}
-
-.card_container {
-  display: grid;
-  grid-template-columns: repeat(3, 312px);
-  gap: 32px 14px;
-
-  @media (max-width: 1028px) {
-    grid-template-columns: repeat(2, 312px);
-  }
 }
