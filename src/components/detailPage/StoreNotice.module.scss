@@ -23,7 +23,7 @@
 }
 
 .shop_title > h1 {
-  color: #ea3c12;
+  color: #ffd43b;
   font-size: 16px;
   font-weight: 700;
   line-height: 20px;
@@ -68,6 +68,10 @@
 .shop_img {
   border-radius: 12px;
   object-fit: cover;
+
+  &.img_filter {
+    filter: blur(3px);
+  }
 }
 
 .img_closed {
@@ -104,19 +108,45 @@
   font-weight: 700;
 }
 
+.pay_box {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  .pay_hover {
+    position: absolute;
+    top: 50px;
+    background-color: rgb(124, 117, 117, 0.9);
+    padding: 8px;
+    border-radius: 7px;
+    font-size: 16px;
+    color: #ffffff;
+    display: none;
+    @media (max-width: 768px) {
+      font-size: 14px;
+    }
+  }
+
+  &:hover .pay_hover {
+    display: block;
+  }
+}
+
 .shop_hourlPay {
   font-size: 28px;
   font-weight: 700;
   line-height: 33px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  max-width: 150px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   @media (max-width: 768px) {
     font-size: 24px;
   }
 }
 
-.shop_contents span {
+.increaseRate {
   background-color: #ffd43b;
   border-radius: 20px;
   font-size: 12px;
@@ -126,6 +156,10 @@
   padding: 12px;
   display: flex;
   align-items: center;
+}
+
+.hidden {
+  display: none;
 }
 
 .badge {

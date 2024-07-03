@@ -113,9 +113,30 @@
   }
 }
 .pay_box {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  .hover_pay {
+    position: absolute;
+    top: 40px;
+    display: none;
+    background-color: rgba(240, 240, 240, 0.9);
+    border-radius: 5px;
+    color: #000000;
+    z-index: 99999px;
+    padding: 5px;
+    font-size: 15px;
+
+    @media (max-width: 768px) {
+      font-size: 13px;
+    }
+  }
+
+  &:hover .hover_pay {
+    display: block;
+  }
   @media (max-width: 768px) {
     flex-direction: column;
     align-items: flex-start;
@@ -147,6 +168,7 @@
   color: #ffffff;
   display: flex;
   align-items: center;
+
   @media (max-width: 768px) {
     background-color: initial;
     color: #ffd43b;

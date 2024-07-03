@@ -86,6 +86,10 @@ const Card: React.FC<DetailCardProps> = ({ recentNoticeData }) => {
                   />
                 </div>
               )}
+              <div className={styles.hover_pay}>
+                <div>{hourlyPay.toLocaleString('ko-KR')}원</div>
+                <div>기존 시급보다 {newIncreaseRate}%</div>
+              </div>
             </div>
           </div>
         </div>

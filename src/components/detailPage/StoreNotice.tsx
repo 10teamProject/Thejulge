@@ -198,22 +198,30 @@ function StoreNotice({
                   src={imageUrl}
                   alt="가게이미지"
                   fill
-                  className={styles.shop_img}
+                  className={`${styles.shop_img} ${closed ? styles.img_filter : ''}`}
                 />
               )}
             </div>
             <div className={styles.shop_contents}>
               <h1>시급</h1>
-              <div className={styles.shop_hourlPay}>
-                {hourlyPay.toLocaleString('ko-KR')}원
+              <div className={styles.pay_box}>
+                <div className={styles.shop_hourlPay}>
+                  {hourlyPay.toLocaleString('ko-KR')}원
+                </div>
                 {originalHourlyPay < hourlyPay && ( // 기존 금액이 현재 금액보다 작으면 화면에 렌더링
-                  <span>
+                  <div
+                    className={`${closed ? styles.hidden : styles.increaseRate}`}
+                  >
                     <p className={styles.badge}>
                       기존 시급보다 {newIncreaseRate}%
                     </p>
                     <Image src={arrow} alt="상승" />
-                  </span>
+                  </div>
                 )}
+                <div className={styles.pay_hover}>
+                  <div>{hourlyPay.toLocaleString('ko-KR')}원</div>
+                  <div>기존 시급보다 {newIncreaseRate}%</div>
+                </div>
               </div>
               <div className={styles.startsAt}>
                 <Image src={time} alt="근무일" />
