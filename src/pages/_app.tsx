@@ -3,6 +3,7 @@ import '@/styles/globals.css';
 import type { AppProps } from 'next/app';
 import { useRouter } from 'next/router';
 
+import Container from '@/components/common/Container';
 import Footer from '@/components/common/Footer';
 import Header from '@/components/common/HeaderComponent';
 import { AuthProvider } from '@/contexts/AuthProvider';
@@ -17,7 +18,9 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <AuthProvider>
       {showHeader && <Header />}
-      <Component {...pageProps} />
+      <Container>
+        <Component {...pageProps} />
+      </Container>
       {showFooter && <Footer />}
     </AuthProvider>
   );
