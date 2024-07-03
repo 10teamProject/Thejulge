@@ -1,7 +1,10 @@
 .datail_container {
-  width: 968px;
+  max-width: 968px;
   margin: 0 auto;
   padding: 60px 0;
+  @media (max-width: 1200px) {
+    padding: 60px 32px;
+  }
 }
 
 .shop_box {
@@ -21,12 +24,20 @@
   font-size: 16px;
   font-weight: 700;
   line-height: 20px;
+  @media (max-width: 768px) {
+    font-size: 14px;
+    line-height: 16px;
+  }
 }
 
 .shop_title > h2 {
   font-size: 28px;
   font-weight: 700;
   line-height: 33px;
+
+  @media (max-width: 768px) {
+    font-size: 20px;
+  }
 }
 
 .shop_info {
@@ -35,12 +46,20 @@
   padding: 24px;
   border: 1px solid #e5e4e7;
   border-radius: 12px;
+
+  @media (max-width: 1200px) {
+    flex-direction: column;
+  }
 }
 
 .shop_img_box {
   position: relative;
   width: 539px;
   height: 308px;
+  @media (max-width: 1200px) {
+    width: 100%;
+    height: 500px;
+  }
 }
 
 .shop_img {
@@ -70,6 +89,9 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  @media (max-width: 1200px) {
+    gap: 8px;
+  }
 }
 
 .shop_contents > h1 {
@@ -86,6 +108,9 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  @media (max-width: 768px) {
+    font-size: 24px;
+  }
 }
 
 .shop_contents span {
@@ -100,6 +125,13 @@
   align-items: center;
 }
 
+.badge {
+  max-width: 130px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .startsAt {
   display: flex;
   gap: 6px;
@@ -108,6 +140,9 @@
   font-weight: 400;
   line-height: 26px;
   color: #7d7986;
+  @media (max-width: 768px) {
+    font-size: 14px;
+  }
 }
 
 .address {
@@ -118,12 +153,18 @@
   font-weight: 400;
   line-height: 26px;
   color: #7d7986;
+  @media (max-width: 768px) {
+    font-size: 14px;
+  }
 }
 
 .shop_contents > p {
   line-height: 26px;
   font-size: 16px;
   font-weight: 400;
+  @media (max-width: 768px) {
+    font-size: 14px;
+  }
 }
 
 .button {
@@ -153,6 +194,10 @@
 
     cursor: auto;
   }
+
+  @media (max-width: 768px) {
+    padding: 14px;
+  }
 }
 
 .notice_description {
@@ -168,10 +213,18 @@
   font-size: 16px;
   font-weight: 700;
   line-height: 20px;
+
+  @media (max-width: 1200px) {
+    font-size: 14px;
+  }
 }
 
 .notice_description > p {
   font-size: 16px;
   font-weight: 400;
   line-height: 26px;
+
+  @media (max-width: 1200px) {
+    font-size: 14px;
+  }
 }

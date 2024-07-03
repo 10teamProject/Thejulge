@@ -119,7 +119,7 @@ function StoreNotice({
           variant: 'primary',
         },
       ]);
-    } else if (isProfile) {
+    } else if (!isProfile) {
       // 알바생으로 로그인은 했지만 프로필을 작성하지 않은 경우
       setIsModalOpen(true);
       setModalIcon(danger);
@@ -192,12 +192,14 @@ function StoreNotice({
           <div className={styles.shop_info}>
             <div className={styles.shop_img_box}>
               {closed && <div className={styles.img_closed}>마감 완료</div>}
-              <Image
-                src={imageUrl}
-                alt="가게이미지"
-                fill
-                className={styles.shop_img}
-              />
+              {imageUrl && (
+                <Image
+                  src={imageUrl}
+                  alt="가게이미지"
+                  fill
+                  className={styles.shop_img}
+                />
+              )}
             </div>
             <div className={styles.shop_contents}>
               <h1>시급</h1>
@@ -205,7 +207,9 @@ function StoreNotice({
                 {hourlyPay.toLocaleString('ko-KR')}원
                 {originalHourlyPay < hourlyPay && ( // 기존 금액이 현재 금액보다 작으면 화면에 렌더링
                   <span>
-                    기존 시급보다 {increaseRate}%
+                    <p className={styles.badge}>
+                      기존 시급보다 {increaseRate}%
+                    </p>
                     <Image src={arrow} alt="상승" />
                   </span>
                 )}

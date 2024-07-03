@@ -28,7 +28,6 @@ const Card: React.FC<DetailCardProps> = ({ recentNoticeData }) => {
 
   const shopid = recentNoticeData.shop.item.id;
   const noticeid = recentNoticeData.id;
-  console.log(recentNoticeData);
 
   return (
     <>
