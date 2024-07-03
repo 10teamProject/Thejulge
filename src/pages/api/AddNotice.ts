@@ -19,3 +19,22 @@ export const AddNotice = async (shop_id: string, workShift: WorkShift) => {
 
   return response.data.item;
 };
+
+export const EditNotice = async (
+  shop_id: string,
+  notice_id: string,
+  workShift: WorkShift,
+) => {
+  const token = Cookies.get('token');
+  const response = await instance.put(
+    `/shops/${shop_id}/notices/${notice_id}`,
+    workShift,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  );
+
+  return response.data.item;
+};

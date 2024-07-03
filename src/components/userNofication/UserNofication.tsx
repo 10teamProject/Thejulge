@@ -1,7 +1,7 @@
-import Cookies from 'js-cookie';
 import Image from 'next/image';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
+import Modal from '@/components/auth/ErrorModal';
 import { useOutsideClick } from '@/hooks/useOutsideClick';
 import { getUserAlerts, readAlert } from '@/pages/api/GetMyAlert';
 import notificationActiveIcon from '@/public/assets/icon/nofication-active.svg';
@@ -15,6 +15,7 @@ const UserNotification: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [alerts, setAlerts] = useState<AlertItem[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
 
@@ -23,10 +24,20 @@ const UserNotification: React.FC = () => {
       const response: AlertResponse = await getUserAlerts(0, 10);
       const alertItems = response.items.map((item) => item.item);
       setAlerts(alertItems);
-      const unreadAlerts = alertItems.filter((item) => !item.read);
-      setUnreadCount(unreadAlerts.length);
+      const newUnreadCount = alertItems.filter((item) => !item.read).length;
+      setUnreadCount(newUnreadCount);
+
+      const totalCount = response.count; // 전체 알림 개수
+      const storedCount = sessionStorage.getItem('totalNotificationCount');
+      if (storedCount !== null) {
+        const prevCount = parseInt(storedCount, 10);
+        if (totalCount > prevCount) {
+          setIsModalOpen(true);
+        }
+      }
+      sessionStorage.setItem('totalNotificationCount', totalCount.toString());
     } catch (error) {
-      console.error('Failed to fetch alerts:', error);
+      console.error('알림을 가져오는데 실패했습니다:', error);
     }
   };
 
@@ -52,8 +63,12 @@ const UserNotification: React.FC = () => {
       await readAlert(alertId);
       fetchAlerts();
     } catch (error) {
-      console.error('Error reading alert:', error);
+      console.error('알림 읽기 오류:', error);
     }
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
   };
 
   return (
@@ -114,6 +129,12 @@ const UserNotification: React.FC = () => {
           </ul>
         </div>
       )}
+      <Modal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        title="새로운 알림"
+        message="지원한 공고 응답이 도착했습니다."
+      />
     </div>
   );
 };

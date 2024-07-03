@@ -14,6 +14,7 @@ const Header: React.FC = () => {
 
   const handleLogout = () => {
     logout();
+    sessionStorage.removeItem('totalNotificationCount');
     router.push('/login');
   };
 
