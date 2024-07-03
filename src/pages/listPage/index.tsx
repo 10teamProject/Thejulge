@@ -214,9 +214,13 @@ const ListPage: React.FC<Props> = ({
           </div>
         </div>
         <div className={styles.notices}>
-          {notices.map((notice) => (
-            <NoticeCard key={notice.id} notice={notice} />
-          ))}
+          {notices.length > 0 ? (
+            notices.map((notice) => (
+              <NoticeCard key={notice.id} notice={notice} />
+            ))
+          ) : (
+            <p className={styles.noNoticesMessage}>공고가 없습니다</p>
+          )}
         </div>
         <Pagination
           activePage={page}

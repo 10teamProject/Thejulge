@@ -53,9 +53,7 @@ const NoticeCard: React.FC<NoticeCardProps> = ({ notice }) => {
   const overlayText = closed ? '마감 완료' : '지난 공고';
   return (
     <div className={styles.container} onClick={handleClick}>
-      <div
-        className={`${styles.storeImage} ${isClosedOrExpired ? styles.closedImage : ''}`}
-      >
+      <div className={`${styles.storeImage} `}>
         {isClosedOrExpired && (
           <div className={styles.closedOverlay}>{overlayText}</div>
         )}
@@ -64,6 +62,7 @@ const NoticeCard: React.FC<NoticeCardProps> = ({ notice }) => {
           fill
           alt="가게 이미지"
           style={{ objectFit: 'cover' }}
+          className={isClosedOrExpired ? styles.closedImage : ''}
         />
       </div>
       <h3

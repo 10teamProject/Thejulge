@@ -141,3 +141,22 @@
     width: 350px;
   }
 }
+.noNoticesMessage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 964px;
+  margin: 50px auto 0px;
+  font-family: 'Spoqa Han Sans Neo';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 28px;
+  line-height: 35px;
+  color: #111322;
+  @media (max-width: 1199px) {
+    width: 678px;
+  }
+  @media (max-width: 767px) {
+    width: 350px;
+  }
+}
