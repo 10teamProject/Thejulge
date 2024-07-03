@@ -41,8 +41,13 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
     };
 
     const data = await getNotices(params);
-    const initialNotices: Notice[] = data.items.map((item) => item.item);
+    const allNotices: Notice[] = data.items.map((item) => item.item);
     const totalCount = data.count;
+
+    const initialNotices = allNotices.filter((notice) => {
+      const isExpired = new Date(notice.startsAt) < new Date();
+      return !notice.closed && !isExpired;
+    });
 
     return {
       props: {
