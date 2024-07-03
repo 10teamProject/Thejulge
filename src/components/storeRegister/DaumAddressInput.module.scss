@@ -1,0 +1,20 @@
+.addressWrapper {
+  display: flex;
+  gap: 10px;
+
+  @media (max-width: 767px) {
+    flex-direction: column;
+  }
+}
+
+.address1Box {
+  width: 100%;
+  display: flex;
+  gap: 10px;
+}
+
+.searchButton {
+  height: 58px;
+  margin-top: 30px;
+  word-break: keep-all;
+}

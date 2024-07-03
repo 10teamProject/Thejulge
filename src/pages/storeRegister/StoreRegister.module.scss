@@ -31,7 +31,7 @@
   grid-template-columns: 1fr 1fr;
   grid-template-areas:
     'storeName category'
-    'address1 address2'
+    'address address'
     'pay pay'
     'storeImage storeImage'
     'storeInfo storeInfo';
@@ -46,12 +46,8 @@
   grid-area: category;
 }
 
-.address1 {
-  grid-area: address1;
-}
-
-.address2 {
-  grid-area: address2;
+.address {
+  grid-area: address;
 }
 
 .pay {

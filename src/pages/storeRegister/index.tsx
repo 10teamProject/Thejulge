@@ -20,11 +20,13 @@ import { GetUserInfo } from '../api/GetUserInfo';
 import { registerStore } from '../api/RegisterStore';
 import { updateStore } from '../api/UpdateStore';
 import styles from './StoreRegister.module.scss';
+import DaumAddressInput from '@/components/storeRegister/DaumAddressInput';
 
 interface StoreRegisterProps {
   shop_id: string;
   formData: StoreProfileProps | null;
   isEditing: boolean;
+  error?: string;
 }
 
 const initialFormValues: StoreProfileProps = {
@@ -71,6 +73,30 @@ export default function StoreRegister({
     }));
   };
 
+  const handleAddressChange = (value: string) => {
+    setFormValues((prev) => ({
+      ...prev,
+      address1: value,
+    }));
+
+    setFormErrors((prev) => ({
+      ...prev,
+      address1: '',
+    }));
+  };
+
+  const handleDetailAddressChange = (value: string) => {
+    setFormValues((prev) => ({
+      ...prev,
+      address2: value,
+    }));
+
+    setFormErrors((prev) => ({
+      ...prev,
+      address2: '',
+    }));
+  };
+
   const handleDropDownChange = (name: string, value: string) => {
     setFormValues((prev) => ({
       ...prev,
@@ -103,6 +129,9 @@ export default function StoreRegister({
     }
     if (!formValues.address1) {
       errors.address1 = Messages.ADDRESS_REQUIRED;
+    }
+    if (!formValues.address1.startsWith('서울시')) {
+      errors.address1 = '현재 서울에 위치한 가게만 등록이 가능합니다.';
     }
     if (!formValues.address2) {
       errors.address2 = Messages.ADDRESS_DETAIL_REQUIRED;
@@ -196,30 +225,12 @@ export default function StoreRegister({
                 error={formErrors.category}
               />
             </div>
-            <div className={`${styles.inputWrapper} ${styles.address1}`}>
-              <label htmlFor="address1" className={styles.label}>
-                주소
-              </label>
-              <DropDown
-                name="address1"
-                value={formValues.address1}
-                options={addressOptions}
-                onChange={handleDropDownChange}
-                placeholder="선택"
-                required
-                error={formErrors.address1}
-              />
-            </div>
-            <div className={`${styles.inputWrapper} ${styles.address2}`}>
-              <Input
-                label="상세 주소"
-                name="address2"
-                type="text"
-                placeholder="입력"
-                value={formValues.address2}
-                onChange={handleInputChange}
-                required
-                error={formErrors.address2}
+            <div className={`${styles.inputWrapper} ${styles.address}`}>
+              <DaumAddressInput
+                onChangeAddress={handleAddressChange}
+                onChangeDetailAddress={handleDetailAddressChange}
+                errorAddress={formErrors.address1}
+                errorDetailAddress={formErrors.address2}
               />
             </div>
             <div className={`${styles.inputWrapper} ${styles.pay}`}>
