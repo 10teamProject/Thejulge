@@ -91,6 +91,7 @@ const ListPage: React.FC<Props> = ({
   const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
   const [startDate, setStartDate] = useState('');
   const [hourlyPay, setHourlyPay] = useState(0);
+  const [filterCount, setFilterCount] = useState(0);
 
   useEffect(() => {
     const fetchNotices = async (
@@ -160,6 +161,10 @@ const ListPage: React.FC<Props> = ({
     setPage(1);
   };
 
+  const handleFilterCountChange = (count: number) => {
+    setFilterCount(count);
+  };
+
   return (
     <>
       {!keyword && <FitNotice initialNotices={initialNotices} />}
@@ -200,7 +205,7 @@ const ListPage: React.FC<Props> = ({
               className={styles.detailFilter}
               onClick={() => setIsFilterOpen(!isFilterOpen)}
             >
-              상세 필터
+              상세 필터 {filterCount > 0 && `(${filterCount})`}
               {isFilterOpen && (
                 <FilterDropdown
                   setIsFilterOpen={setIsFilterOpen}
@@ -208,6 +213,7 @@ const ListPage: React.FC<Props> = ({
                   initialSelectedLocations={selectedLocations}
                   initialStartDate={startDate}
                   initialHourlyPay={hourlyPay}
+                  onFilterCountChange={handleFilterCountChange}
                 />
               )}
             </div>
