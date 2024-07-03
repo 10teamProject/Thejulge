@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 
 import yellowarrow from '@/public/assets/icon/arrow_yellow.svg';
 import location from '@/public/assets/icon/location.svg';
@@ -27,6 +28,7 @@ const NoticeCard: React.FC<NoticeCardProps> = ({ notice }) => {
   const roundedIncreaseRate = Math.round(increaseRate);
   const formattedStartTime = formatDate(startsAt);
   const endTime = calculateEndTime(startsAt, workhour);
+  const router = useRouter();
 
   const formattedPay = hourlyPay.toLocaleString();
   const backgroundClass = (() => {
@@ -41,8 +43,12 @@ const NoticeCard: React.FC<NoticeCardProps> = ({ notice }) => {
     }
   })();
 
+  const handleClick = () => {
+    router.push(`/detailPage/${shop.item.id}/${notice.id}`);
+  };
+
   return (
-    <div className={styles.container}>
+    <div className={styles.container} onClick={handleClick}>
       <div
         className={`${styles.storeImage} ${closed ? styles.closedImage : ''}`}
       >

@@ -36,7 +36,7 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({
     const now = new Date();
     const today = now.toISOString().split('T')[0];
     setMinDate(today);
-    setStartDate(formatDateForInput(initialStartDate || today));
+    setStartDate(initialStartDate ? formatDateForInput(initialStartDate) : '');
     setHourlyPay(initialHourlyPay);
     setSelectedLocations(
       initialSelectedLocations.map((location) => ({
