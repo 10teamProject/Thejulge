@@ -1,97 +1,140 @@
 .noticeGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  @media (max-width: 1199px) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    padding: 0 24px;
+  }
+
+  @media (max-width: 767px) {
+    grid-template-columns: repeat(2, 1fr);
+    padding: 0;
+  }
 }
 
 .noticeCard {
-  background: white;
-  width: 340px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 16px;
+  gap: 10px;
+  width: 100%;
+  height: 349px;
+  background: #ffffff;
+  border: 1px solid #e5e4e7;
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+  @media (max-width: 1199px) {
+    width: 100%;
+    height: 360px;
+  }
+
+  @media (max-width: 767px) {
+    width: 100%;
+    height: 260px;
+    padding: 12px;
+    gap: 7px;
+  }
 }
 
 .imageContainer {
   position: relative;
   width: 100%;
+  height: 160px;
   border-radius: 12px;
   overflow: hidden;
-  padding: 16px;
+
+  @media (max-width: 1199px) {
+    width: 100%;
+    height: 170px;
+  }
+
+  @media (max-width: 767px) {
+    width: 100%;
+    height: 84px;
+  }
 }
 
 .noticeImage {
   width: 100%;
   height: 100%;
-  max-width: 340px;
-  max-height: 160px;
-  border-radius: 12px;
   object-fit: cover;
 }
 
 .closedOverlay {
   position: absolute;
-  top: 12px;
-  left: 12px;
-  right: 12px;
-  bottom: 12px;
-  background: rgba(0, 0, 0, 0.6);
-  color: white;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 18px;
+  color: #ffffff;
+  font-size: 24px;
   font-weight: bold;
-  border-radius: 12px;
+  z-index: 10;
 }
 
 .noticeContent {
-  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .noticeTitle {
-  font-family: Spoqa Han Sans Neo;
-  font-size: 20px;
+  font-family: 'Spoqa Han Sans Neo', sans-serif;
+  font-style: normal;
   font-weight: 700;
-  line-height: 25.04px;
-  text-align: left;
-  margin-bottom: 8px;
+  font-size: 20px;
+  line-height: 25px;
+  color: #111322;
+
+  @media (max-width: 767px) {
+    font-size: 16px;
+    line-height: 20px;
+  }
 }
 
 .noticeInfo {
   display: flex;
   flex-direction: column;
-  font-size: 14px;
-  color: #888;
-  margin-bottom: 8px;
+  gap: 5px;
 }
 
-.noticeTime {
-  display: flex;
-  align-items: center;
-  margin-bottom: 8px;
-  font-family: Spoqa Han Sans Neo;
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 22px;
-  text-align: left;
-
-  img {
-    margin-right: 6px;
-  }
-}
+.noticeTime,
 .noticeLocation {
   display: flex;
   align-items: center;
-  margin-bottom: 16px;
-  font-family: Spoqa Han Sans Neo;
-  font-size: 14px;
+  gap: 5px;
+  font-family: 'Spoqa Han Sans Neo', sans-serif;
+  font-style: normal;
   font-weight: 400;
+  font-size: 14px;
   line-height: 22px;
-  text-align: left;
+  color: #7d7986;
+
+  @media (max-width: 767px) {
+    font-size: 12px;
+    line-height: 16px;
+  }
 
   img {
-    margin-right: 6px;
+    width: 14px;
+    height: 14px;
+
+    @media (max-width: 767px) {
+      width: 16px;
+      height: 16px;
+    }
   }
 }
 
@@ -99,44 +142,76 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-top: 8px;
+
+  @media (max-width: 767px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }
 
 .payAmount {
-  font-family: Spoqa Han Sans Neo;
-  font-size: 24px;
+  font-family: 'Spoqa Han Sans Neo', sans-serif;
+  font-style: normal;
   font-weight: 700;
-  line-height: 30.05px;
-  letter-spacing: 0.02em;
-  text-align: left;
+  font-size: 21px;
+  line-height: 30px;
+  color: #111322;
+
+  @media (max-width: 767px) {
+    font-size: 18px;
+    line-height: 22px;
+  }
 }
 
 .payIncrease {
-  background-color: var(--yellow4);
-  color: white;
-  font-family: Spoqa Han Sans Neo;
-  font-size: 14px;
-  font-weight: 700;
-  line-height: 17.53px;
-  text-align: center;
-  white-space: nowrap;
-  width: 170px;
-  height: 36px;
-  padding: 8px;
-  border-radius: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
-}
+  padding: 10px;
+  background: var(--yellow5);
+  border-radius: 20px;
+  font-family: 'Spoqa Han Sans Neo', sans-serif;
+  font-style: normal;
+  font-weight: 600;
+  margin-left: 10px;
+  font-size: 14px;
+  line-height: 18px;
+  color: #ffffff;
 
-.arrowIcon {
-  margin-left: 7px;
-  display: inline-flex;
-  vertical-align: middle;
+  @media (max-width: 767px) {
+    background-color: transparent;
+    color: var(--yellow5);
+    font-size: 12px;
+    line-height: 16px;
+    padding: 0;
+    margin-top: 5px;
+    font-weight: 400;
+    justify-content: flex-start;
+  }
+
+  .arrowIcon {
+    @media (max-width: 767px) {
+      display: none;
+    }
+  }
 }
 
 .noticeCard.closed {
   .closedOverlay {
-    z-index: 20;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    font-size: 24px;
+    font-weight: bold;
+    z-index: 10;
   }
 
   .noticeContent {
@@ -146,4 +221,8 @@
   .noticeImage {
     filter: blur(3px);
   }
+}
+
+.closedText {
+  color: #cbc9cf;
 }
