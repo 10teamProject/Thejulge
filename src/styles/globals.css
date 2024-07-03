@@ -181,3 +181,19 @@ table {
   --green20: #20a81e;
   --green10: #20a81e;
 }
+
+.layoutContainer {
+  min-height: 768px;
+}
+
+@media (max-width: 767px) {
+  .layoutContainer {
+    min-height: 738px;
+  }
+}
+
+@media (min-width: 2559px) {
+  .layoutContainer {
+    min-height: 1010px;
+  }
+}
