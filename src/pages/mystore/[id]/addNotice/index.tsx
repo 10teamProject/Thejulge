@@ -1,16 +1,16 @@
 import { useRouter } from 'next/router';
 
-import AddNoticeComponent from '@/components/addNotice/AddNotice';
+import NoticeForm from '@/components/addNotice/AddNotice';
 
 function AddNoticePage() {
   const router = useRouter();
-  const { id } = router.query; // [id] 폴더명에 맞춰 변경
+  const { id } = router.query;
 
   if (!id || typeof id !== 'string') {
     return <div>Loading...</div>;
   }
 
-  return <AddNoticeComponent shop_id={id} />;
+  return <NoticeForm shop_id={id} mode="add" />;
 }
 
 export default AddNoticePage;
