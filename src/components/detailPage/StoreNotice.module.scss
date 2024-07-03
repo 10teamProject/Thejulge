@@ -5,6 +5,9 @@
   @media (max-width: 1200px) {
     padding: 60px 32px;
   }
+  @media (max-width: 768px) {
+    padding: 40px 12px;
+  }
 }
 
 .shop_box {
@@ -126,7 +129,7 @@
 }
 
 .badge {
-  max-width: 130px;
+  max-width: 100px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

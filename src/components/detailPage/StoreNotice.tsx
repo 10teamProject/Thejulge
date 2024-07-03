@@ -6,9 +6,9 @@ import { useEffect, useState } from 'react';
 import { instance } from '@/pages/api/AxiosInstance';
 import check from '@/public/assets/icon/check_Icon.svg';
 import danger from '@/public/assets/icon/danger_mark.svg';
+import location from '@/public/assets/icon/location.svg';
+import time from '@/public/assets/icon/timer.svg';
 import arrow from '@/public/assets/images/arrow.png';
-import location from '@/public/assets/images/location.png';
-import time from '@/public/assets/images/timers.png';
 import {
   ButtonProps,
   ModalIcon,
@@ -44,6 +44,7 @@ function StoreNotice({
   const { category, name, imageUrl, address1, originalHourlyPay } =
     storeData.item.shop.item;
   const increaseRate = calculateHourlyPayIncrease(originalHourlyPay, hourlyPay);
+  const newIncreaseRate = Math.round(increaseRate);
   const startTime = formatDate(startsAt);
   const endTime = calculateEndTime(startsAt, workhour);
   const [isApplied, setIsApplied] = useState<boolean>(false); // 신청하기 버튼 상태관리변수
@@ -208,7 +209,7 @@ function StoreNotice({
                 {originalHourlyPay < hourlyPay && ( // 기존 금액이 현재 금액보다 작으면 화면에 렌더링
                   <span>
                     <p className={styles.badge}>
-                      기존 시급보다 {increaseRate}%
+                      기존 시급보다 {newIncreaseRate}%
                     </p>
                     <Image src={arrow} alt="상승" />
                   </span>
