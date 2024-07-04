@@ -41,8 +41,13 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
     };
 
     const data = await getNotices(params);
-    const initialNotices: Notice[] = data.items.map((item) => item.item);
+    const allNotices: Notice[] = data.items.map((item) => item.item);
     const totalCount = data.count;
+
+    const initialNotices = allNotices.filter((notice) => {
+      const isExpired = new Date(notice.startsAt) < new Date();
+      return !notice.closed && !isExpired;
+    });
 
     return {
       props: {
@@ -86,6 +91,7 @@ const ListPage: React.FC<Props> = ({
   const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
   const [startDate, setStartDate] = useState('');
   const [hourlyPay, setHourlyPay] = useState(0);
+  const [filterCount, setFilterCount] = useState(0);
 
   useEffect(() => {
     const fetchNotices = async (
@@ -155,6 +161,10 @@ const ListPage: React.FC<Props> = ({
     setPage(1);
   };
 
+  const handleFilterCountChange = (count: number) => {
+    setFilterCount(count);
+  };
+
   return (
     <>
       {!keyword && <FitNotice initialNotices={initialNotices} />}
@@ -195,7 +205,7 @@ const ListPage: React.FC<Props> = ({
               className={styles.detailFilter}
               onClick={() => setIsFilterOpen(!isFilterOpen)}
             >
-              상세 필터
+              상세 필터 {filterCount > 0 && `(${filterCount})`}
               {isFilterOpen && (
                 <FilterDropdown
                   setIsFilterOpen={setIsFilterOpen}
@@ -203,15 +213,20 @@ const ListPage: React.FC<Props> = ({
                   initialSelectedLocations={selectedLocations}
                   initialStartDate={startDate}
                   initialHourlyPay={hourlyPay}
+                  onFilterCountChange={handleFilterCountChange}
                 />
               )}
             </div>
           </div>
         </div>
         <div className={styles.notices}>
-          {notices.map((notice) => (
-            <NoticeCard key={notice.id} notice={notice} />
-          ))}
+          {notices.length > 0 ? (
+            notices.map((notice) => (
+              <NoticeCard key={notice.id} notice={notice} />
+            ))
+          ) : (
+            <p className={styles.noNoticesMessage}>공고가 없습니다</p>
+          )}
         </div>
         <Pagination
           activePage={page}

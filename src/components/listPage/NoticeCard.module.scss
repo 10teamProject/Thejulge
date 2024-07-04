@@ -71,7 +71,6 @@
   width: 280px;
   .hoverDetails {
     position: absolute;
-    z-index: 1000;
     bottom: -10px;
     left: 0;
     padding: 5px;
@@ -245,7 +244,7 @@
   color: #ffffff;
   font-size: 24px;
   font-weight: bold;
-  z-index: 10;
+  z-index: 1;
 }
 
 .closedText {
@@ -253,5 +252,5 @@
 }
 
 .closedImage {
-  filter: grayscale(100%);
+  filter: blur(3px);
 }
