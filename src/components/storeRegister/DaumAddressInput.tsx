@@ -78,7 +78,7 @@ export default function DaumAddressInput({
           label="주소"
           name="address1"
           type="text"
-          placeholder="입력"
+          placeholder="도로명 주소를 선택해 주세요"
           value={addrValue}
           required
           error={errorAddress}
@@ -94,7 +94,7 @@ export default function DaumAddressInput({
         label="상세 주소"
         name="address2"
         type="text"
-        placeholder="입력"
+        placeholder="상세 주소를 입력해 주세요"
         value={detailAddrValue}
         required
         error={errorDetailAddress}

@@ -1,7 +1,7 @@
 import { GetServerSideProps } from 'next';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import React, { ChangeEvent, FormEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, useState } from 'react';
 
 import Modal from '@/components/auth/ErrorModal';
 import Button from '@/components/common/Button';
@@ -12,7 +12,7 @@ import useWindowSize from '@/hooks/useWindowSize';
 import cameraImg from '@/public/assets/icon/icon_camera_white.svg';
 import closeImg from '@/public/assets/images/black_x.png';
 import { StoreProfileProps } from '@/types/storeProfileTypes';
-import { addressOptions, categoryOptions } from '@/utils/Options';
+import { categoryOptions } from '@/utils/Options';
 import Messages from '@/utils/validation/Message';
 
 import { GetMyStore } from '../api/getMystore';
@@ -30,6 +30,7 @@ interface StoreRegisterProps {
   error?: string;
 }
 
+// 초기 폼 값 설정
 const initialFormValues: StoreProfileProps = {
   name: '',
   category: '',
@@ -58,6 +59,7 @@ export default function StoreRegister({
   const [modalMessage, setModalMessage] = useState('');
   const { width } = useWindowSize();
 
+  // 입력값 변경 핸들러
   const handleInputChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
@@ -74,6 +76,7 @@ export default function StoreRegister({
     }));
   };
 
+  // 주소 변경 핸들러
   const handleAddressChange = (value: string) => {
     setFormValues((prev) => ({
       ...prev,
@@ -98,6 +101,7 @@ export default function StoreRegister({
     }));
   };
 
+  // 드롭다운 변경 핸들러
   const handleDropDownChange = (name: string, value: string) => {
     setFormValues((prev) => ({
       ...prev,
@@ -110,6 +114,7 @@ export default function StoreRegister({
     }));
   };
 
+  // 이미지 업로드 핸들러
   const handleImageUpload = (url: string) => {
     setFormValues((prev) => ({
       ...prev,
@@ -117,6 +122,7 @@ export default function StoreRegister({
     }));
   };
 
+  // 폼 제출 핸들러
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
@@ -169,6 +175,7 @@ export default function StoreRegister({
     }
   };
 
+  // 모달 닫기 핸들러
   const handleModalClose = async () => {
     const userInfo = await GetUserInfo();
     setIsModalOpen(false);
@@ -177,19 +184,24 @@ export default function StoreRegister({
     }
   };
 
+  // 폼 입력 완료 여부 확인
   const isFilled =
     !formValues.name ||
     !formValues.category ||
     !formValues.address1 ||
+    !formValues.address2 ||
     !formValues.originalHourlyPay ||
-    !formValues.address2;
+    !formValues.imageUrl;
 
+  // 화면 크기 확인
   const getWindowSize = () => {
     return width <= 767 ? 'full' : 'large';
   };
 
+  // 이미지 URL 가져오기
   const imageUrl = formValues.imageUrl || initialFormValues.imageUrl;
 
+  // 이전 페이지로 돌아가기
   const handleGoBack = () => {
     router.back();
   };
@@ -205,7 +217,7 @@ export default function StoreRegister({
                 label="가게 이름"
                 name="name"
                 type="text"
-                placeholder="입력"
+                placeholder="상호명을 입력해 주세요."
                 value={formValues.name}
                 onChange={handleInputChange}
                 required
@@ -214,7 +226,7 @@ export default function StoreRegister({
             </div>
             <div className={`${styles.inputWrapper} ${styles.category}`}>
               <label htmlFor="category" className={styles.label}>
-                분류
+                분류*
               </label>
               <DropDown
                 name="category"
@@ -241,7 +253,7 @@ export default function StoreRegister({
                 label="기본 시급"
                 name="originalHourlyPay"
                 type="number"
-                placeholder="입력"
+                placeholder="기본 시급을 입력해 주세요"
                 value={formValues.originalHourlyPay.toString()}
                 onChange={handleInputChange}
                 onKeyDown={getNumberOnly}
@@ -250,7 +262,7 @@ export default function StoreRegister({
               />
             </div>
             <div className={`${styles.inputWrapper} ${styles.storeImage}`}>
-              <label className={styles.label}>가게 이미지</label>
+              <label className={styles.label}>가게 이미지*</label>
               <div className={styles.imageWrapper}>
                 {isEditing && (
                   <div className={styles.imageEditCover}>
@@ -269,7 +281,7 @@ export default function StoreRegister({
                 label="가게 설명"
                 name="description"
                 type="textarea"
-                placeholder="입력"
+                placeholder="가게 설명을 입력해 주세요"
                 value={formValues.description}
                 onChange={handleInputChange}
                 isTextArea={true}
