@@ -1,8 +1,9 @@
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import React from 'react';
 
-import locationIcon from '@/public/assets/images/location.svg';
-import phoneIcon from '@/public/assets/images/phone.svg'; 
+import locationIcon from '@/public/assets/icon/location.svg';
+import phoneIcon from '@/public/assets/icon/phone.svg'; 
 
 import DetailCard from '../../components/detail_Profile/Detailcard'; 
 import styles from './RenderingMyPage.module.scss';
@@ -15,6 +16,15 @@ interface Props {
 }
 
 function RenderingMyPage({ name, phone, address, bio }: Props) {
+  const router = useRouter();
+
+  const handleEditClick = () => {
+    router.push({
+      pathname: '/PostMyPage',
+      query: { name, phone, address, bio },
+    });
+  };
+
   return (
     <div className='renderingPage'>
       <div className={styles.profileWrap}>
@@ -50,7 +60,7 @@ function RenderingMyPage({ name, phone, address, bio }: Props) {
               </div>
               
               <div>
-                <button className={styles.button}>편집하기</button>
+                <button className={styles.button} onClick={handleEditClick}>편집하기</button>
               </div>
             </div>
           </div>
