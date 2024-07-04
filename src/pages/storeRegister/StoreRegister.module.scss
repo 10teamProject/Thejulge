@@ -53,6 +53,14 @@
 .pay {
   grid-area: pay;
   grid-column: span 1;
+  position: relative;
+
+  .won {
+    position: absolute;
+    right: 15px;
+    top: 53px;
+    pointer-events: none;
+  }
 }
 
 .storeImage {

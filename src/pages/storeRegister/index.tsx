@@ -260,6 +260,7 @@ export default function StoreRegister({
                 required
                 error={formErrors.originalHourlyPay}
               />
+              <span className={styles.won}>원</span>
             </div>
             <div className={`${styles.inputWrapper} ${styles.storeImage}`}>
               <label className={styles.label}>가게 이미지*</label>
