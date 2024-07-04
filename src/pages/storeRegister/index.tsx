@@ -229,6 +229,8 @@ export default function StoreRegister({
               <DaumAddressInput
                 onChangeAddress={handleAddressChange}
                 onChangeDetailAddress={handleDetailAddressChange}
+                initialValueAddress={formData?.address1 || ''}
+                initialValueDetailAddress={formData?.address2 || ''}
                 errorAddress={formErrors.address1}
                 errorDetailAddress={formErrors.address2}
               />

@@ -23,6 +23,8 @@ interface AddressInputProps {
   onChangeDetailAddress: (value: string) => void;
   errorAddress?: string;
   errorDetailAddress?: string;
+  initialValueAddress?: string;
+  initialValueDetailAddress: string;
 }
 
 export default function DaumAddressInput({
@@ -30,9 +32,13 @@ export default function DaumAddressInput({
   onChangeDetailAddress,
   errorAddress,
   errorDetailAddress,
+  initialValueAddress = '',
+  initialValueDetailAddress = '',
 }: AddressInputProps) {
-  const [addrValue, setAddrValue] = useState(''); // 도로명주소
-  const [detailAddrValue, setDetailAddrValue] = useState(''); // 상세 주소
+  const [addrValue, setAddrValue] = useState(initialValueAddress); // 도로명주소
+  const [detailAddrValue, setDetailAddrValue] = useState(
+    initialValueDetailAddress,
+  ); // 상세 주소
 
   const handleSearchAddress = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
