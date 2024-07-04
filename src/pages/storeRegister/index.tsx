@@ -83,10 +83,17 @@ export default function StoreRegister({
       address1: value,
     }));
 
-    setFormErrors((prev) => ({
-      ...prev,
-      address1: '',
-    }));
+    if (!value.startsWith('서울시')) {
+      setFormErrors((prev) => ({
+        ...prev,
+        address1: '현재 서울에 위치한 가게만 등록이 가능합니다.',
+      }));
+    } else {
+      setFormErrors((prev) => ({
+        ...prev,
+        address1: '',
+      }));
+    }
   };
 
   const handleDetailAddressChange = (value: string) => {
@@ -136,9 +143,6 @@ export default function StoreRegister({
     }
     if (!formValues.address1) {
       errors.address1 = Messages.ADDRESS_REQUIRED;
-    }
-    if (!formValues.address1.startsWith('서울시')) {
-      errors.address1 = '현재 서울에 위치한 가게만 등록이 가능합니다.';
     }
     if (!formValues.address2) {
       errors.address2 = Messages.ADDRESS_DETAIL_REQUIRED;
