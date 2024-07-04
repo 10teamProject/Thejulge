@@ -41,10 +41,9 @@ function NoticeForm({ shop_id, notice_id, mode }: NoticeFormProps) {
           const data = await GetMyNoticeDetail(shop_id, notice_id);
           if (data) {
             setValue('hourlyPay', data.item.hourlyPay);
-            setValue(
-              'startsAt',
-              new Date(data.item.startsAt).toISOString().slice(0, 16),
-            );
+            // Convert UTC to local time
+            const localStartsAt = new Date(data.item.startsAt);
+            setValue('startsAt', localStartsAt.toISOString().slice(0, 16));
             setValue('workhour', data.item.workhour);
             setValue('description', data.item.description || '');
           }
@@ -61,9 +60,15 @@ function NoticeForm({ shop_id, notice_id, mode }: NoticeFormProps) {
 
   const onSubmit: SubmitHandler<WorkShift> = async (data) => {
     try {
+      // Convert local time to UTC
+      const localDate = new Date(data.startsAt);
+      const utcDate = new Date(
+        localDate.getTime() - localDate.getTimezoneOffset() * 60000,
+      );
+
       const formattedData = {
         ...data,
-        startsAt: new Date(data.startsAt).toISOString(),
+        startsAt: utcDate.toISOString(),
       };
 
       if (mode === 'add') {

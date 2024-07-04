@@ -8,6 +8,10 @@ import locationIcon from '@/public/assets/icon/location.svg';
 import timeIcon from '@/public/assets/icon/timer.svg';
 import arrowIcon from '@/public/assets/icon/up_icon.svg';
 import { Item, RequestParams, Shop } from '@/types/myStoreType';
+import {
+  calculateEndTime,
+  formatDate,
+} from '@/utils/NoticeCard/CalculateThings';
 
 import styles from './MyNotice.module.scss';
 
@@ -41,14 +45,6 @@ const MyNotice: React.FC<MyNoticeProps> = ({ shop }) => {
     return <NoNotice shopId={shop.id} />;
   }
 
-  const formatTime = (date: Date): string => {
-    return date.toLocaleTimeString('ko-KR', {
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: false,
-    });
-  };
-
   const handleNoticeClick = (noticeId: string) => {
     router.push(`/mystore/${shop.id}/notice/${noticeId}`);
   };
@@ -56,10 +52,8 @@ const MyNotice: React.FC<MyNoticeProps> = ({ shop }) => {
   return (
     <div className={styles.noticeGrid}>
       {notices.map((notice) => {
-        const startTime = new Date(notice.startsAt);
-        const endTime = new Date(
-          startTime.getTime() + notice.workhour * 60 * 60 * 1000,
-        );
+        const formattedStartTime = formatDate(notice.startsAt);
+        const endTime = calculateEndTime(notice.startsAt, notice.workhour);
 
         return (
           <div
@@ -90,13 +84,7 @@ const MyNotice: React.FC<MyNoticeProps> = ({ shop }) => {
                     width={16}
                     height={16}
                   />
-                  {startTime.toLocaleDateString('ko-KR', {
-                    year: 'numeric',
-                    month: '2-digit',
-                    day: '2-digit',
-                  })}{' '}
-                  {formatTime(startTime)}~{formatTime(endTime)} (
-                  {notice.workhour}시간)
+                  {formattedStartTime} ~ {endTime} ({notice.workhour}시간)
                 </span>
                 <span className={styles.noticeLocation}>
                   <Image

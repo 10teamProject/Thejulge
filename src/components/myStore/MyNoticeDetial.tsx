@@ -5,6 +5,10 @@ import locationIcon from '@/public/assets/icon/location.svg';
 import timerIcon from '@/public/assets/icon/timer.svg';
 import arrowIcon from '@/public/assets/images/arrow.png';
 import { JobResponse } from '@/types/myStoreType';
+import {
+  calculateEndTime,
+  formatDate,
+} from '@/utils/NoticeCard/CalculateThings';
 
 import styles from './MyNoticeDetail.module.scss';
 
@@ -19,18 +23,8 @@ const NoticeCard: React.FC<NoticeCardProps> = ({ noticeData }) => {
     (item.hourlyPay / item.shop.item.originalHourlyPay - 1) * 100,
   );
 
-  const formatDate = (date: Date) => {
-    return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
-  };
-
-  const formatTime = (date: Date) => {
-    return `${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
-  };
-
-  const startTime = new Date(item.startsAt);
-  const endTime = new Date(
-    startTime.getTime() + item.workhour * 60 * 60 * 1000,
-  );
+  const formattedStartTime = formatDate(item.startsAt);
+  const endTime = calculateEndTime(item.startsAt, item.workhour);
 
   const handleEditClick = () => {
     router.push(`/mystore/${item.shop.item.id}/editNotice/${item.id}`);
@@ -66,8 +60,7 @@ const NoticeCard: React.FC<NoticeCardProps> = ({ noticeData }) => {
             <div className={styles.infoItem}>
               <Image src={timerIcon} alt="Time" width={20} height={20} />
               <span>
-                {formatDate(startTime)} {formatTime(startTime)}-
-                {formatTime(endTime)} ({item.workhour}시간)
+                {formattedStartTime} ~ {endTime} ({item.workhour}시간)
               </span>
             </div>
             <div className={styles.infoItem}>
