@@ -6,9 +6,9 @@ import { useEffect, useState } from 'react';
 import { instance } from '@/pages/api/AxiosInstance';
 import check from '@/public/assets/icon/check_Icon.svg';
 import danger from '@/public/assets/icon/danger_mark.svg';
+import location from '@/public/assets/icon/location.svg';
+import time from '@/public/assets/icon/timer.svg';
 import arrow from '@/public/assets/images/arrow.png';
-import location from '@/public/assets/images/location.png';
-import time from '@/public/assets/images/timers.png';
 import {
   ButtonProps,
   ModalIcon,
@@ -44,6 +44,7 @@ function StoreNotice({
   const { category, name, imageUrl, address1, originalHourlyPay } =
     storeData.item.shop.item;
   const increaseRate = calculateHourlyPayIncrease(originalHourlyPay, hourlyPay);
+  const newIncreaseRate = Math.round(increaseRate);
   const startTime = formatDate(startsAt);
   const endTime = calculateEndTime(startsAt, workhour);
   const [isApplied, setIsApplied] = useState<boolean>(false); // 신청하기 버튼 상태관리변수
@@ -192,23 +193,35 @@ function StoreNotice({
           <div className={styles.shop_info}>
             <div className={styles.shop_img_box}>
               {closed && <div className={styles.img_closed}>마감 완료</div>}
-              <Image
-                src={imageUrl}
-                alt="가게이미지"
-                fill
-                className={styles.shop_img}
-              />
+              {imageUrl && (
+                <Image
+                  src={imageUrl}
+                  alt="가게이미지"
+                  fill
+                  className={`${styles.shop_img} ${closed ? styles.img_filter : ''}`}
+                />
+              )}
             </div>
             <div className={styles.shop_contents}>
               <h1>시급</h1>
-              <div className={styles.shop_hourlPay}>
-                {hourlyPay.toLocaleString('ko-KR')}원
+              <div className={styles.pay_box}>
+                <div className={styles.shop_hourlPay}>
+                  {hourlyPay.toLocaleString('ko-KR')}원
+                </div>
                 {originalHourlyPay < hourlyPay && ( // 기존 금액이 현재 금액보다 작으면 화면에 렌더링
-                  <span>
-                    기존 시급보다 {increaseRate}%
+                  <div
+                    className={`${closed ? styles.hidden : styles.increaseRate}`}
+                  >
+                    <p className={styles.badge}>
+                      기존 시급보다 {newIncreaseRate}%
+                    </p>
                     <Image src={arrow} alt="상승" />
-                  </span>
+                  </div>
                 )}
+                <div className={styles.pay_hover}>
+                  <div>{hourlyPay.toLocaleString('ko-KR')}원</div>
+                  <div>기존 시급보다 {newIncreaseRate}%</div>
+                </div>
               </div>
               <div className={styles.startsAt}>
                 <Image src={time} alt="근무일" />

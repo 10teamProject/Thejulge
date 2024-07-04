@@ -1,14 +1,24 @@
-// 여기서부턴 "최근에 본 공고" 스타일
 .notice_container {
-  width: 968px;
+  max-width: 968px;
   margin: 0 auto;
   padding: 60px 0;
+  @media (max-width: 1200px) {
+    padding: 60px 32px;
+  }
+  @media (max-width: 768px) {
+    padding: 40px 12px;
+  }
 }
 
 .notice_container > h1 {
   font-size: 28px;
   font-weight: 700;
+  line-height: 33px;
   padding-bottom: 32px;
+  @media (max-width: 768px) {
+    font-size: 20px;
+    line-height: 24px;
+  }
 }
 
 .card_container {
@@ -16,7 +26,13 @@
   grid-template-columns: repeat(3, 312px);
   gap: 32px 14px;
 
-  @media (max-width: 1028px) {
+  @media (max-width: 1200px) {
     grid-template-columns: repeat(2, 312px);
+    justify-content: center;
+  }
+  @media (max-width: 768px) {
+    gap: 16px 8px;
+    grid-template-columns: repeat(2, 171px);
+    justify-content: center;
   }
 }
