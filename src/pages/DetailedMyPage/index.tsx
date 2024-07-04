@@ -1,67 +1,73 @@
-import Image from 'next/image';
-import React from 'react';
-
-import location from '@/public/assets/images/loacation.svg'
-import phoneIcon from '@/public/assets/images/phone.svg'
+import Cookies from 'js-cookie';
+import { useRouter } from 'next/router';
+import React, { useEffect, useState } from 'react';
 
 import DetailCard from '../../components/detail_Profile/Detailcard';
+import RenderingMyPage from '../../components/detail_Profile/RenderingMyPage'
+import { instance } from '../api/AxiosInstance';
 import styles from './MyPage.module.scss'
 
 function MyPage() {
+  const [userInfo, setUserInfo] = useState({
+    name: '',
+    phone: '',
+    address: '',
+    bio: ''
+  });
+
+  const router = useRouter();
+
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      const token = Cookies.get('token');
+      if (!token) {
+        console.error('토큰이 없습니다.');
+        return;
+      }
+
+      try {
+        const userId = JSON.parse(sessionStorage.getItem('user') || '{}').id;
+        if (!userId) {
+          console.error('사용자 ID를 찾을 수 없습니다.');
+          return;
+        }
+
+        const response = await instance.get(`/users/${userId}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          }
+        });
+        setUserInfo(response.data.item);
+      } catch (error) {
+        console.error('사용자 정보를 가져오는 데 실패했습니다:', error);
+      }
+    };
+
+    fetchUserInfo();
+  }, []);
+
+  // 데이터있으면 RenderingMyPage 렌더링
+  const isUserInfoEmpty = () => {
+    return !userInfo.name && !userInfo.phone && !userInfo.address && !userInfo.bio;
+  };
+
   return (
     <main className={styles.main}>
-      <div className={styles.marginBox}>
-        <DetailCard 
-          title="내 프로필"
-          content="내 프로필을 업데이트하고 원하는 가게에 지원해 보세요."
-          buttonText="내 프로필 수정하기" 
-        />
-      </div>
-      <div className='renderingPage'>
-        <div className={styles.profileWrap}>
-          <div className={styles.informationWrap}>
-            <h1 className={styles.profileTitle}>내 프로필</h1>
-            <div className={styles.userWrap}>
-              <div className={styles.userFlex}>
-                <div className={styles.titleWrap}>
-                <h4 className={styles.nameProfile}>이름</h4>
-                <p className={styles.userName}>김승우</p>
-                
-                <div className={styles.informationFlex}>
-                  <Image
-                    src={phoneIcon}
-                    alt="폰 아이콘"
-                    width={20} 
-                    height={20} 
-                  />
-                  <p className={styles.information}>010-1234-5678</p>
-                </div>
-                <div className={styles.informationFlex}>
-                  <Image
-                    src={location}
-                    alt="폰 아이콘"
-                    width={20} 
-                    height={20} 
-                  />
-                  <p className={styles.information}>선호 지역: {/*지역 데이터*/}</p>
-                </div>
-                  <p className={`${styles.information} ${styles.bio}`}>열심히 일 하겠습니다.</p>
-                </div>
-                <div>
-                  <button className={styles.button}>편집하기</button>
-                </div>
-              </div>
-            </div>
-          </div>
+      {isUserInfoEmpty() && (
+        <div className={styles.marginBox}>
+          <DetailCard 
+            title="내 프로필"
+            content="내 프로필을 업데이트하고 원하는 가게에 지원해 보세요."
+            buttonText="내 프로필 수정하기"
+          />
         </div>
-
-        <div className={styles.backgroundColor}>
-        <DetailCard title="신청 내역"
-          content="아직 신청 내역이 없어요."
-          buttonText="공고 보러가기"
-        />  
-        </div>
-    </div>
+      )}
+      <RenderingMyPage 
+        name={userInfo.name}
+        phone={userInfo.phone}
+        address={userInfo.address}
+        bio={userInfo.bio}
+      />
     </main>
   );
 }
