@@ -47,52 +47,65 @@ const NoticeCard: React.FC<NoticeCardProps> = ({ notice }) => {
     router.push(`/detailPage/${shop.item.id}/${notice.id}`);
   };
 
+  const isExpired = new Date(startsAt) < new Date();
+
+  const isClosedOrExpired = closed || isExpired;
+  const overlayText = closed ? '마감 완료' : '지난 공고';
   return (
     <div className={styles.container} onClick={handleClick}>
-      <div
-        className={`${styles.storeImage} ${closed ? styles.closedImage : ''}`}
-      >
-        {closed && <div className={styles.closedOverlay}>마감완료</div>}
+      <div className={`${styles.storeImage} `}>
+        {isClosedOrExpired && (
+          <div className={styles.closedOverlay}>{overlayText}</div>
+        )}
         <Image
           src={imageUrl}
           fill
           alt="가게 이미지"
           style={{ objectFit: 'cover' }}
+          className={isClosedOrExpired ? styles.closedImage : ''}
         />
       </div>
-      <h3 className={`${styles.storeName} ${closed ? styles.closedText : ''}`}>
+      <h3
+        className={`${styles.storeName} ${isClosedOrExpired ? styles.closedText : ''}`}
+      >
         {name}
       </h3>
       <div
-        className={`${styles.detailSection} ${closed ? styles.closedText : ''}`}
+        className={`${styles.detailSection} ${isClosedOrExpired ? styles.closedText : ''}`}
       >
-        {closed ? (
+        {isClosedOrExpired ? (
           <Image src={grayTimer} alt="시간" className={styles.iconImage} />
         ) : (
           <Image src={timer} alt="시간" className={styles.iconImage} />
         )}
-        <p className={`${styles.detail} ${closed ? styles.closedText : ''}`}>
+        <p
+          className={`${styles.detail} ${isClosedOrExpired ? styles.closedText : ''}`}
+        >
           {formattedStartTime} ~ {endTime} ({workhour}시간)
         </p>
       </div>
       <div
-        className={`${styles.detailSection} ${closed ? styles.closedText : ''}`}
+        className={`${styles.detailSection} ${isClosedOrExpired ? styles.closedText : ''}`}
       >
-        {closed ? (
+        {isClosedOrExpired ? (
           <Image src={grayLocation} alt="장소" className={styles.iconImage} />
         ) : (
           <Image src={location} alt="장소" className={styles.iconImage} />
         )}
-        <p className={`${styles.detail} ${closed ? styles.closedText : ''}`}>
+        <p
+          className={`${styles.detail} ${isClosedOrExpired ? styles.closedText : ''}`}
+        >
           {address1}
         </p>
       </div>
       <div className={styles.priceSection}>
-        <p className={`${styles.price} ${closed ? styles.closedText : ''}`}>
+        <p
+          className={`${styles.price} ${isClosedOrExpired ? styles.closedText : ''}`}
+        >
           {formattedPay}원
         </p>
         <div
-          className={`${styles.badge} ${backgroundClass} ${closed ? styles.hidden : ''}`}
+          className={`${styles.badge} ${backgroundClass} ${isClosedOrExpired ? styles.hidden : ''}`}
         >
           <p className={styles.increaseRate}>
             기존 시급보다 {roundedIncreaseRate}%️️
