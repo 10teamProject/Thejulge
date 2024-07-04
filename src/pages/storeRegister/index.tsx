@@ -21,6 +21,7 @@ import { registerStore } from '../api/RegisterStore';
 import { updateStore } from '../api/UpdateStore';
 import styles from './StoreRegister.module.scss';
 import DaumAddressInput from '@/components/storeRegister/DaumAddressInput';
+import { getNumberOnly } from '@/utils/GetNumberOnly';
 
 interface StoreRegisterProps {
   shop_id: string;
@@ -243,6 +244,7 @@ export default function StoreRegister({
                 placeholder="입력"
                 value={formValues.originalHourlyPay.toString()}
                 onChange={handleInputChange}
+                onKeyDown={getNumberOnly}
                 required
                 error={formErrors.originalHourlyPay}
               />
