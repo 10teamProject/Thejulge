@@ -47,6 +47,10 @@ function StoreNotice({
   const newIncreaseRate = Math.round(increaseRate);
   const startTime = formatDate(startsAt);
   const endTime = calculateEndTime(startsAt, workhour);
+  const isExpired = new Date(startsAt) < new Date();
+  const isClosedOrExpired = closed || isExpired;
+  const endText = closed ? '마감 완료' : '지난 공고';
+
   const [isApplied, setIsApplied] = useState<boolean>(false); // 신청하기 버튼 상태관리변수
   const [applicationId, setApplicationId] = useState<string>(''); // applicaionId를 담는 변수, 신청하기 버튼을 누르거나 화면이 제일 처음 렌더링될 때 값이 담김
 
@@ -229,13 +233,15 @@ function StoreNotice({
 
           <div className={styles.shop_info}>
             <div className={styles.shop_img_box}>
-              {closed && <div className={styles.img_closed}>마감 완료</div>}
+              {isClosedOrExpired && (
+                <div className={styles.img_closed}>{endText}</div>
+              )}
               {imageUrl && (
                 <Image
                   src={imageUrl}
                   alt="가게이미지"
                   fill
-                  className={`${styles.shop_img} ${closed ? styles.img_filter : ''}`}
+                  className={`${styles.shop_img} ${isClosedOrExpired ? styles.img_filter : ''}`}
                 />
               )}
             </div>
@@ -247,7 +253,7 @@ function StoreNotice({
                 </div>
                 {originalHourlyPay < hourlyPay && ( // 기존 금액이 현재 금액보다 작으면 화면에 렌더링
                   <div
-                    className={`${closed ? styles.hidden : styles.increaseRate}`}
+                    className={`${isClosedOrExpired ? styles.hidden : styles.increaseRate}`}
                   >
                     <p className={styles.badge}>
                       기존 시급보다 {newIncreaseRate}%
@@ -271,11 +277,15 @@ function StoreNotice({
               <p>{storeData.item.shop.item.description}</p>
               <div>
                 <button
-                  className={`${styles.button} ${isApplied ? styles.true : styles.false} ${closed ? styles.closed : ''}`}
+                  className={`${styles.button} ${isApplied ? styles.true : styles.false} ${isClosedOrExpired ? styles.closed : ''}`}
                   onClick={handleApply}
-                  disabled={closed}
+                  disabled={isClosedOrExpired}
                 >
-                  {closed ? '신청불가' : isApplied ? '취소하기' : '신청하기'}
+                  {isClosedOrExpired
+                    ? '신청불가'
+                    : isApplied
+                      ? '취소하기'
+                      : '신청하기'}
                 </button>
                 <Modal
                   isOpen={isModalOpen}

@@ -28,6 +28,9 @@ const Card: React.FC<DetailCardProps> = ({ recentNoticeData }) => {
   const newIncreaseRate = Math.round(increaseRate);
   const startTime = formatDate(startsAt);
   const endTime = calculateEndTime(startsAt, workhour);
+  const isExpired = new Date(startsAt) < new Date();
+  const isClosedOrExpired = closed || isExpired;
+  const endText = closed ? '마감 완료' : '지난 공고';
 
   const shopid = recentNoticeData.shop.item.id;
   const noticeid = recentNoticeData.id;
@@ -37,21 +40,23 @@ const Card: React.FC<DetailCardProps> = ({ recentNoticeData }) => {
       <Link href={`/detailPage/${shopid}/${noticeid}`}>
         <div className={`${styles.card_container}`}>
           <div className={styles.img_box}>
-            {closed && <div className={styles.img_closed}> 마감완료</div>}
+            {isClosedOrExpired && (
+              <div className={styles.img_closed}> {endText}</div>
+            )}
             <Image
               src={imageUrl}
               fill
               alt="카드이미지"
-              className={`${styles.card_img} ${closed ? styles.card_img_closed : ''} `}
+              className={`${styles.card_img} ${isClosedOrExpired ? styles.card_img_closed : ''} `}
             />
           </div>
           <div
-            className={`${styles.shop_info}  ${closed ? styles.card_closed : ''}`}
+            className={`${styles.shop_info}  ${isClosedOrExpired ? styles.card_closed : ''}`}
           >
             <div className={styles.shop_info_box}>
               <div className={styles.shop_name}>{name}</div>
               <div className={styles.workAt}>
-                {closed ? (
+                {isClosedOrExpired ? (
                   <Image src={graytime} alt="알바시간" />
                 ) : (
                   <Image src={time} alt="알바시간" />
@@ -59,7 +64,7 @@ const Card: React.FC<DetailCardProps> = ({ recentNoticeData }) => {
                 {startTime}~{endTime} ({workhour}시간)
               </div>
               <div className={styles.address}>
-                {closed ? (
+                {isClosedOrExpired ? (
                   <Image src={graylocation} alt="위치" />
                 ) : (
                   <Image src={location} alt="위치" />
@@ -73,7 +78,7 @@ const Card: React.FC<DetailCardProps> = ({ recentNoticeData }) => {
               </div>
               {originalHourlyPay < hourlyPay && (
                 <div
-                  className={`${closed ? styles.hidden : styles.increaseRate}`}
+                  className={`${isClosedOrExpired ? styles.hidden : styles.increaseRate}`}
                 >
                   <p className={styles.badge}>
                     기존 시급보다 {newIncreaseRate}%
