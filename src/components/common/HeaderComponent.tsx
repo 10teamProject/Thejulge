@@ -15,6 +15,7 @@ const Header: React.FC = () => {
   const handleLogout = () => {
     logout();
     sessionStorage.removeItem('totalNotificationCount');
+    localStorage.removeItem('RECENT_NOTICES');
     router.push('/login');
   };
 
@@ -32,7 +33,7 @@ const Header: React.FC = () => {
     <header className={styles.header}>
       <div className={styles.headerContainer}>
         <Link href="/listPage" className={styles.logo}>
-          +HE JULGE
+          Pay Plus+
         </Link>
         <div className={styles.searchBar}>
           <Search />
