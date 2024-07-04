@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 
 import locationIcon from '@/public/assets/icon/location.svg';
 import timerIcon from '@/public/assets/icon/timer.svg';
@@ -12,6 +13,7 @@ interface NoticeCardProps {
 }
 
 const NoticeCard: React.FC<NoticeCardProps> = ({ noticeData }) => {
+  const router = useRouter();
   const { item } = noticeData;
   const increaseRate = Math.round(
     (item.hourlyPay / item.shop.item.originalHourlyPay - 1) * 100,
@@ -29,6 +31,10 @@ const NoticeCard: React.FC<NoticeCardProps> = ({ noticeData }) => {
   const endTime = new Date(
     startTime.getTime() + item.workhour * 60 * 60 * 1000,
   );
+
+  const handleEditClick = () => {
+    router.push(`/mystore/${item.shop.item.id}/editNotice/${item.id}`);
+  };
 
   return (
     <div className={styles.CardWrapper}>
@@ -70,7 +76,9 @@ const NoticeCard: React.FC<NoticeCardProps> = ({ noticeData }) => {
             </div>
           </div>
           <p className={styles.description}>{item.shop.item.description}</p>
-          <button className={styles.applyButton}>공고 편집하기</button>
+          <button className={styles.applyButton} onClick={handleEditClick}>
+            공고 편집하기
+          </button>
         </div>
       </div>
       <div className={styles.descriptionCard}>
