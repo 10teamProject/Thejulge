@@ -3,16 +3,18 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
 import DetailCard from '../../components/detail_Profile/Detailcard';
-import RenderingMyPage from '../../components/detail_Profile/RenderingMyPage'
+import RenderingMyPage from '../../components/detail_Profile/RenderingMyPage';
 import { instance } from '../api/AxiosInstance';
-import styles from './MyPage.module.scss'
+import styles from './MyPage.module.scss';
 
 function MyPage() {
   const [userInfo, setUserInfo] = useState({
+    user_id: '',
     name: '',
     phone: '',
     address: '',
-    bio: ''
+    bio: '',
+    notice_id: '',
   });
 
   const router = useRouter();
@@ -37,7 +39,10 @@ function MyPage() {
             'Authorization': `Bearer ${token}`,
           }
         });
-        setUserInfo(response.data.item);
+        setUserInfo({
+          ...response.data.item,
+          user_id: userId, 
+        });
       } catch (error) {
         console.error('사용자 정보를 가져오는 데 실패했습니다:', error);
       }
@@ -46,14 +51,14 @@ function MyPage() {
     fetchUserInfo();
   }, []);
 
-  // 데이터있으면 RenderingMyPage 렌더링
+  // 데이터가 있으면 RenderingMyPage 렌더링
   const isUserInfoEmpty = () => {
     return !userInfo.name && !userInfo.phone && !userInfo.address && !userInfo.bio;
   };
 
   return (
     <main className={styles.main}>
-      {isUserInfoEmpty() && (
+      {isUserInfoEmpty() ? (
         <div className={styles.marginBox}>
           <DetailCard 
             title="내 프로필"
@@ -61,13 +66,16 @@ function MyPage() {
             buttonText="내 프로필 수정하기"
           />
         </div>
+      ) : (
+        <RenderingMyPage 
+          name={userInfo.name}
+          phone={userInfo.phone}
+          address={userInfo.address}
+          bio={userInfo.bio}
+          user_id={userInfo.user_id}
+          notice_id={userInfo.notice_id}
+        />
       )}
-      <RenderingMyPage 
-        name={userInfo.name}
-        phone={userInfo.phone}
-        address={userInfo.address}
-        bio={userInfo.bio}
-      />
     </main>
   );
 }

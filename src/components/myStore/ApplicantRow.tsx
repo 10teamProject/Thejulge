@@ -40,7 +40,7 @@ export const ApplicantRow: React.FC<ApplicantRowProps> = ({
   return (
     <>
       <tr>
-        <td>{applicant.user.item.name}</td>
+        <td>{applicant.item.shop.name}</td>
         <td className={styles.introText}>{applicant.user.item.bio}</td>
         <td>{applicant.user.item.phone}</td>
         <td className={styles.statusCell}>

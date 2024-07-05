@@ -1,11 +1,12 @@
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import locationIcon from '@/public/assets/icon/location.svg';
-import phoneIcon from '@/public/assets/icon/phone.svg'; 
+import phoneIcon from '@/public/assets/icon/phone.svg';
 
-import DetailCard from '../../components/detail_Profile/Detailcard'; 
+import DetailCard from '../../components/detail_Profile/Detailcard';
+import ApplicantTable from './ApplicantTable';
 import styles from './RenderingMyPage.module.scss';
 
 interface Props {
@@ -13,16 +14,28 @@ interface Props {
   phone?: string;
   address?: string;
   bio?: string;
+  user_id: string; 
+  notice_id: string;
 }
 
-function RenderingMyPage({ name, phone, address, bio }: Props) {
+function RenderingMyPage({ name, phone, address, bio, user_id, notice_id }: Props) {
   const router = useRouter();
+  const [hasData, setHasData] = useState(false);
 
-  const handleEditClick = () => {
+  useEffect(() => {
+
+    setHasData(true);
+  }, []);
+
+  const PostPageMove = () => {
     router.push({
       pathname: '/PostMyPage',
       query: { name, phone, address, bio },
     });
+  };
+
+  const ListPageMove = () => {
+    router.push('/listPage');
   };
 
   return (
@@ -60,7 +73,7 @@ function RenderingMyPage({ name, phone, address, bio }: Props) {
               </div>
               
               <div>
-                <button className={styles.button} onClick={handleEditClick}>편집하기</button>
+                <button className={styles.button} onClick={PostPageMove}>편집하기</button>
               </div>
             </div>
           </div>
@@ -68,11 +81,16 @@ function RenderingMyPage({ name, phone, address, bio }: Props) {
       </div>
 
       <div className={styles.backgroundColor}>
-        <DetailCard
-          title="신청 내역"
-          content="아직 신청 내역이 없어요."
-          buttonText="공고 보러가기"
-        />
+        {hasData ? (
+          <ApplicantTable user_id={user_id} notice_id={notice_id} /> 
+        ) : (
+          <DetailCard
+            title="신청 내역"
+            content="아직 신청 내역이 없어요."
+            buttonText="공고 보러가기"
+            onButtonClick={ListPageMove}
+          />
+        )}
       </div>
     </div>
   );
