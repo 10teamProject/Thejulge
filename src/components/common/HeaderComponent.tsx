@@ -14,6 +14,7 @@ const Header: React.FC = () => {
 
   const handleLogout = () => {
     logout();
+    sessionStorage.removeItem('totalNotificationCount');
     router.push('/login');
   };
 
@@ -44,7 +45,7 @@ const Header: React.FC = () => {
             </>
           ) : user.type === 'employee' ? (
             <>
-              <Link href="/profile">내 프로필</Link>
+              <Link href="/DetailedMyPage">내 프로필</Link>
               <div className={styles.logoutContainer}>
                 <button onClick={handleLogout} className={styles.logoutButton}>
                   로그아웃

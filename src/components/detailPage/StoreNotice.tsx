@@ -233,9 +233,11 @@ function StoreNotice({
 
           <div className={styles.shop_info}>
             <div className={styles.shop_img_box}>
+
               {isClosedOrExpired && (
                 <div className={styles.img_closed}>{endText}</div>
               )}
+
               {imageUrl && (
                 <Image
                   src={imageUrl}

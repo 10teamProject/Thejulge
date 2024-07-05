@@ -214,8 +214,16 @@
     z-index: 10;
   }
 
-  .noticeContent {
-    filter: blur(4px);
+  .noticeContent,
+  .noticePay,
+  .noticeInfo,
+  .noticeTitle,
+  .payAmount,
+  .payIncrease,
+  .noticeTime,
+  .noticeLocation {
+    filter: grayscale(1);
+    color: #cbc9cf;
   }
 
   .noticeImage {

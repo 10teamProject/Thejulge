@@ -43,6 +43,7 @@ export default tseslint.config(
       'simple-import-sort/exports': 'error',
       'no-unused-vars': 'off',
       '@typescript-eslint/no-unused-vars': 'off',
+      '@typescript-eslint/no-explicit-any': true, // daum: any 로 지정
       'comma-spacing': ['error', { before: false, after: true }],
     },
   },

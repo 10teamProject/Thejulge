@@ -52,11 +52,14 @@ const Card: React.FC<DetailCardProps> = ({ recentNoticeData }) => {
           </div>
           <div
             className={`${styles.shop_info}  ${isClosedOrExpired ? styles.card_closed : ''}`}
+
+
           >
             <div className={styles.shop_info_box}>
               <div className={styles.shop_name}>{name}</div>
               <div className={styles.workAt}>
                 {isClosedOrExpired ? (
+
                   <Image src={graytime} alt="알바시간" />
                 ) : (
                   <Image src={time} alt="알바시간" />
@@ -64,7 +67,11 @@ const Card: React.FC<DetailCardProps> = ({ recentNoticeData }) => {
                 {startTime}~{endTime} ({workhour}시간)
               </div>
               <div className={styles.address}>
+                
                 {isClosedOrExpired ? (
+
+     
+
                   <Image src={graylocation} alt="위치" />
                 ) : (
                   <Image src={location} alt="위치" />

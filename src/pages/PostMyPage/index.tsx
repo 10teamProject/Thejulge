@@ -36,7 +36,7 @@ function PostMyPage() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState<string>('선택');
   const [userId, setUserId] = useState<string | null>(null);
-  const [profileUpdated, setProfileUpdated] = useState(false); // 프로필 업데이트 성공 상태
+  const [profileUpdated, setProfileUpdated] = useState(false);
 
   const dropdownRef = useRef<HTMLDivElement>(null);
   const nameRef = useRef<HTMLInputElement>(null);
@@ -44,19 +44,24 @@ function PostMyPage() {
   const introRef = useRef<HTMLTextAreaElement>(null);
 
   const router = useRouter();
-
+  const { name, phone, address, bio } = router.query;
 
   useEffect(() => {
-    const storedUserId = getUserIdFromSessionStorage(); // 세션 스토리지에서 ID 가져옴
+    const storedUserId = getUserIdFromSessionStorage();
     if (storedUserId) {
       setUserId(storedUserId);
     }
+
+    if (name) nameRef.current!.value = name as string;
+    if (phone) telRef.current!.value = phone as string;
+    if (address) setSelectedOption(address as string);
+    if (bio) introRef.current!.value = bio as string;
 
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, []);
+  }, [name, phone, address, bio]);
 
   const handleClickOutside = (event: MouseEvent) => {
     if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -97,7 +102,7 @@ function PostMyPage() {
       const response = await updateUserProfile(userId, data);
 
       if (response && 'item' in response) {
-        setProfileUpdated(true); // 프로필 업데이트 성공 시 상태 변경
+        setProfileUpdated(true);
       } else {
         alert('프로필 등록에 실패했습니다.');
       }
@@ -184,7 +189,6 @@ function PostMyPage() {
           <button type="submit" className={styles.button}><span>등록하기</span></button>
         </form>
       </div>
-      {/* 프로필 업데이트 성공 시 모달 */}
       {profileUpdated && (
         <Modal
           isOpen={profileUpdated}
@@ -195,7 +199,7 @@ function PostMyPage() {
               text: "확인",
               onClick: () => {
                 setProfileUpdated(false); 
-                router.push("../DetailedMyPage"); // 다음 페이지로 이동
+                router.push("../DetailedMyPage");
               },
               variant: "primary"
             }
