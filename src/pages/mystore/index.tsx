@@ -5,6 +5,7 @@ import StoreRegistration from '@/components/myStore/StoreRegistration';
 
 import { GetUserInfo } from '../api/GetUserInfo';
 import styles from './Mystore.module.scss';
+import LoadingSpinner from '@/components/common/Spinner';
 
 export default function MyStorePage() {
   const router = useRouter();
@@ -25,7 +26,7 @@ export default function MyStorePage() {
   }, [router]);
 
   if (isLoading) {
-    return <div className={styles.loading}>로딩 중...</div>;
+    return <LoadingSpinner />;
   }
 
   return (

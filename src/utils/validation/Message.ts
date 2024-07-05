@@ -12,9 +12,10 @@ const Messages = {
   NAME_REQUIRED: '가게 이름을 입력해주세요.',
   CATEGORY_REQUIRED: '분류를 선택해주세요.',
   ADDRESS_REQUIRED: '주소를 검색해 주세요.',
+  ADDRESS_SEOUL_ONLY: '현재 서울에 위치한 가게만 등록이 가능합니다.',
   ADDRESS_DETAIL_REQUIRED: '상세 주소를 입력해주세요.',
   HOURLY_PAY_REQUIRED: '기본 시급을 입력해주세요.',
-  INVALID_HOURLY_PAY: '유효한 값을 입력해주세요.',
+  INVALID_HOURLY_PAY: '최저시급(9,620원) 이상의 값을 입력해주세요.',
 
   REGISTER_FAILED: '가게 정보 등록 중 에러가 발생했습니다.',
   NETWORK_ERROR: '네트워크 연결 문제가 발생했습니다.',

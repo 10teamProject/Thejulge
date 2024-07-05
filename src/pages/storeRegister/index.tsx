@@ -22,6 +22,11 @@ import { updateStore } from '../api/UpdateStore';
 import styles from './StoreRegister.module.scss';
 import DaumAddressInput from '@/components/storeRegister/DaumAddressInput';
 import { getNumberOnly } from '@/utils/GetNumberOnly';
+import {
+  initialFormErrors,
+  initialFormValues,
+  validateForm,
+} from '@/utils/storeRegister/formUtils';
 
 interface StoreRegisterProps {
   shop_id: string;
@@ -30,32 +35,15 @@ interface StoreRegisterProps {
   error?: string;
 }
 
-// 초기 폼 값 설정
-const initialFormValues: StoreProfileProps = {
-  name: '',
-  category: '',
-  address1: '',
-  address2: '',
-  description: '',
-  imageUrl: '',
-  originalHourlyPay: 0,
-};
-
 export default function StoreRegister({
   shop_id,
   formData,
   isEditing,
 }: StoreRegisterProps) {
   const [formValues, setFormValues] = useState(formData || initialFormValues);
-  const [formErrors, setFormErrors] = useState({
-    name: '',
-    category: '',
-    address1: '',
-    address2: '',
-    originalHourlyPay: '',
-  });
-  const router = useRouter();
+  const [formErrors, setFormErrors] = useState(initialFormErrors);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const router = useRouter();
   const [modalMessage, setModalMessage] = useState('');
   const { width } = useWindowSize();
 
@@ -70,88 +58,59 @@ export default function StoreRegister({
       [name]: value,
     }));
 
+    const errors = validateForm({ ...formValues, [name]: value });
     setFormErrors((prev) => ({
       ...prev,
-      [name]: '',
+      [name]: errors[name as keyof typeof errors] || '',
     }));
   };
 
   // 주소 변경 핸들러
   const handleAddressChange = (value: string) => {
-    setFormValues((prev) => ({
-      ...prev,
-      address1: value,
-    }));
+    const updatedValues = { ...formValues, address1: value };
+    setFormValues(updatedValues);
 
-    if (!value.startsWith('서울시')) {
-      setFormErrors((prev) => ({
-        ...prev,
-        address1: '현재 서울에 위치한 가게만 등록이 가능합니다.',
-      }));
-    } else {
-      setFormErrors((prev) => ({
-        ...prev,
-        address1: '',
-      }));
-    }
+    const errors = validateForm(updatedValues);
+    setFormErrors((prev) => ({
+      ...prev,
+      address1: errors.address1 || '',
+    }));
   };
 
   const handleDetailAddressChange = (value: string) => {
-    setFormValues((prev) => ({
-      ...prev,
-      address2: value,
-    }));
+    const updatedValues = { ...formValues, address2: value };
+    setFormValues(updatedValues);
 
+    const errors = validateForm(updatedValues);
     setFormErrors((prev) => ({
       ...prev,
-      address2: '',
+      address2: errors.address2 || '',
     }));
   };
 
   // 드롭다운 변경 핸들러
   const handleDropDownChange = (name: string, value: string) => {
-    setFormValues((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    const updatedValues = { ...formValues, [name]: value };
+    setFormValues(updatedValues);
 
+    const errors = validateForm(updatedValues);
     setFormErrors((prev) => ({
       ...prev,
-      [name]: '',
+      [name]: errors[name as keyof typeof errors] || '',
     }));
   };
 
   // 이미지 업로드 핸들러
   const handleImageUpload = (url: string) => {
-    setFormValues((prev) => ({
-      ...prev,
-      imageUrl: url,
-    }));
+    const updatedValues = { ...formValues, imageUrl: url };
+    setFormValues(updatedValues);
   };
 
   // 폼 제출 핸들러
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
-    // 필수 입력 필드 검증
-    const errors: Partial<typeof formErrors> = {};
-    if (!formValues.name) {
-      errors.name = Messages.NAME_REQUIRED;
-    }
-    if (!formValues.category) {
-      errors.category = Messages.CATEGORY_REQUIRED;
-    }
-    if (!formValues.address1) {
-      errors.address1 = Messages.ADDRESS_REQUIRED;
-    }
-    if (!formValues.address2) {
-      errors.address2 = Messages.ADDRESS_DETAIL_REQUIRED;
-    }
-    if (!formValues.originalHourlyPay) {
-      errors.originalHourlyPay = Messages.HOURLY_PAY_REQUIRED;
-    } else if (formValues.originalHourlyPay < 1) {
-      errors.originalHourlyPay = Messages.INVALID_HOURLY_PAY;
-    }
+    const errors = validateForm(formValues);
 
     if (Object.keys(errors).length > 0) {
       setFormErrors(errors as typeof formErrors);
@@ -238,7 +197,6 @@ export default function StoreRegister({
                 options={categoryOptions}
                 onChange={handleDropDownChange}
                 placeholder="선택"
-                required
                 error={formErrors.category}
               />
             </div>
