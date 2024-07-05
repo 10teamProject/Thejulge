@@ -8,7 +8,7 @@ export interface InputProps {
   type?: string;
   placeholder?: string;
   value: string;
-  onChange: (
+  onChange?: (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => void;
   onKeyDown?: (event: KeyboardEvent<HTMLInputElement>) => void;

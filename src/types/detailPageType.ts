@@ -68,6 +68,5 @@ export interface StoreNoticeProps {
   isLogin: boolean;
   isProfile: boolean;
   userType: string;
-  applicationId: string;
-  setApplicationId: (id: string) => void;
+  userid: string;
 }

@@ -1,10 +1,9 @@
-import Cookies from 'js-cookie';
 import { GetServerSideProps } from 'next';
 import { useCallback, useEffect, useState } from 'react';
 
 import Card from '@/components/detailPage/Card';
 import StoreNotice from '@/components/detailPage/StoreNotice';
-import { Application, ProfileData, Props, User } from '@/types/detailPageType';
+import { ProfileData, Props, User } from '@/types/detailPageType';
 import { Notice, NoticeItem } from '@/utils/NoticeCard/NoticesType';
 
 import { instance } from '../../../api/AxiosInstance';
@@ -52,7 +51,7 @@ function DetailPage({
   const [isLogin, setIsLogin] = useState<boolean>(false); // 로그인 여부를 확인
   const [isProfile, setIsProfile] = useState<boolean>(false); // 프로필 여부를 확인
   const [userType, setUserType] = useState<string>(''); // user가 알바생인지 사장님인지 확인
-  const [applicationId, setApplicationId] = useState<string>(''); // applicaionId를 담는 변수인데 "신청하기" 버튼을 누르면 값이 담김
+  const [userId, setUserId] = useState<string>('');
 
   /// 세션 스토리지에서 데이터 가져오기 구현
   const getSesstionStorageData = () => {
@@ -63,7 +62,7 @@ function DetailPage({
       setIsLogin(true); // 로그인여부를 true
       setUserType(sessionData.type); // 세션에 있는 유저 type 저장 (알바생 | 사장님)
       getCheckProfile(sessionData.id);
-      getUserApplications(sessionData.id);
+      setUserId(sessionData.id);
     }
   };
 
@@ -85,38 +84,6 @@ function DetailPage({
       }
     } catch (error) {
       console.log('프로필 API 연결 실패 : ', error);
-    }
-  };
-
-  ///// 유저가 지원한 공고 확인하기
-  const getUserApplications = async (userId: string) => {
-    try {
-      const res = await instance.get(`/users/${userId}/applications`, {
-        headers: {
-          Authorization: `Bearer ${Cookies.get('token')}`,
-        },
-      });
-
-      const userApplications: Application[] = res.data.items; // response로 유저가 지원한 공고를 가져와서 저장(배열로 되어있음)
-      let applicationId: string = ''; // response로 받은 공고들 중에 조건에 만족하는 applicationId를 저장하기 위해 선언함
-
-      for (let i = 0; i < userApplications.length; i++) {
-        const application = userApplications[i].item;
-        if (
-          application.notice.item.id === noticeid &&
-          application.status === 'pending'
-        ) {
-          applicationId = application.id; // 위에 조건을 해당하면 그 데이터의 id를 저장하는데 id가 applicationId라고 보면 됨
-          break; // 원하는 지원을 찾았으므로 반복문 종료, 하나만 존재할건데 그래도 혹시나 싶어서 break 줬음
-        }
-      }
-      if (applicationId) {
-        // applicationId이 있다는거는 post 요청을 서버로 보냈다는 뜻이니깐 버튼상태를 true로 반환하고 applicationId을 렌더링될 때 넣어줌
-        // 이렇게 applicationId를 넣어주면 취소하기 클릭할 때 axios 에러가 생기지 않는다.
-        setApplicationId(applicationId);
-      }
-    } catch (error) {
-      console.log('application GET 에러 : ', error);
     }
   };
 
@@ -177,8 +144,7 @@ function DetailPage({
         isLogin={isLogin}
         isProfile={isProfile}
         userType={userType}
-        applicationId={applicationId}
-        setApplicationId={setApplicationId}
+        userid={userId}
       />
       <div className={styles.notice_container}>
         <h1>최근에 본 공고</h1>
