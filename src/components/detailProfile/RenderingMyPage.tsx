@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 import locationIcon from '@/public/assets/icon/location.svg';
 import phoneIcon from '@/public/assets/icon/phone.svg';
 
-import DetailCard from '../../components/detail_Profile/Detailcard';
+import DetailCard from './Detailcard';
 import ApplicantTable from './ApplicantTable';
 import fetchAPI from '@/pages/api/AxiosInstance'; // fetchAPI import 추가
 import Cookies from 'js-cookie'; // Cookies import 추가

@@ -1,10 +1,13 @@
+import Image from 'next/image';
 import Cookies from 'js-cookie';
 import React, { useEffect, useState } from 'react';
-
 import { Pagination } from '@/components/common/PageNation';
 import fetchAPI from '@/pages/api/AxiosInstance';
-
 import styles from './ApplicantTable.module.scss';
+
+import pendingImage from '@/public/assets/icon/pending.svg';
+import applyImage from '@/public/assets/icon/apply.svg';
+import rejectionImage from '@/public/assets/icon/rejection.svg';
 
 interface ApplicantTableProps {
   user_id: string;
@@ -14,7 +17,6 @@ const ApplicantTable: React.FC<ApplicantTableProps> = ({ user_id }) => {
   const [currentPage, setCurrentPage] = useState(1); // 페이지는 1부터 시작
   const [list, setList] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
-
   const rowPerPage = 5;
 
   const loadList = async (pageNumber: number) => {
@@ -49,8 +51,41 @@ const ApplicantTable: React.FC<ApplicantTableProps> = ({ user_id }) => {
     fetchData(currentPage);
   }, [currentPage]);
 
+  const formatDate = (startsAt: string, workhour: number) => {
+    const startDate = new Date(startsAt);
+
+    // 로컬 시간으로 변환
+    const localStartDate = new Date(startDate.getTime() + (startDate.getTimezoneOffset() * 60000));
+    const endDate = new Date(localStartDate.getTime() + (workhour * 60 * 60 * 1000));
+
+    const formatHour = (hour: number) => hour.toString().padStart(2, '0');
+    const formatMinute = (minute: number) => minute.toString().padStart(2, '0');
+
+    const formattedStart = `${localStartDate.getFullYear()}-${formatHour(localStartDate.getMonth() + 1)}-${formatHour(localStartDate.getDate())} ${formatHour(localStartDate.getHours())}:${formatMinute(localStartDate.getMinutes())}`;
+
+    const formattedEnd = `${formatHour(endDate.getHours())}:${formatMinute(endDate.getMinutes())}`;
+
+    const duration = `${workhour}시간`;
+
+    return `${formattedStart} ~ ${formattedEnd} (${duration})`;
+  };
+
+  const getStatusImage = (status: string) => {
+    switch (status) {
+      case 'pending':
+        return pendingImage.src;
+      case 'accepted':
+        return applyImage.src;
+      case 'rejected':
+        return rejectionImage.src;
+      default:
+        return null; // 기타 상태에 대한 이미지가 없는 경우
+    }
+  };
+
   return (
     <div className={styles.tableWrapper}>
+      <div className={styles.tableTitle}>신청 내역</div>
       <table className={styles.table}>
         <thead>
           <tr>
@@ -64,19 +99,31 @@ const ApplicantTable: React.FC<ApplicantTableProps> = ({ user_id }) => {
           {list.map((tItem, idx) => {
             const { shop, notice, status } = tItem.item;
 
+            let imageWidth = 46;
+            let imageHeight = 29;
+
+            if (status === 'pending') {
+              imageWidth = 59;
+              imageHeight = 29;
+            } else if (status === 'accepted') {
+              imageWidth = 75;
+              imageHeight = 29;
+            }
+
             return (
               <tr key={idx}>
                 <td>{shop.item.name}</td>
-                <td>{notice.item.startsAt}</td>
+                <td>{formatDate(notice.item.startsAt, notice.item.workhour)}</td>
                 <td>{notice.item.hourlyPay}</td>
                 <td>
-                  {status === 'pending'
-                    ? '신청완료'
-                    : status === 'accepted'
-                    ? '승인됨'
-                    : status === 'rejected'
-                    ? '거절됨'
-                    : '지원마감'}
+                  <div className={styles.statusImage}>
+                    <Image
+                      src={getStatusImage(status)}
+                      alt={status}
+                      width={imageWidth} // 이미지 폭 설정
+                      height={imageHeight} // 이미지 높이 설정
+                    />
+                  </div>
                 </td>
               </tr>
             );

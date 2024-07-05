@@ -3,8 +3,8 @@ import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
-import DetailCard from '../../components/detail_Profile/Detailcard';
-import RenderingMyPage from '../../components/detail_Profile/RenderingMyPage';
+import DetailCard from '../../components/detailProfile/Detailcard';
+import RenderingMyPage from '../../components/detailProfile/RenderingMyPage';
 import { instance } from '../api/AxiosInstance';
 import styles from './MyPage.module.scss';
 

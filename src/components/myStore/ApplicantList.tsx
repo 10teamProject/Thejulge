@@ -2,7 +2,7 @@ import { Pagination } from '@/components/common/PageNation';
 import LoadingSpinner from '@/components/common/Spinner';
 import { useApplicants } from '@/hooks/useApplicants';
 
-import { ApplicantRow } from '../detail_Profile/ApplicantRow';
+import { ApplicantRow } from '../detailProfile/ApplicantRow';
 import styles from './ApplicantList.module.scss';
 
 interface ApplicantTableProps {
