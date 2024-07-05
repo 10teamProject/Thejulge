@@ -35,7 +35,7 @@ const Header: React.FC = () => {
     <header className={styles.header}>
       <div className={styles.headerContainer}>
         <Image src={coinlogo} alt="로고" width={40} height={40} />
-        <Link href="/listPage" className={styles.logo}>
+        <Link href="/listPage" className={` ${styles.customFont}`}>
           Pay Plus+
         </Link>
         <div className={styles.searchBar}>

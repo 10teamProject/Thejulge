@@ -3,7 +3,12 @@
   padding: 25px 0;
   border-bottom: 1px solid #eee;
 }
-
+.customFont {
+  font-family: 'Bagel Fat One', cursive;
+  font-size: 30px;
+  color: var(--yellow5);
+  text-decoration: none;
+}
 .headerContainer {
   width: 100%;
   max-width: 1200px;
@@ -16,10 +21,7 @@
 }
 
 .logo {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: var(--yellow5);
-  text-decoration: none;
+  font-family: '@/public/assets/fonts/BagelFatOne-Regular.ttf';
 }
 
 .searchBar {
