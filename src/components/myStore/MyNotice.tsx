@@ -88,10 +88,14 @@ const MyNotice: React.FC<MyNoticeProps> = ({ shop }) => {
                   className={styles.noticeImage}
                   width={280}
                   height={160}
+                  loading="lazy"
                 />
                 {notice.closed && (
                   <div className={styles.closedOverlay}>마감 완료</div>
                 )}
+                <div className={styles.spinnerContainer}>
+                  <LoadingSpinner />
+                </div>
               </div>
               <div className={styles.noticeContent}>
                 <h3 className={styles.noticeTitle}>{shop.name}</h3>
