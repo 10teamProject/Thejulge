@@ -1,4 +1,5 @@
 import { Pagination } from '@/components/common/PageNation';
+import LoadingSpinner from '@/components/common/Spinner';
 import { useApplicants } from '@/hooks/useApplicants';
 
 import styles from './ApplicantList.module.scss';
@@ -19,7 +20,20 @@ const ApplicantTable: React.FC<ApplicantTableProps> = ({
     totalPages,
     setCurrentPage,
     handleStatusChange,
+    loading,
   } = useApplicants(shop_id, notice_id);
+
+  if (loading) {
+    return <LoadingSpinner />;
+  }
+
+  if (applicants.length === 0) {
+    return (
+      <div className={styles.noApplicants}>
+        <p>아직 아무도 공고를 신청하지 않았어요.</p>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.tableWrapper}>

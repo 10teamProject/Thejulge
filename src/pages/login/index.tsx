@@ -10,9 +10,7 @@ export default function LoginPage() {
   return (
     <div className={styles.pageContainer}>
       <div className={styles.formContainer}>
-        <div className={styles.logoContainer}>
-          <Image src={logo} alt="로고" width={248} height={45} />
-        </div>
+        <div className={styles.logoContainer}>Pay Plus+</div>
         <LoginForm />
         <Link className={styles.loginLink} href="/signup">
           회원이 아닌가요? 회원가입하기

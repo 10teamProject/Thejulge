@@ -164,6 +164,34 @@
   max-height: 3em;
 }
 
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  font-size: 18px;
+  color: #6c757d;
+}
+
+.noApplicants {
+  display: flex;
+  margin-top: 40px;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  p {
+    font-size: 18px;
+    color: #6c757d;
+    text-align: center;
+    line-height: 1.5;
+    max-width: 80%;
+  }
+}
+
 @media (max-width: 767px) {
   .table {
     font-size: 12px;
