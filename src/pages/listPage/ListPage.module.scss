@@ -51,7 +51,7 @@
 }
 .sortDropdown {
   cursor: pointer;
-  z-index: 1;
+  z-index: 2;
   position: relative;
   display: flex;
   flex-direction: row;
@@ -77,9 +77,10 @@
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: center;
   padding: 12px;
   gap: 6px;
-  width: 79px;
+  min-width: 79px;
   height: 30px;
   background: var(--yellow5);
   border-radius: 5px;
@@ -136,6 +137,25 @@
     width: 678px;
     gap: 15px;
     grid-template: 1fr 1fr / repeat(2, 1fr);
+  }
+  @media (max-width: 767px) {
+    width: 350px;
+  }
+}
+.noNoticesMessage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 964px;
+  margin: 50px auto 0px;
+  font-family: 'Spoqa Han Sans Neo';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 28px;
+  line-height: 35px;
+  color: #111322;
+  @media (max-width: 1199px) {
+    width: 678px;
   }
   @media (max-width: 767px) {
     width: 350px;

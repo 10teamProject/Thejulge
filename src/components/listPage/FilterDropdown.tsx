@@ -18,6 +18,7 @@ interface FilterDropdownProps {
   initialSelectedLocations: string[];
   initialStartDate: string;
   initialHourlyPay: number;
+  onFilterCountChange: (count: number) => void;
 }
 
 const FilterDropdown: React.FC<FilterDropdownProps> = ({
@@ -26,6 +27,7 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({
   initialSelectedLocations,
   initialStartDate,
   initialHourlyPay,
+  onFilterCountChange,
 }) => {
   const [minDate, setMinDate] = useState('');
   const [startDate, setStartDate] = useState('');
@@ -44,6 +46,12 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({
       })),
     );
   }, [initialSelectedLocations, initialStartDate, initialHourlyPay]);
+
+  useEffect(() => {
+    const count =
+      selectedLocations.length + (startDate ? 1 : 0) + (hourlyPay > 0 ? 1 : 0);
+    onFilterCountChange(count);
+  }, [selectedLocations, startDate, hourlyPay]);
 
   const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedDate = new Date(event.target.value);

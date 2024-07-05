@@ -11,10 +11,12 @@ export const useApplicants = (shop_id: string, notice_id: string) => {
   const [applicants, setApplicants] = useState<Item[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [loading, setLoading] = useState(true);
   const ITEMS_PER_PAGE = 5;
 
   useEffect(() => {
     const fetchApplicants = async () => {
+      setLoading(true);
       try {
         const response: ResponseType = await GetApplicantList(
           shop_id,
@@ -30,6 +32,8 @@ export const useApplicants = (shop_id: string, notice_id: string) => {
         setTotalPages(Math.ceil(response.count / ITEMS_PER_PAGE));
       } catch (error) {
         console.error('Error fetching applicants:', error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -38,7 +42,7 @@ export const useApplicants = (shop_id: string, notice_id: string) => {
 
   const handleStatusChange = async (
     id: string,
-    newStatus: 'accepted' | 'rejected',
+    newStatus: 'accepted' | 'rejected' | 'canceled',
   ) => {
     try {
       await updateApplicationStatus(shop_id, notice_id, id, newStatus);
@@ -63,5 +67,6 @@ export const useApplicants = (shop_id: string, notice_id: string) => {
     totalPages,
     setCurrentPage,
     handleStatusChange,
+    loading,
   };
 };

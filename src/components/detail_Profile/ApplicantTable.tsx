@@ -10,39 +10,39 @@ interface ApplicantTableProps {
   user_id: string;
 }
 
-const ApplicantTable: React.FC<ApplicantTableProps> = ({
-  user_id
-}) => {
-  const [currentPage, setCurrentPage] = useState(0);
-  const [list, setList] = useState([])
-  const [totalPages, setTotalPages] = useState(0)
+const ApplicantTable: React.FC<ApplicantTableProps> = ({ user_id }) => {
+  const [currentPage, setCurrentPage] = useState(1); // 페이지는 1부터 시작
+  const [list, setList] = useState([]);
+  const [totalPages, setTotalPages] = useState(0);
 
   const rowPerPage = 5;
 
   const loadList = async (pageNumber: number) => {
-    console.log(pageNumber)
     const token = Cookies.get('token');
 
-    const {data} = await fetchAPI().get(`/users/${user_id}/applications`, {
+    const { data } = await fetchAPI().get(`/users/${user_id}/applications`, {
       params: {
-        offset: (pageNumber - 1),
+        offset: (pageNumber - 1) * rowPerPage, // 페이지 번호에 따라 오프셋 계산
         limit: rowPerPage,
-      }
-    })
+      },
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
-    return data
-  }
+    return data;
+  };
 
   const fetchData = async (page: number) => {
     try {
-      const res = await loadList(1)
+      const res = await loadList(page);
 
-      setCurrentPage(res.offset + 1); // 현재 페이지 set = data.offset + 1 (offset은 index, 사용자 표시 숫자 = idx + 1)
+      setCurrentPage(page); // 현재 페이지 설정
       setList(res.items);
-      setTotalPages(Math.ceil(res.count / rowPerPage))
+      setTotalPages(Math.ceil(res.count / rowPerPage));
     } catch (error) {
       console.error('Error fetching applicants:', error);
-    } 
+    }
   };
 
   useEffect(() => {
@@ -61,27 +61,33 @@ const ApplicantTable: React.FC<ApplicantTableProps> = ({
           </tr>
         </thead>
         <tbody>
-          {
-            list.map((tItem, idx) => {
-              const {shop, notice} = tItem.item
+          {list.map((tItem, idx) => {
+            const { shop, notice, status } = tItem.item;
 
-              return <>
-                <tr key={idx}>
-                  <td>{shop.item.name}</td>
-                  <td>{notice.item.startsAt}</td>
-                  <td>{notice.item.hourlyPay}</td>
-                  <td>{notice.item.closed === false ? '신청완료' : '거절'}</td>
-                </tr>
-              </>
-            })
-          }
+            return (
+              <tr key={idx}>
+                <td>{shop.item.name}</td>
+                <td>{notice.item.startsAt}</td>
+                <td>{notice.item.hourlyPay}</td>
+                <td>
+                  {status === 'pending'
+                    ? '신청완료'
+                    : status === 'accepted'
+                    ? '승인됨'
+                    : status === 'rejected'
+                    ? '거절됨'
+                    : '지원마감'}
+                </td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
       <div className={styles.pageNationWrap}>
         <Pagination
           currentPage={currentPage}
           totalPages={totalPages}
-          onPageChange={loadList}
+          onPageChange={(page) => setCurrentPage(page)}
         />
       </div>
     </div>
@@ -89,4 +95,3 @@ const ApplicantTable: React.FC<ApplicantTableProps> = ({
 };
 
 export default ApplicantTable;
-

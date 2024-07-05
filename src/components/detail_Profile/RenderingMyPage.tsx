@@ -7,6 +7,8 @@ import phoneIcon from '@/public/assets/icon/phone.svg';
 
 import DetailCard from '../../components/detail_Profile/Detailcard';
 import ApplicantTable from './ApplicantTable';
+import fetchAPI from '@/pages/api/AxiosInstance'; // fetchAPI import 추가
+import Cookies from 'js-cookie'; // Cookies import 추가
 import styles from './RenderingMyPage.module.scss';
 
 interface Props {
@@ -22,9 +24,21 @@ function RenderingMyPage({ name, phone, address, bio, user_id, notice_id }: Prop
   const router = useRouter();
   const [hasData, setHasData] = useState(false);
 
-  useEffect(() => {
+  const checkData = async () => {
+    const token = Cookies.get('token');
 
-    setHasData(true);
+    const { data } = await fetchAPI().get(`/users/${user_id}/applications`, {
+      params: { limit: 1 }, // 데이터 1개 이상 있으면 페이지 조건부 렌더링 작동
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    setHasData(data.count > 0);
+  };
+
+  useEffect(() => {
+    checkData();
   }, []);
 
   const PostPageMove = () => {

@@ -13,6 +13,10 @@ interface ApplicantRowProps {
     id: string,
     newStatus: 'accepted' | 'rejected' | 'canceled',
   ) => void;
+  onStatusChange: (
+    id: string,
+    newStatus: 'accepted' | 'rejected' | 'canceled',
+  ) => void;
 }
 
 export const ApplicantRow: React.FC<ApplicantRowProps> = ({
@@ -22,8 +26,10 @@ export const ApplicantRow: React.FC<ApplicantRowProps> = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [pendingAction, setPendingAction] = useState<
     'accepted' | 'rejected' | 'canceled' | null
+    'accepted' | 'rejected' | 'canceled' | null
   >(null);
 
+  const handleActionClick = (action: 'accepted' | 'rejected' | 'canceled') => {
   const handleActionClick = (action: 'accepted' | 'rejected' | 'canceled') => {
     setPendingAction(action);
     setIsModalOpen(true);
@@ -71,6 +77,11 @@ export const ApplicantRow: React.FC<ApplicantRowProps> = ({
                 : applicant.status === 'canceled'
                   ? '취소됨'
                   : '승인됨'}
+              {applicant.status === 'rejected'
+                ? '거절됨'
+                : applicant.status === 'canceled'
+                  ? '취소됨'
+                  : '승인됨'}
             </span>
           )}
         </td>
@@ -87,6 +98,7 @@ export const ApplicantRow: React.FC<ApplicantRowProps> = ({
             height={24}
           />
         }
+        message={`신청을 ${pendingAction === 'accepted' ? '승인' : pendingAction === 'rejected' ? '거절' : '취소'}하시겠어요?`}
         message={`신청을 ${pendingAction === 'accepted' ? '승인' : pendingAction === 'rejected' ? '거절' : '취소'}하시겠어요?`}
         buttons={[
           {

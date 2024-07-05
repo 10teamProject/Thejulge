@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
@@ -5,6 +6,7 @@ import Search from '@/components/listPage/Search';
 import UserNotification from '@/components/userNofication/UserNofication';
 import { useAuth } from '@/contexts/AuthProvider';
 import { GetUserInfo } from '@/pages/api/GetUserInfo';
+import coinlogo from '@/public/assets/images/coinicons.png';
 
 import styles from './Header.module.scss';
 
@@ -14,7 +16,9 @@ const Header: React.FC = () => {
 
   const handleLogout = () => {
     logout();
-    router.push('/');
+    sessionStorage.removeItem('totalNotificationCount');
+    localStorage.removeItem('RECENT_NOTICES');
+    router.push('/login');
   };
 
   const handleMyStoreClick = async () => {
@@ -30,10 +34,13 @@ const Header: React.FC = () => {
   return (
     <header className={styles.header}>
       <div className={styles.headerContainer}>
-        <Link href="/listPage" className={styles.logo}>
-          +HE JULGE
+        <Image src={coinlogo} alt="로고" width={40} height={40} />
+        <Link href="/listPage" className={` ${styles.customFont}`}>
+          Pay Plus+
         </Link>
-        <Search />
+        <div className={styles.searchBar}>
+          <Search />
+        </div>
         <nav className={styles.nav}>
           {!user ? (
             <>
@@ -42,7 +49,7 @@ const Header: React.FC = () => {
             </>
           ) : user.type === 'employee' ? (
             <>
-              <Link href="/profile">내 프로필</Link>
+              <Link href="/DetailedMyPage">내 프로필</Link>
               <div className={styles.logoutContainer}>
                 <button onClick={handleLogout} className={styles.logoutButton}>
                   로그아웃

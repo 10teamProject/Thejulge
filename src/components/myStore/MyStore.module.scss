@@ -20,11 +20,12 @@
   max-width: 539px;
   max-height: 308px;
   border-radius: 12px;
+  object-fit: cover;
 }
 
 .content {
   flex: 1;
-  padding: 30px;
+  padding: 24px;
   display: flex;
   flex-direction: column;
 }
@@ -35,7 +36,9 @@
 }
 
 .storeName {
-  font-family: Spoqa Han Sans Neo;
+  font-family:
+    Spoqa Han Sans Neo,
+    sans-serif;
   font-size: 28px;
   font-weight: 700;
   line-height: 33.6px;
@@ -62,7 +65,9 @@
   margin-top: 10px;
   margin-bottom: 20px;
   flex-grow: 1;
-  font-family: Spoqa Han Sans Neo;
+  font-family:
+    Spoqa Han Sans Neo,
+    sans-serif;
   font-size: 16px;
   font-weight: 400;
   line-height: 26px;
@@ -76,14 +81,16 @@
 
 .editButton,
 .shareButton {
-  width: 169px;
+  width: 140px;
   height: 48px;
   padding: 10px 20px;
   border: none;
   border-radius: 6px;
   cursor: pointer;
   flex: 1;
-  font-family: Spoqa Han Sans Neo;
+  font-family:
+    Spoqa Han Sans Neo,
+    sans-serif;
   font-size: 16px;
   font-weight: 700;
   line-height: 20px;
@@ -101,27 +108,27 @@
   color: white;
 }
 
+/* Tablet: 768px 이상 ~ 1199px 이하 */
 @media (max-width: 1199px) {
   .card {
     flex-direction: column;
-    padding: 20px;
+    max-width: 680px;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .imageContainer {
-    max-width: 100%;
-    padding: 0;
-    margin-bottom: 20px;
+    max-width: 680px;
+    padding: 20px 20px 0;
   }
 
   .image {
-    width: 100%;
+    max-width: 680px;
     height: auto;
-    aspect-ratio: 632 / 360.86;
-    border-radius: 12px;
   }
 
   .content {
-    padding: 0;
+    padding: 20px;
   }
 
   .buttonContainer {
@@ -129,21 +136,20 @@
   }
 }
 
+/* Mobile: 375px 이상 ~ 767px 이하 */
 @media (max-width: 767px) {
   .card {
-    padding: 16px;
+    min-width: 330px;
+    padding: 12px;
+    margin-bottom: 40px;
   }
 
   .imageContainer {
-    max-width: 100%;
-    padding: 0;
-    margin-bottom: 16px;
+    padding: 0 0 16px;
   }
 
   .image {
-    width: 100%;
-    height: auto;
-    aspect-ratio: 16 / 9;
+    max-height: 177.71px;
     border-radius: 8px;
   }
 
@@ -153,7 +159,6 @@
 
   .category {
     font-size: 14px;
-    color: var(--yellow5);
   }
 
   .storeName {
@@ -164,7 +169,6 @@
 
   .location {
     font-size: 14px;
-    color: #666;
   }
 
   .description {
@@ -175,26 +179,13 @@
   }
 
   .buttonContainer {
-    flex-direction: row;
     gap: 8px;
   }
 
   .editButton,
   .shareButton {
-    flex: 1;
     height: 40px;
     font-size: 14px;
     border-radius: 8px;
-  }
-
-  .editButton {
-    background-color: #ffffff;
-    color: var(--yellow5);
-    border: 1px solid var(--yellow5);
-  }
-
-  .shareButton {
-    background-color: var(--yellow5);
-    color: #ffffff;
   }
 }

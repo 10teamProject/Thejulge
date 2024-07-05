@@ -1,17 +1,17 @@
 import { GetServerSideProps } from 'next';
-import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { useRef } from 'react';
 import Pagination from 'react-js-pagination';
 
 import FilterDropdown from '@/components/listPage/FilterDropdown';
 import FitNotice from '@/components/listPage/FitNotice';
 import NoticeCard from '@/components/listPage/NoticeCard';
+import { useOutsideClick } from '@/hooks/useOutsideClick';
 import { Notice } from '@/utils/NoticeCard/NoticesType';
 import paginationStyles from '@/utils/Pagination.module.scss';
 
 import { getNotices } from '../api/GetNotice';
 import styles from './ListPage.module.scss';
-
 type Props = {
   initialNotices: Notice[];
   totalCount: number;
@@ -41,8 +41,13 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
     };
 
     const data = await getNotices(params);
-    const initialNotices: Notice[] = data.items.map((item) => item.item);
+    const allNotices: Notice[] = data.items.map((item) => item.item);
     const totalCount = data.count;
+
+    const initialNotices = allNotices.filter((notice) => {
+      const isExpired = new Date(notice.startsAt) < new Date();
+      return !notice.closed && !isExpired;
+    });
 
     return {
       props: {
@@ -86,6 +91,16 @@ const ListPage: React.FC<Props> = ({
   const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
   const [startDate, setStartDate] = useState('');
   const [hourlyPay, setHourlyPay] = useState(0);
+  const [filterCount, setFilterCount] = useState(0);
+
+  const filterRef = useRef<HTMLDivElement>(null);
+  const filterButtonRef = useRef<HTMLDivElement>(null); // 버튼에 대한 참조 생성
+
+  // useOutsideClick 훅 사용
+  useOutsideClick(filterRef, filterButtonRef, () => {
+    setIsFilterOpen(false);
+    setFilterCount(0);
+  });
 
   useEffect(() => {
     const fetchNotices = async (
@@ -155,6 +170,10 @@ const ListPage: React.FC<Props> = ({
     setPage(1);
   };
 
+  const handleFilterCountChange = (count: number) => {
+    setFilterCount(count);
+  };
+
   return (
     <>
       {!keyword && <FitNotice initialNotices={initialNotices} />}
@@ -193,25 +212,33 @@ const ListPage: React.FC<Props> = ({
             </div>
             <div
               className={styles.detailFilter}
+              ref={filterButtonRef}
               onClick={() => setIsFilterOpen(!isFilterOpen)}
             >
-              상세 필터
+              상세 필터 {filterCount > 0 && `(${filterCount})`}
               {isFilterOpen && (
-                <FilterDropdown
-                  setIsFilterOpen={setIsFilterOpen}
-                  onApply={handleFilterApply}
-                  initialSelectedLocations={selectedLocations}
-                  initialStartDate={startDate}
-                  initialHourlyPay={hourlyPay}
-                />
+                <div ref={filterRef}>
+                  <FilterDropdown
+                    setIsFilterOpen={setIsFilterOpen}
+                    onApply={handleFilterApply}
+                    initialSelectedLocations={selectedLocations}
+                    initialStartDate={startDate}
+                    initialHourlyPay={hourlyPay}
+                    onFilterCountChange={handleFilterCountChange}
+                  />
+                </div>
               )}
             </div>
           </div>
         </div>
         <div className={styles.notices}>
-          {notices.map((notice) => (
-            <NoticeCard key={notice.id} notice={notice} />
-          ))}
+          {notices.length > 0 ? (
+            notices.map((notice) => (
+              <NoticeCard key={notice.id} notice={notice} />
+            ))
+          ) : (
+            <p className={styles.noNoticesMessage}>공고가 없습니다</p>
+          )}
         </div>
         <Pagination
           activePage={page}
