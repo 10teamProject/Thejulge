@@ -11,7 +11,7 @@ const Messages = {
 
   NAME_REQUIRED: '가게 이름을 입력해주세요.',
   CATEGORY_REQUIRED: '분류를 선택해주세요.',
-  ADDRESS_REQUIRED: '주소를 선택해주세요.',
+  ADDRESS_REQUIRED: '주소를 검색해 주세요.',
   ADDRESS_DETAIL_REQUIRED: '상세 주소를 입력해주세요.',
   HOURLY_PAY_REQUIRED: '기본 시급을 입력해주세요.',
   INVALID_HOURLY_PAY: '유효한 값을 입력해주세요.',
