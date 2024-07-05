@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
+import LoadingSpinner from '@/components/common/Spinner';
 import { instance } from '@/pages/api/AxiosInstance';
 import check from '@/public/assets/icon/check_Icon.svg';
 import danger from '@/public/assets/icon/danger_mark.svg';
@@ -31,6 +32,10 @@ const Icon: ModalIcon = {
   width: 0,
 };
 
+interface ExtendedStoreNoticeProps extends StoreNoticeProps {
+  isLoading: boolean;
+}
+
 function StoreNotice({
   shopid,
   noticeid,
@@ -39,8 +44,28 @@ function StoreNotice({
   isProfile,
   userType,
   userid,
-}: StoreNoticeProps) {
-  const { hourlyPay, startsAt, workhour, description, closed } = storeData.item; //description은 이름이 겹쳐서 공고 description만 변수선언
+  isLoading,
+}: ExtendedStoreNoticeProps) {
+  const [isApplied, setIsApplied] = useState<boolean>(false);
+  const [applicationId, setApplicationId] = useState<string>('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
+  const [modalButton, setModalbutton] = useState<ButtonProps[]>([]);
+  const [modalIcon, setModalIcon] = useState<ModalIcon>(Icon);
+  const [isToastMessage, setIsToastMessage] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
+
+  const router = useRouter();
+
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
+
+  if (!storeData || !storeData.item) {
+    return <div>데이터를 불러올 수 없습니다.</div>;
+  }
+
+  const { hourlyPay, startsAt, workhour, description, closed } = storeData.item;
   const { category, name, imageUrl, address1, originalHourlyPay } =
     storeData.item.shop.item;
   const increaseRate = calculateHourlyPayIncrease(originalHourlyPay, hourlyPay);
@@ -51,32 +76,14 @@ function StoreNotice({
   const isClosedOrExpired = closed || isExpired;
   const endText = closed ? '마감 완료' : '지난 공고';
 
-  const [isApplied, setIsApplied] = useState<boolean>(false); // 신청하기 버튼 상태관리변수
-  const [applicationId, setApplicationId] = useState<string>(''); // applicaionId를 담는 변수, 신청하기 버튼을 누르거나 화면이 제일 처음 렌더링될 때 값이 담김
-
-  ///// 모달창과 관련된 변수들
-  const [isModalOpen, setIsModalOpen] = useState(false); // 모달창 상태여부
-  const [modalMessage, setModalMessage] = useState(''); // 모달창에 내려줄 메시지 관리
-  const [modalButton, setModalbutton] = useState<ButtonProps[]>([]); // 모달창에 내려줄 버튼 관리
-  const [modalIcon, setModalIcon] = useState<ModalIcon>(Icon); // 모달창에 내려줄 아이콘
-
-  const router = useRouter();
-
-  /////토스트 메시지와 관련된 변수들
-  const [isToastMessage, setIsToastMessage] = useState(false);
-  const [toastMessage, setToastMessage] = useState('');
-
-  // 로그인 페이지로 이동하는 이벤트
   const onClickLoginPage = () => {
     router.push('/login');
   };
 
-  // 프로필 페이지로 이동하는 이벤트
   const onClickProfilePage = () => {
     router.push('/DetailedMyPage');
   };
 
-  // 취소하기 버튼 클릭시 PUT 요청 보내는 이벤트
   const onClickPutRequest = async () => {
     try {
       await instance.put(
@@ -99,10 +106,8 @@ function StoreNotice({
     }
   };
 
-  ///// 신청하기 버튼 구현하기
   const handleApply = async () => {
     if (!isLogin) {
-      // 로그인이 되지 않은 경우
       setIsModalOpen(true);
       setModalIcon(danger);
       setModalMessage('로그인이 필요합니다');
@@ -114,7 +119,6 @@ function StoreNotice({
         },
       ]);
     } else if (userType === 'employer') {
-      // 사장님으로 로그인한 경우
       setIsModalOpen(true);
       setModalIcon(danger);
       setModalMessage('사장님은 신청할 수 없습니다');
@@ -126,7 +130,6 @@ function StoreNotice({
         },
       ]);
     } else if (!isProfile) {
-      // 알바생으로 로그인은 했지만 프로필을 작성하지 않은 경우
       setIsModalOpen(true);
       setModalIcon(danger);
       setModalMessage('내 프로필을 먼저 등록해주세요');
@@ -139,7 +142,6 @@ function StoreNotice({
       ]);
     } else {
       if (!isApplied) {
-        // 버튼이 신청하기인 경우
         try {
           const res = await instance.post(
             `/shops/${shopid}/notices/${noticeid}/applications`,
@@ -150,7 +152,7 @@ function StoreNotice({
               },
             },
           );
-          setApplicationId(res.data.item.id); // 리스폰스로 받은 application_id를 넣는다.
+          setApplicationId(res.data.item.id);
           setIsApplied(true);
           setToastMessage('신청완료!');
           setIsToastMessage(true);
@@ -158,7 +160,6 @@ function StoreNotice({
           console.log('POST에러', error);
         }
       } else {
-        // 버튼이 취소하기인 경우
         setIsModalOpen(true);
         setModalIcon(check);
         setModalMessage('신청을 취소하시겠어요?');
@@ -168,7 +169,6 @@ function StoreNotice({
             onClick: () => setIsModalOpen(false),
             variant: 'secondary',
           },
-
           {
             text: '확인',
             onClick: onClickPutRequest,
@@ -179,7 +179,6 @@ function StoreNotice({
     }
   };
 
-  ///// 유저가 지원한 공고 확인하기
   const getUserApplications = async (userId: string) => {
     try {
       const res = await instance.get(`/users/${userId}/applications`, {
@@ -188,8 +187,8 @@ function StoreNotice({
         },
       });
 
-      const userApplications: Application[] = res.data.items; // response로 유저가 지원한 공고를 가져와서 저장(배열로 되어있음)
-      let applicationId: string = ''; // response로 받은 공고들 중에 조건에 만족하는 applicationId를 저장하기 위해 선언함
+      const userApplications: Application[] = res.data.items;
+      let applicationId: string = '';
 
       for (let i = 0; i < userApplications.length; i++) {
         const application = userApplications[i].item;
@@ -197,13 +196,11 @@ function StoreNotice({
           application.notice.item.id === noticeid &&
           application.status === 'pending'
         ) {
-          applicationId = application.id; // 위에 조건을 해당하면 그 데이터의 id를 저장하는데 id가 applicationId라고 보면 됨
-          break; // 원하는 지원을 찾았으므로 반복문 종료, 하나만 존재할건데 그래도 혹시나 싶어서 break 줬음
+          applicationId = application.id;
+          break;
         }
       }
       if (applicationId) {
-        // applicationId이 있다는거는 post 요청을 서버로 보냈다는 뜻이니깐 버튼상태를 true로 반환하고 applicationId을 렌더링될 때 넣어줌
-        // 이렇게 applicationId를 넣어주면 취소하기 클릭할 때 axios 에러가 생기지 않는다.
         setApplicationId(applicationId);
         setIsApplied(true);
       } else {
@@ -217,8 +214,6 @@ function StoreNotice({
 
   useEffect(() => {
     if (!userid) return;
-    // getUserApplications함수가 userid가 있어야 유저가 지원했는지 확인할 수 있기 때문에 처음에 렌더링될 때 userid가 빈값인 것을 고려해서 return을 했음
-
     getUserApplications(userid);
   }, [userid, noticeid]);
 
@@ -233,11 +228,9 @@ function StoreNotice({
 
           <div className={styles.shop_info}>
             <div className={styles.shop_img_box}>
-
               {isClosedOrExpired && (
                 <div className={styles.img_closed}>{endText}</div>
               )}
-
               {imageUrl && (
                 <Image
                   src={imageUrl}
@@ -253,7 +246,7 @@ function StoreNotice({
                 <div className={styles.shop_hourlPay}>
                   {hourlyPay.toLocaleString('ko-KR')}원
                 </div>
-                {originalHourlyPay < hourlyPay && ( // 기존 금액이 현재 금액보다 작으면 화면에 렌더링
+                {originalHourlyPay < hourlyPay && (
                   <div
                     className={`${isClosedOrExpired ? styles.hidden : styles.increaseRate}`}
                   >

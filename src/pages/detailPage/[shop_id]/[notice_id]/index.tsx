@@ -3,6 +3,7 @@ import { useCallback, useEffect, useState } from 'react';
 
 import Card from '@/components/detailPage/Card';
 import StoreNotice from '@/components/detailPage/StoreNotice';
+import LoadingSpinner from '@/components/common/Spinner';
 import { ProfileData, Props, User } from '@/types/detailPageType';
 import { Notice, NoticeItem } from '@/utils/NoticeCard/NoticesType';
 
@@ -40,38 +41,30 @@ const initialStoreData: NoticeItem = {
   ],
 };
 
-function DetailPage({
-  shopid,
-  noticeid, // 테스트한다고 임의로 값을 넣음. 나중에 지워줘야한다
-}: Props) {
+function DetailPage({ shopid, noticeid }: Props) {
   const [storeData, setStoreData] = useState<NoticeItem>(initialStoreData);
-  const [recentNotices, setRecentNotices] = useState<Notice[]>([]); // 로컬스토리지 담을 변수
-
-  ///// 세션 스토리지와 관련된 변수들
-  const [isLogin, setIsLogin] = useState<boolean>(false); // 로그인 여부를 확인
-  const [isProfile, setIsProfile] = useState<boolean>(false); // 프로필 여부를 확인
-  const [userType, setUserType] = useState<string>(''); // user가 알바생인지 사장님인지 확인
+  const [recentNotices, setRecentNotices] = useState<Notice[]>([]);
+  const [isLogin, setIsLogin] = useState<boolean>(false);
+  const [isProfile, setIsProfile] = useState<boolean>(false);
+  const [userType, setUserType] = useState<string>('');
   const [userId, setUserId] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  /// 세션 스토리지에서 데이터 가져오기 구현
   const getSesstionStorageData = () => {
     const sessionStorageData = sessionStorage.getItem('user');
     if (sessionStorageData) {
-      // 만약 세션 스토리지에 데이터가 있으면 실행
-      const sessionData: User = JSON.parse(sessionStorageData); // 데이터를 JS로 변환
-      setIsLogin(true); // 로그인여부를 true
-      setUserType(sessionData.type); // 세션에 있는 유저 type 저장 (알바생 | 사장님)
+      const sessionData: User = JSON.parse(sessionStorageData);
+      setIsLogin(true);
+      setUserType(sessionData.type);
       getCheckProfile(sessionData.id);
       setUserId(sessionData.id);
     }
   };
 
-  /// 프로필 API로 요청을 보내서 프로필 여부를 확인하기
   const getCheckProfile = async (userId: string) => {
     try {
       const res = await instance.get(`/users/${userId}`);
       const profileData: ProfileData = res.data.item;
-      // 만약 받아온 프로필 정보에 name,phone,address,bio가 없으면 프로필상태를 false로 있으면 true로 반환
       if (
         !profileData.name ||
         !profileData.phone ||
@@ -88,6 +81,7 @@ function DetailPage({
   };
 
   async function getData() {
+    setIsLoading(true);
     try {
       const res = await instance.get(`/shops/${shopid}/notices/${noticeid}`);
       const nextData = await res.data;
@@ -95,45 +89,42 @@ function DetailPage({
       localStorageUpdate(nextData.item);
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsLoading(false);
     }
   }
 
-  ///// 로컬 스토리지에 저장하는 함수 구현
   const localStorageUpdate = useCallback((storeData: Notice) => {
-    // 로컬 스토리지에 똑같은 key값으로 데이터를 저장할려면 로컬스토리지에 있는 데이터를 가져와서 병합해서 다시 넣어야한다.
     const localData = localStorage.getItem('RECENT_NOTICES');
     const recentLocalData: Notice[] = localData ? JSON.parse(localData) : [];
 
-    // 로컬 스토리지에 있는 데이터랑 storeData랑 똑같은지 확인하는 코드, 존재하지 않는 데이터는 -1을 반환한다. 객체로 이뤄진 배열에서는 findIndex가 유용
     const existId = recentLocalData.findIndex(
       (StorageData) => StorageData.id === storeData.id,
     );
 
-    // 존재하지 않는 데이터는 -1을 반환하는데 -1이 아니라면 존재한다는 뜻
-    // 이미 존재하는 데이터는 splice함수를 사용해서 해당위치의 데이터를 제거하고 제거한 항목의 첫번째[0]을 사용해서 existNotice에 변수에 넣어준다.
-    // unshift를 사용해서 배열의 맨앞으로 이동시킴
     if (existId !== -1) {
       const existNotice = recentLocalData.splice(existId, 1)[0];
       recentLocalData.unshift(existNotice);
     } else {
-      // 동일한 id를 가진 데이터가 없으면 storeData를 배열의 제일 앞으로 추가한다
       recentLocalData.unshift(storeData);
     }
 
-    // 로컬 스토리지에 넣을 데이터의 길이가 6이상이면 맨 끝의 값을 제거함.
     if (recentLocalData.length > 6) {
       recentLocalData.pop();
     }
 
-    // 로컬 스토리지에 데이터를 넣을때는 JSON으로 변환해서 넣어야한다.
     localStorage.setItem('RECENT_NOTICES', JSON.stringify(recentLocalData));
-    setRecentNotices(recentLocalData); // 카드 컴포넌트로 넘겨줄 데이터를 setter함수를 이용해 넣어준다.
+    setRecentNotices(recentLocalData);
   }, []);
 
   useEffect(() => {
     getData();
     getSesstionStorageData();
   }, [shopid, noticeid]);
+
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <>
@@ -145,15 +136,16 @@ function DetailPage({
         isProfile={isProfile}
         userType={userType}
         userid={userId}
+        isLoading={isLoading}
       />
       <div className={styles.notice_container}>
         <h1>최근에 본 공고</h1>
-        {/* 카드 컴포넌트에는 로컬 스토리지에 있는 데이터 배열을 넘겨줘야한다 */}
         <div className={styles.card_container}>
           {recentNotices.map((recentNoticeData) => (
             <Card
               key={recentNoticeData.id}
               recentNoticeData={recentNoticeData}
+              isLoading={isLoading}
             />
           ))}
         </div>
@@ -161,6 +153,7 @@ function DetailPage({
     </>
   );
 }
+
 export default DetailPage;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
