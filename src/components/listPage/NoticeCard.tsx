@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 
@@ -13,6 +14,7 @@ import {
   formatDate,
 } from '@/utils/NoticeCard/CalculateThings';
 import { Notice } from '@/utils/NoticeCard/NoticesType';
+import LoadingSpinner from '@/components/common/Spinner';
 
 import styles from './NoticeCard.module.scss';
 
@@ -21,6 +23,7 @@ interface NoticeCardProps {
 }
 
 const NoticeCard: React.FC<NoticeCardProps> = ({ notice }) => {
+  const [imageLoading, setImageLoading] = useState(true);
   const { hourlyPay, startsAt, workhour, shop, closed } = notice;
   const { name, address1, imageUrl, originalHourlyPay } = shop.item;
 
@@ -51,18 +54,23 @@ const NoticeCard: React.FC<NoticeCardProps> = ({ notice }) => {
 
   const isClosedOrExpired = closed || isExpired;
   const overlayText = closed ? '마감 완료' : '지난 공고';
+
   return (
     <div className={styles.container} onClick={handleClick}>
       <div className={`${styles.storeImage} `}>
         {isClosedOrExpired && (
           <div className={styles.closedOverlay}>{overlayText}</div>
         )}
+        {imageLoading && <LoadingSpinner />}
         <Image
           src={imageUrl}
           fill
           alt="가게 이미지"
           style={{ objectFit: 'cover' }}
           className={isClosedOrExpired ? styles.closedImage : ''}
+          onLoadStart={() => setImageLoading(true)}
+          onLoad={() => setImageLoading(false)}
+          onError={() => setImageLoading(false)}
         />
       </div>
       <h3

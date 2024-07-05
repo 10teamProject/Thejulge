@@ -70,6 +70,9 @@ const MyNotice: React.FC<MyNoticeProps> = ({ shop }) => {
         {notices.map((notice) => {
           const formattedStartTime = formatDate(notice.startsAt);
           const endTime = calculateEndTime(notice.startsAt, notice.workhour);
+          const increaseRate = Math.round(
+            (notice.hourlyPay / shop.originalHourlyPay - 1) * 100,
+          );
 
           return (
             <div
@@ -85,10 +88,14 @@ const MyNotice: React.FC<MyNoticeProps> = ({ shop }) => {
                   className={styles.noticeImage}
                   width={280}
                   height={160}
+                  loading="lazy"
                 />
                 {notice.closed && (
                   <div className={styles.closedOverlay}>마감 완료</div>
                 )}
+                <div className={styles.spinnerContainer}>
+                  <LoadingSpinner />
+                </div>
               </div>
               <div className={styles.noticeContent}>
                 <h3 className={styles.noticeTitle}>{shop.name}</h3>
@@ -117,20 +124,25 @@ const MyNotice: React.FC<MyNoticeProps> = ({ shop }) => {
                     {notice.hourlyPay.toLocaleString()}원
                   </span>
                   {notice.hourlyPay > shop.originalHourlyPay && (
-                    <span className={styles.payIncrease}>
-                      기존 시급보다{' '}
-                      {Math.round(
-                        (notice.hourlyPay / shop.originalHourlyPay - 1) * 100,
-                      )}
-                      %
-                      <Image
-                        className={styles.arrowIcon}
-                        src={arrowIcon}
-                        alt="상승아이콘"
-                        width={16}
-                        height={16}
-                      />
-                    </span>
+                    <div className={styles.payIncreaseContainer}>
+                      <span
+                        className={styles.payIncrease}
+                        aria-label={`기존 시급 ${shop.originalHourlyPay.toLocaleString()}원 대비 ${increaseRate}% 상승`}
+                      >
+                        기존 시급보다 {increaseRate}%
+                        <Image
+                          className={styles.arrowIcon}
+                          src={arrowIcon}
+                          alt="상승아이콘"
+                          width={16}
+                          height={16}
+                        />
+                      </span>
+                      <div className={styles.payIncreaseHover}>
+                        <p>{notice.hourlyPay.toLocaleString()}원</p>
+                        <p>기존 시급보다 {increaseRate}%</p>
+                      </div>
+                    </div>
                   )}
                 </div>
               </div>
