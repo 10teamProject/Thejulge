@@ -1,8 +1,8 @@
 import { Pagination } from '@/components/common/PageNation';
 import { useApplicants } from '@/hooks/useApplicants';
 
+import { ApplicantRow } from '../detail_Profile/ApplicantRow';
 import styles from './ApplicantList.module.scss';
-import { ApplicantRow } from './ApplicantRow';
 
 interface ApplicantTableProps {
   shop_id: string;
