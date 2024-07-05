@@ -10,10 +10,10 @@
 // 내 프로필
 
 .postContainer {
-  // border: 1px solid red;
   width: 964px;
   height: 449px;
   margin-top: 60px;
+
 }
 
 // input 제목 스타일 공통
@@ -31,12 +31,13 @@
   display: flex;
   width: 964px;
   height: 449px;
-  // border: 1px solid rgb(255, 0, 238);
   flex-wrap: wrap;
+
 }
 
 .formarray {
   display: flex;
+
 }
 
 .inputSize {
@@ -70,6 +71,8 @@
    &::placeholder {
     color: #A4A1A4;
    }
+
+   
 }
 
 .input:focus {
@@ -252,3 +255,44 @@
 }
 
 
+@media (max-width: 767px) {
+  .postContainer, .formInput, .input, .inputBoard, .introduceBox {
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  .profileTitle {
+    margin-top: 50px;
+    text-align: center;
+  }
+
+
+  .inputSize {
+    margin: 0 auto;
+    height: auto;
+    margin-bottom: 20px; 
+  }
+  
+  .input {
+    width: 200%;
+  }
+
+  .selectStyle {
+    width: 200%;
+    height: auto;
+    margin-bottom: 20px;
+  };
+
+  .inputBoard {
+    width: 95%;
+  }
+
+  .formarray {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .button {
+    width: 50%;
+  }
+}

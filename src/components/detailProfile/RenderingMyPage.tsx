@@ -86,7 +86,7 @@ function RenderingMyPage({ name, phone, address, bio, user_id, notice_id }: Prop
                 <p className={`${styles.information} ${styles.bio}`}>{bio}</p>
               </div>
               
-              <div>
+              <div className={styles.buttonWrap}>
                 <button className={styles.button} onClick={PostPageMove}>편집하기</button>
               </div>
             </div>

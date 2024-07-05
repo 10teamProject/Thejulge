@@ -79,7 +79,7 @@ const ApplicantTable: React.FC<ApplicantTableProps> = ({ user_id }) => {
       case 'rejected':
         return rejectionImage.src;
       default:
-        return null; // 기타 상태에 대한 이미지가 없는 경우
+        return null; 
     }
   };
 
@@ -120,8 +120,8 @@ const ApplicantTable: React.FC<ApplicantTableProps> = ({ user_id }) => {
                     <Image
                       src={getStatusImage(status)}
                       alt={status}
-                      width={imageWidth} // 이미지 폭 설정
-                      height={imageHeight} // 이미지 높이 설정
+                      width={imageWidth}
+                      height={imageHeight}
                     />
                   </div>
                 </td>
