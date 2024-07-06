@@ -1,0 +1,221 @@
+.profileWrap {
+  display: flex;
+  height: 376px;
+  align-items: center;
+  background-color: #FFFFFF;
+}
+
+.informationWrap {
+  display: flex;
+  align-items: flex-start;
+  width: 957px;
+  height: 256px;
+  gap: 180px;
+  margin: 0 auto;
+}
+
+.profileTitle {
+  font-weight: 700;
+  font-size: 28px;
+  line-height: 33.6px;
+}
+
+.nameProfile {
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 20px;
+  color: var(--yellow5);
+  margin-bottom: 8px;
+}
+
+.userName {
+  font-weight: 700;
+  font-size: 28px;
+  line-height: 33.6px;
+  color: var(--black);
+}
+
+.information {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 26px;
+  color: var(--gray50);
+}
+
+.userWrap {
+  width: 665px;
+  height: 256px;
+  border-radius: 12px;
+  padding: 32px;
+  gap: 8px;
+  background-color: #fffae7;
+}
+
+.userFlex {
+  display: flex;
+  gap: 95px;
+}
+
+.titleWrap {
+  width: 392px;
+  height: 192px;
+}
+
+.informationFlex {
+  display: flex;
+  gap: 3px;
+  margin-top: 12px;
+  align-items: center;
+}
+
+.bio {
+  color: #000000;
+  margin-top: 28px;
+}
+
+.button {
+  width: 169px;
+  height: 48px;
+  border-color: var(--yellow4);
+  border-radius: 6px;
+  background-color: #FFFFFF;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 20px;
+  color: #eab012;
+  font-family: 'Spoqa Han Sans Neo', 'Pretendard', sans-serif;
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: var(--yellow2);
+}
+
+// 페이지네이션
+.pageNationWrap {
+  background-color: #FAFAFA;
+}
+
+.item {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  list-style-type: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.pagination li {
+  display: inline-block;
+  margin: 0 5px;
+}
+
+.pagination a {
+  text-decoration: none;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  color: #333;
+}
+
+.pagination a:hover {
+  background-color: #f2f2f2;
+}
+
+.pagination .active a {
+  background-color: var(--yellow5);
+  color: #fff;
+  border-color: var(--yellow5);
+}
+
+.pagination .disabled a {
+  color: #ddd;
+  pointer-events: none;
+}
+
+
+@media (min-width: 1024px) {
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+
+  .profileTitle {
+    width: 120px;
+    position: relative;
+    left: 50px;
+    display: flex;
+    font-weight: 700;
+    font-size: 28px;
+    line-height: 33.6px;
+  }
+
+}
+
+@media (max-width: 767px) {
+  .profileWrap {
+    flex-direction: column;
+    height: auto;
+    padding: 16px;
+  }
+
+  .informationWrap {
+    flex-direction: column;
+    width: 100%;
+    height: auto;
+    gap: 16px;
+    padding: 16px;
+  }
+
+  .profileTitle {
+    font-size: 24px;
+    line-height: 28.8px;
+    text-align: center;
+  }
+
+  .userWrap {
+    width: 100%;
+    padding: 16px;
+    gap: 12px;
+  }
+
+  .userFlex {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .titleWrap {
+    width: 100%;
+    height: auto;
+  }
+
+  .nameProfile {
+    font-size: 14px;
+    line-height: 18px;
+    text-align: center;
+  }
+
+  .userName {
+    font-size: 24px;
+    line-height: 28.8px;
+    text-align: center;
+  }
+
+  .information {
+    font-size: 14px;
+    line-height: 22px;
+    text-align: center;
+  }
+
+  .bio {
+    margin-top: 16px;
+    text-align: center;
+  }
+
+  .button {
+    width: 100%;
+  }
+}

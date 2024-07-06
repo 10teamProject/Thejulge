@@ -7,14 +7,18 @@ interface DetailCardProps {
   title: string;
   content: string;
   buttonText: string;
+  onButtonClick?: () => void;
 }
 
-
-const DetailCard: React.FC<DetailCardProps> = ({ title, content, buttonText }) => {
+function DetailCard({ title, content, buttonText, onButtonClick }: DetailCardProps) {
   const router = useRouter();
 
-  const handleClick = () => {
-    router.push('/PostMyPage');
+  const PageMove = () => {
+    if (onButtonClick) {
+      onButtonClick();
+    } else {
+      router.push('/PostMyPage');
+    }
   };
 
   return (
@@ -23,11 +27,11 @@ const DetailCard: React.FC<DetailCardProps> = ({ title, content, buttonText }) =
         <h1 className={styles.profileTitle}>{title}</h1>
         <div className={styles.profileBox}>
           <p className={styles.profileContent}>{content}</p>
-          <button onClick={handleClick} className={styles.profileButton}><span>{buttonText}</span></button>
+          <button onClick={PageMove} className={styles.profileButton}><span>{buttonText}</span></button>
         </div>
       </div>
     </main>
   );
-};
+}
 
 export default DetailCard;

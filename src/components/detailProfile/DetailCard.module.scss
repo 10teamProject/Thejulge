@@ -3,8 +3,17 @@
 .main {
   display: flex;
   justify-content: center; 
+  height: 100vh;
+  background-color: #FAFAFA;
+  
 }
 
+.mainContainer {
+  @media (max-width: 767px) {
+    width: 100%; 
+    margin-top: 20px;
+  }
+}
 
 .profileTitle {
   font-family: 'Spoqa Han Sans Neo', sans-serif;
@@ -13,6 +22,11 @@
   line-height: 33.6px;
   margin-top: 60px;
   margin-bottom: 24px;
+  @media (max-width: 767px) {
+    width: 100%; 
+    position: relative;
+    left: 5%;
+  }
 }
 
 .profileBox {
@@ -27,6 +41,11 @@
   border: 1px solid #E5E4E7;
   padding: 60px 24px 60px 24px;
   margin-bottom: 120px;
+  @media (max-width: 767px) {
+    width: 90%;
+    margin: 0 auto;  /* 모바일 사이즈에서 세로 배열 */
+    padding: 20px; /* 모바일 사이즈에서 더 작은 패딩 */
+  }
 }
 
 .profileContent {
@@ -37,6 +56,11 @@
   font-family: 'Spoqa Han Sans Neo', sans-serif;
   font-weight: 400;
   font-size: 16px;
+
+  @media (max-width: 767px) {
+    width: 100%; 
+  }
+  
 }
 
 .profileButton {
@@ -55,5 +79,13 @@
       line-height: 20px;
       text-align: center;
       color: #FFFFFF;
+    }
+
+    @media (max-width: 767px) {
+      width: 30%;
+      margin-top: 10px;
+    }
+    @media (min-width: 375px) {
+      width: 80%;
     }
 }

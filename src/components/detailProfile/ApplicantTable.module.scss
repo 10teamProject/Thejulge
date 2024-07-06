@@ -1,0 +1,221 @@
+.tableWrapper {
+  margin-top: 32px;
+  background-color: #FAFAFA;
+  width: 100%;;
+  height: 700px;
+}
+
+.tableTitle {
+  font-family: 'Spoqa Han Sans Neo', sans-serif;
+  font-weight: 700;
+  font-size: 28px;
+  line-height: 33.6px;
+  margin-top: 60px;
+  text-align: center;
+  position: relative;
+  top: 10%;
+}
+
+.table {
+  width: 964px;
+  margin: 0 auto;
+  height: 459px;
+  border-collapse: collapse;
+  border-spacing: 0;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-top: 100px;
+  margin-bottom: 20px;
+
+  th,
+  td {
+    padding: 20px;
+    text-align: left;
+    vertical-align: middle;
+    
+  }
+
+  th {
+    background-color: #fefad8;
+    color: #333;
+    font-weight: bold;
+    border-bottom: 2px solid #e9ecef;
+
+  }
+
+  td {
+    border-bottom: 1px solid #e9ecef;
+    
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+    height: 5px;
+  }
+
+  tr td {
+    height: 5px;
+  }
+
+  th:nth-child(1),
+  td:nth-child(1) {
+    width: 20%;
+    
+  } // 신청자
+  th:nth-child(2),
+  td:nth-child(2) {
+    width: 30%;
+  } // 소개
+  th:nth-child(3),
+  td:nth-child(3) {
+    width: 20%;
+  } // 전화번호
+  th:nth-child(4),
+  td:nth-child(4) {
+    width: 30%;
+    
+  } // 상태
+}
+
+.button {
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+
+  font-family: Spoqa Han Sans Neo;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 17.53px;
+  text-align: center;
+  margin-bottom: 120px;
+
+  &.reject {
+    border: 1px solid #ff6b6b;
+    background-color: #fff;
+    color: #ff6b6b;
+
+    &:hover {
+      background-color: #ff6b6b;
+      color: #fff;
+    }
+  }
+
+  &.approve {
+    border: 1px solid #4dabf7;
+    background-color: #fff;
+    color: #4dabf7;
+
+    &:hover {
+      background-color: #4dabf7;
+      color: #fff;
+    }
+  }
+}
+
+.statusCell {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  height: 100%;
+}
+
+.statusBadge {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  min-width: 80px;
+  margin-right: 8px;
+
+  &.rejected {
+    background-color: #fff5f5;
+    color: #fa5252;
+    border: 1px solid #ffc9c9;
+  }
+
+  &.accepted {
+    background-color: #e6fcf5;
+    color: #0ca678;
+    border: 1px solid #96f2d7;
+  }
+
+  &.pending {
+    background-color: #fff9db;
+    color: #f08c00;
+    border: 1px solid #ffec99;
+  }
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  width: 964px;
+
+  .pageButton {
+    padding: 6px 12px;
+    margin: 0 2px;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    
+
+    &:hover:not(:disabled) {
+      background-color: #f1f3f5;
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    &.active {
+      background-color: #fcc419;
+      color: #fff;
+      border-color: #fcc419;
+    }
+  }
+}
+
+.introText {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-word;
+  line-height: 1.5;
+  max-height: 3em; // 2줄로 제한
+}
+
+@media (max-width: 768px) {
+  .table {
+    font-size: 14px;
+
+    th,
+    td {
+      padding: 12px;
+    }
+  }
+
+  .button {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+
+  .statusBadge {
+    padding: 4px 8px;
+    font-size: 12px;
+    min-width: 60px;
+  }
+}
