@@ -1,14 +1,12 @@
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
-
 import locationIcon from '@/public/assets/icon/location.svg';
 import phoneIcon from '@/public/assets/icon/phone.svg';
-
 import DetailCard from './Detailcard';
 import ApplicantTable from './ApplicantTable';
-import fetchAPI from '@/pages/api/AxiosInstance'; // fetchAPI import 추가
-import Cookies from 'js-cookie'; // Cookies import 추가
+import fetchAPI from '@/pages/api/AxiosInstance';
+import Cookies from 'js-cookie';
 import styles from './RenderingMyPage.module.scss';
 
 interface Props {
@@ -16,24 +14,21 @@ interface Props {
   phone?: string;
   address?: string;
   bio?: string;
-  user_id: string; 
-  notice_id: string;
+  user_id: string;
 }
 
-function RenderingMyPage({ name, phone, address, bio, user_id, notice_id }: Props) {
+function RenderingMyPage({ name, phone, address, bio, user_id }: Props) {
   const router = useRouter();
   const [hasData, setHasData] = useState(false);
 
   const checkData = async () => {
     const token = Cookies.get('token');
-
     const { data } = await fetchAPI().get(`/users/${user_id}/applications`, {
-      params: { limit: 1 }, // 데이터 1개 이상 있으면 페이지 조건부 렌더링 작동
+      params: { limit: 1 },
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
-
     setHasData(data.count > 0);
   };
 
@@ -85,7 +80,6 @@ function RenderingMyPage({ name, phone, address, bio, user_id, notice_id }: Prop
                 
                 <p className={`${styles.information} ${styles.bio}`}>{bio}</p>
               </div>
-              
               <div className={styles.buttonWrap}>
                 <button className={styles.button} onClick={PostPageMove}>편집하기</button>
               </div>
@@ -93,10 +87,9 @@ function RenderingMyPage({ name, phone, address, bio, user_id, notice_id }: Prop
           </div>
         </div>
       </div>
-
       <div className={styles.backgroundColor}>
         {hasData ? (
-          <ApplicantTable user_id={user_id} notice_id={notice_id} /> 
+          <ApplicantTable user_id={user_id} />
         ) : (
           <DetailCard
             title="신청 내역"
