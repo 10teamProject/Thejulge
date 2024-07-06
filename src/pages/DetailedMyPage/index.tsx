@@ -6,7 +6,7 @@ import DetailCard from '../../components/detailProfile/Detailcard';
 import RenderingMyPage from '../../components/detailProfile/RenderingMyPage';
 import { instance } from '../api/AxiosInstance';
 import styles from './MyPage.module.scss';
-import LoadingSpinner from '../../components/common/Spinner'; // 로딩 스피너 컴포넌트를 추가합니다.
+import LoadingSpinner from '../../components/common/Spinner'; //로딩 스피너 수정
 
 function MyPage() {
   const [userInfo, setUserInfo] = useState({
