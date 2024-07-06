@@ -109,7 +109,7 @@ const UserNotification: React.FC = () => {
 
       const intervalId = setInterval(() => {
         fetchAlerts();
-      }, 3000);
+      }, 10000);
 
       return () => clearInterval(intervalId);
     }
@@ -196,7 +196,7 @@ const UserNotification: React.FC = () => {
       </button>
       {isOpen && (
         <div ref={modalRef} className={styles.notificationModal}>
-          <h3>알림 {alerts.length}개</h3>
+          <h3>알림 {unreadCount}개</h3>
           <ul className={styles.alertList}>
             {alerts.map((alert) => (
               <li
