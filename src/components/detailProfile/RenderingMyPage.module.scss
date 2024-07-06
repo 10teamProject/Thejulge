@@ -2,7 +2,7 @@
   display: flex;
   height: 376px;
   align-items: center;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
 }
 
 .informationWrap {
@@ -76,9 +76,9 @@
 .button {
   width: 169px;
   height: 48px;
-  border-color: var(--yellow4);
+  border: 1px solid var(--yellow4);
   border-radius: 6px;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   font-weight: 700;
   font-size: 16px;
   line-height: 20px;
@@ -93,7 +93,7 @@
 
 // 페이지네이션
 .pageNationWrap {
-  background-color: #FAFAFA;
+  background-color: #fafafa;
 }
 
 .item {
@@ -137,12 +137,10 @@
   pointer-events: none;
 }
 
-
 @media (min-width: 1024px) {
 }
 
 @media (min-width: 768px) and (max-width: 1023px) {
-
   .profileTitle {
     width: 120px;
     position: relative;
@@ -152,7 +150,6 @@
     font-size: 28px;
     line-height: 33.6px;
   }
-
 }
 
 @media (max-width: 767px) {
