@@ -76,7 +76,8 @@
     .alertText,
     .time,
     .acceptedText,
-    .rejectedText {
+    .rejectedText,
+    .pendingText {
       color: #a4a1aa;
     }
   }
@@ -99,6 +100,10 @@
   background-color: #f03e3e;
 }
 
+.pending {
+  background-color: #ffc107;
+}
+
 .alertContent {
   flex-grow: 1;
 }
@@ -113,10 +118,17 @@
 
 .acceptedText {
   color: #3182f6;
+  font-weight: bold;
 }
 
 .rejectedText {
   color: #f03e3e;
+  font-weight: bold;
+}
+
+.pendingText {
+  color: #ffc107;
+  font-weight: bold;
 }
 
 .time {

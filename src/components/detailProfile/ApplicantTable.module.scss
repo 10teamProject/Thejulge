@@ -1,8 +1,9 @@
 .tableWrapper {
   margin-top: 32px;
-  background-color: #FAFAFA;
-  width: 100%;;
-  height: 700px;
+  background-color: #fafafa;
+  width: 100%;
+  min-height: 700px;
+  padding-bottom: 20px;
 }
 
 .tableTitle {
@@ -10,31 +11,25 @@
   font-weight: 700;
   font-size: 28px;
   line-height: 33.6px;
-  margin-top: 60px;
+  padding-top: 60px;
   text-align: center;
-  position: relative;
-  top: 10%;
 }
 
 .table {
   width: 964px;
-  margin: 0 auto;
-  height: 459px;
+  margin: 100px auto 20px;
   border-collapse: collapse;
   border-spacing: 0;
   background-color: #fff;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   overflow: hidden;
-  margin-top: 100px;
-  margin-bottom: 20px;
 
   th,
   td {
     padding: 20px;
     text-align: left;
     vertical-align: middle;
-    
   }
 
   th {
@@ -42,80 +37,60 @@
     color: #333;
     font-weight: bold;
     border-bottom: 2px solid #e9ecef;
-
   }
 
   td {
     border-bottom: 1px solid #e9ecef;
-    
   }
 
   tr:last-child td {
     border-bottom: none;
-    height: 5px;
-  }
-
-  tr td {
-    height: 5px;
   }
 
   th:nth-child(1),
   td:nth-child(1) {
     width: 20%;
-    
-  } // 신청자
+  }
   th:nth-child(2),
   td:nth-child(2) {
     width: 30%;
-  } // 소개
+  }
   th:nth-child(3),
   td:nth-child(3) {
     width: 20%;
-  } // 전화번호
+  }
   th:nth-child(4),
   td:nth-child(4) {
     width: 30%;
-    
-  } // 상태
+  }
 }
 
-.button {
-  padding: 8px 16px;
-  border-radius: 4px;
-  cursor: pointer;
-  margin-right: 8px;
-  display: inline-flex;
+.statusImage {
+  display: flex;
   align-items: center;
+  justify-content: flex-start;
+}
+
+.pageNationWrap {
+  display: flex;
   justify-content: center;
-  white-space: nowrap;
+  margin-top: 20px;
+}
 
-  font-family: Spoqa Han Sans Neo;
-  font-size: 14px;
-  font-weight: 700;
-  line-height: 17.53px;
-  text-align: center;
-  margin-bottom: 120px;
+@media (max-width: 768px) {
+  .table {
+    font-size: 14px;
+    width: 100%;
 
-  &.reject {
-    border: 1px solid #ff6b6b;
-    background-color: #fff;
-    color: #ff6b6b;
-
-    &:hover {
-      background-color: #ff6b6b;
-      color: #fff;
+    th,
+    td {
+      padding: 12px;
     }
   }
 
-  &.approve {
-    border: 1px solid #4dabf7;
-    background-color: #fff;
-    color: #4dabf7;
-
-    &:hover {
-      background-color: #4dabf7;
-      color: #fff;
-    }
+  .statusImage img {
+    max-width: 100%;
+    height: auto;
   }
 }
 
@@ -123,7 +98,7 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  height: 100%;
+  gap: 10px;
 }
 
 .statusBadge {
@@ -155,67 +130,26 @@
     color: #f08c00;
     border: 1px solid #ffec99;
   }
-}
 
-.pagination {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-  width: 964px;
-
-  .pageButton {
-    padding: 6px 12px;
-    margin: 0 2px;
-    border: 1px solid #ddd;
-    background-color: #fff;
-    color: #333;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    
-
-    &:hover:not(:disabled) {
-      background-color: #f1f3f5;
-    }
-
-    &:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-
-    &.active {
-      background-color: #fcc419;
-      color: #fff;
-      border-color: #fcc419;
-    }
+  &.canceled {
+    background-color: #f0f0f0;
+    color: #666;
+    border: 1px solid #ccc;
   }
 }
 
-.introText {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  word-break: break-word;
-  line-height: 1.5;
-  max-height: 3em; // 2줄로 제한
-}
+.cancelButton {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #dc3545;
+  background-color: #fff;
+  border: 1px solid #dc3545;
+  cursor: pointer;
 
-@media (max-width: 768px) {
-  .table {
-    font-size: 14px;
-
-    th,
-    td {
-      padding: 12px;
-    }
-  }
-
-  .button {
-    padding: 6px 12px;
-    font-size: 12px;
-  }
-
-  .statusBadge {
-    padding: 4px 8px;
-    font-size: 12px;
-    min-width: 60px;
+  &:hover {
+    background-color: #dc3545;
+    color: #fff;
   }
 }

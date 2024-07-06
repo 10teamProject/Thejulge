@@ -45,7 +45,6 @@
 
 .confirmButton {
   background-color: var(--yellow4);
-  color: white;
   border: none;
   cursor: pointer;
   transition: background-color 0.3s;
@@ -59,8 +58,13 @@
   border-radius: 8px;
   align-self: flex-end;
   margin-top: 20px;
+  color: white;
 
   &:hover {
     background-color: #ffe066;
   }
+}
+
+.modalContent .confirmButton {
+  color: white !important;
 }

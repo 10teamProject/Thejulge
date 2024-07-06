@@ -1,28 +1,26 @@
-import Image from 'next/image';
 import Cookies from 'js-cookie';
 import React, { useEffect, useState } from 'react';
 import { Pagination } from '@/components/common/PageNation';
 import fetchAPI from '@/pages/api/AxiosInstance';
 import styles from './ApplicantTable.module.scss';
-
-import pendingImage from '@/public/assets/icon/pending.svg';
-import applyImage from '@/public/assets/icon/apply.svg';
-import rejectionImage from '@/public/assets/icon/rejection.svg';
+import { updateApplicationStatus } from '@/pages/api/ApplicationStatus';
 
 interface ApplicantTableProps {
   user_id: string;
 }
 
-type ApplicationStatus = 'pending' | 'accepted' | 'rejected' | 'canceled';
+type ApplicationStatus = 'accepted' | 'rejected' | 'canceled' | 'pending';
 
 interface Shop {
   item: {
+    id: string;
     name: string;
   };
 }
 
 interface Notice {
   item: {
+    id: string;
     startsAt: string;
     workhour: number;
     hourlyPay: number;
@@ -30,33 +28,38 @@ interface Notice {
 }
 
 interface Application {
-  item: {
-    id: string;
-    status: ApplicationStatus;
-    createdAt: string;
-    shop: Shop;
-    notice: Notice;
-  };
+  id: string;
+  status: ApplicationStatus;
+  createdAt: string;
+  shop: Shop;
+  notice: Notice;
+}
+
+interface ApiResponseItem {
+  item: Application;
 }
 
 interface ApiResponse {
-  items: Application[];
+  items: ApiResponseItem[];
   count: number;
 }
 
 const ApplicantTable: React.FC<ApplicantTableProps> = ({ user_id }) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [list, setList] = useState<Application[]>([]);
+  const [list, setList] = useState<ApiResponseItem[]>([]);
   const [totalPages, setTotalPages] = useState(0);
   const rowPerPage = 5;
 
-  const loadList = async (pageNumber: number): Promise<ApiResponse> => {
+  const loadList = async (
+    offset: number,
+    limit: number,
+  ): Promise<ApiResponse> => {
     const token = Cookies.get('token');
 
-    const { data } = await fetchAPI().get<ApiResponse>(`/users/${user_id}/applications`, {
+    const { data } = await fetchAPI().get(`/users/${user_id}/applications`, {
       params: {
-        offset: (pageNumber - 1) * rowPerPage,
-        limit: rowPerPage,
+        offset,
+        limit,
       },
       headers: {
         Authorization: `Bearer ${token}`,
@@ -68,13 +71,27 @@ const ApplicantTable: React.FC<ApplicantTableProps> = ({ user_id }) => {
 
   const fetchData = async (page: number) => {
     try {
-      const res = await loadList(page);
+      let currentOffset = (page - 1) * rowPerPage;
+      let currentLimit = rowPerPage;
+      let aggregatedList: ApiResponseItem[] = [];
+      let totalItems = 0;
+
+      while (aggregatedList.length < rowPerPage) {
+        const res = await loadList(currentOffset, currentLimit);
+        totalItems = res.count;
+        aggregatedList = [...aggregatedList, ...res.items];
+
+        if (res.items.length < currentLimit) {
+          break;
+        }
+
+        currentOffset += currentLimit;
+        currentLimit = rowPerPage - aggregatedList.length;
+      }
 
       setCurrentPage(page);
-      // 취소된 데이터를 제외한 리스트 설정
-      const filteredList = res.items.filter((item) => item.item.status !== 'canceled');
-      setList(filteredList);
-      setTotalPages(Math.ceil(res.count / rowPerPage));
+      setList(aggregatedList.slice(0, rowPerPage));
+      setTotalPages(Math.ceil(totalItems / rowPerPage));
     } catch (error) {
       console.error('Error fetching applicants:', error);
     }
@@ -88,8 +105,12 @@ const ApplicantTable: React.FC<ApplicantTableProps> = ({ user_id }) => {
     const startDate = new Date(startsAt);
 
     // 로컬 시간으로 변환
-    const localStartDate = new Date(startDate.getTime() + (startDate.getTimezoneOffset() * 60000));
-    const endDate = new Date(localStartDate.getTime() + (workhour * 60 * 60 * 1000));
+    const localStartDate = new Date(
+      startDate.getTime() + startDate.getTimezoneOffset() * 60000,
+    );
+    const endDate = new Date(
+      localStartDate.getTime() + workhour * 60 * 60 * 1000,
+    );
 
     const formatHour = (hour: number) => hour.toString().padStart(2, '0');
     const formatMinute = (minute: number) => minute.toString().padStart(2, '0');
@@ -103,16 +124,59 @@ const ApplicantTable: React.FC<ApplicantTableProps> = ({ user_id }) => {
     return `${formattedStart} ~ ${formattedEnd} (${duration})`;
   };
 
-  const getStatusImage = (status: ApplicationStatus) => {
+  const formatCurrency = (number: number) => {
+    return new Intl.NumberFormat('ko-KR', {
+      style: 'currency',
+      currency: 'KRW',
+    }).format(number);
+  };
+
+  const getStatusBadge = (status: string) => {
     switch (status) {
       case 'pending':
-        return pendingImage.src;
+        return (
+          <div className={`${styles.statusBadge} ${styles.pending}`}>
+            대기중
+          </div>
+        );
       case 'accepted':
-        return applyImage.src;
+        return (
+          <div className={`${styles.statusBadge} ${styles.accepted}`}>
+            승인완료
+          </div>
+        );
       case 'rejected':
-        return rejectionImage.src;
+        return (
+          <div className={`${styles.statusBadge} ${styles.rejected}`}>
+            거절됨
+          </div>
+        );
+      case 'canceled':
+        return (
+          <div className={`${styles.statusBadge} ${styles.canceled}`}>
+            취소됨
+          </div>
+        );
       default:
-        return null; 
+        return null;
+    }
+  };
+
+  const handleCancelApplication = async (
+    shopId: string,
+    noticeId: string,
+    applicationId: string,
+  ) => {
+    try {
+      await updateApplicationStatus(
+        shopId,
+        noticeId,
+        applicationId,
+        'canceled',
+      );
+      fetchData(currentPage); // 취소 후 현재 페이지 목록 갱신
+    } catch (error) {
+      console.error('Error canceling application:', error);
     }
   };
 
@@ -130,32 +194,32 @@ const ApplicantTable: React.FC<ApplicantTableProps> = ({ user_id }) => {
         </thead>
         <tbody>
           {list.map((tItem, idx) => {
-            const { shop, notice, status } = tItem.item;
-
-            let imageWidth = 46;
-            let imageHeight = 29;
-
-            if (status === 'pending') {
-              imageWidth = 59;
-              imageHeight = 29;
-            } else if (status === 'accepted') {
-              imageWidth = 75;
-              imageHeight = 29;
-            }
+            const { id, shop, notice, status } = tItem.item;
 
             return (
               <tr key={idx}>
                 <td>{shop.item.name}</td>
-                <td>{formatDate(notice.item.startsAt, notice.item.workhour)}</td>
-                <td>{notice.item.hourlyPay}</td>
                 <td>
-                  <div className={styles.statusImage}>
-                    <Image
-                      src={getStatusImage(status)}
-                      alt={status}
-                      width={imageWidth}
-                      height={imageHeight}
-                    />
+                  {formatDate(notice.item.startsAt, notice.item.workhour)}
+                </td>
+                <td>{formatCurrency(notice.item.hourlyPay)}</td>
+                <td>
+                  <div className={styles.statusCell}>
+                    {getStatusBadge(status)}
+                    {status === 'pending' && (
+                      <button
+                        className={styles.cancelButton}
+                        onClick={() =>
+                          handleCancelApplication(
+                            shop.item.id,
+                            notice.item.id,
+                            id,
+                          )
+                        }
+                      >
+                        취소
+                      </button>
+                    )}
                   </div>
                 </td>
               </tr>
