@@ -1,0 +1,274 @@
+.datail_container {
+  max-width: 968px;
+  margin: 0 auto;
+  padding: 60px 0;
+  @media (max-width: 1200px) {
+    padding: 60px 32px;
+  }
+  @media (max-width: 768px) {
+    padding: 40px 12px;
+  }
+}
+
+.shop_box {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.shop_title {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.shop_title > h1 {
+  color: #ffd43b;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 20px;
+  @media (max-width: 768px) {
+    font-size: 14px;
+    line-height: 16px;
+  }
+}
+
+.shop_title > h2 {
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 33px;
+
+  @media (max-width: 768px) {
+    font-size: 20px;
+  }
+}
+
+.shop_info {
+  display: flex;
+  gap: 24px;
+  padding: 24px;
+  border: 1px solid #e5e4e7;
+  border-radius: 12px;
+
+  @media (max-width: 1200px) {
+    flex-direction: column;
+  }
+}
+
+.shop_img_box {
+  position: relative;
+  width: 539px;
+  height: 308px;
+  @media (max-width: 1200px) {
+    width: 100%;
+
+    height: 360px;
+  }
+  @media (max-width: 768px) {
+    width: 100%;
+    height: 171px;
+
+
+  }
+}
+
+.shop_img {
+  border-radius: 12px;
+  object-fit: cover;
+
+  &.img_filter {
+    filter: blur(3px);
+  }
+}
+
+.img_closed {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-size: 24px;
+  font-weight: bold;
+  border-radius: 12px;
+  z-index: 10;
+}
+
+.shop_contents {
+  padding-top: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  @media (max-width: 1200px) {
+    gap: 8px;
+  }
+}
+
+.shop_contents > h1 {
+  color: #ffd43b;
+  line-height: 20px;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.pay_box {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  .pay_hover {
+    position: absolute;
+    top: 50px;
+    background-color: rgb(124, 117, 117, 0.9);
+    padding: 8px;
+    border-radius: 7px;
+    font-size: 16px;
+    color: #ffffff;
+    display: none;
+    @media (max-width: 768px) {
+      font-size: 14px;
+    }
+  }
+
+  &:hover .pay_hover {
+    display: block;
+  }
+}
+
+.shop_hourlPay {
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 33px;
+  max-width: 150px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  @media (max-width: 768px) {
+    font-size: 24px;
+  }
+}
+
+.increaseRate {
+  background-color: #ffd43b;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 17px;
+  color: #ffffff;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+}
+
+.hidden {
+  display: none;
+}
+
+.badge {
+  max-width: 100px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.startsAt {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 26px;
+  color: #7d7986;
+  @media (max-width: 768px) {
+    font-size: 14px;
+  }
+}
+
+.address {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 26px;
+  color: #7d7986;
+  @media (max-width: 768px) {
+    font-size: 14px;
+  }
+}
+
+.shop_contents > p {
+  line-height: 26px;
+  font-size: 16px;
+  font-weight: 400;
+  @media (max-width: 768px) {
+    font-size: 14px;
+  }
+}
+
+.button {
+  width: 100%;
+  padding: 14px 136px;
+  border-radius: 6px;
+  border: none;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  &.true {
+    background-color: #ffffff;
+    color: #ffd43b;
+    border: 1px solid #ffd43b;
+  }
+
+  &.false {
+    background-color: #ffd43b;
+    color: #ffffff;
+    border: 1px solid #ffffff; // 하얀 테두리를 넣은 이유 : 테두리를 안넣으니 화면이 움직임
+  }
+
+  &.closed {
+    background-color: #7d7986;
+    color: #ffffff;
+    border: 1px solid #7d7986; // 하얀 테두리를 넣은 이유 : 테두리를 안넣으니 화면이 움직임
+
+    cursor: auto;
+  }
+
+  @media (max-width: 768px) {
+    padding: 14px;
+  }
+}
+
+.notice_description {
+  background-color: #f2f2f3;
+  border-radius: 12px;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.notice_description > h1 {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 20px;
+
+  @media (max-width: 1200px) {
+    font-size: 14px;
+  }
+}
+
+.notice_description > p {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 26px;
+
+  @media (max-width: 1200px) {
+    font-size: 14px;
+  }
+}

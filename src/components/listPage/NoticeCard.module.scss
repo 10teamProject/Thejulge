@@ -1,0 +1,256 @@
+.container {
+  cursor: pointer;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 16px;
+  gap: 10px;
+  width: 312px;
+  height: 349px;
+  background: #ffffff;
+  border: 1px solid #e5e4e7;
+  border-radius: 12px;
+  @media (max-width: 1199px) {
+    width: 332px;
+    height: 360px;
+  }
+  @media (max-width: 767px) {
+    width: 170px;
+    height: 260px;
+    padding: 12px;
+    gap: 7px;
+  }
+}
+.storeImage {
+  position: relative;
+  width: 280px;
+  height: 160px;
+  border-radius: 12px;
+  border: none;
+  background-color: var(--yellow2);
+  overflow: hidden;
+  @media (max-width: 1199px) {
+    width: 300px;
+    height: 170px;
+  }
+  @media (max-width: 767px) {
+    width: 147px;
+    height: 84px;
+  }
+}
+.storeName {
+  font-family: 'Spoqa Han Sans Neo';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 25px;
+  color: #111322;
+  margin-top: 10px;
+  @media (max-width: 767px) {
+    font-size: 16px;
+    line-height: 20px;
+  }
+}
+.detailSection {
+  position: relative;
+  display: flex;
+  gap: 5px;
+  width: 280px;
+  @media (max-width: 1199px) {
+    width: 300px;
+  }
+  @media (max-width: 767px) {
+    width: 170px;
+  }
+}
+.priceSection {
+  position: relative;
+  display: flex;
+  gap: 5px;
+  width: 280px;
+  .hoverDetails {
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    padding: 5px;
+    background-color: rgba(240, 240, 240, 0.9);
+    color: #000000;
+    font-size: 14px;
+    line-height: 22px;
+    border-radius: 5px;
+    display: none; /* 기본적으로 숨김 */
+    @media (max-width: 767px) {
+      font-size: 12px;
+      line-height: 16px;
+    }
+  }
+
+  &:hover .hoverDetails {
+    display: block; /* 마우스를 올렸을 때 보이도록 */
+  }
+  @media (max-width: 1199px) {
+    width: 300px;
+    height: 36px;
+  }
+  @media (max-width: 767px) {
+    display: flex;
+    flex-direction: column;
+    height: 50px;
+  }
+}
+.iconImage {
+  @media (max-width: 767px) {
+    width: 16px;
+    height: 16px;
+  }
+}
+.detail {
+  font-family: 'Spoqa Han Sans Neo';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 22px;
+  color: #7d7986;
+
+  @media (max-width: 767px) {
+    font-size: 12px;
+    line-height: 16px;
+    display: inline-block;
+    width: 120px;
+  }
+}
+
+.price {
+  font-family: 'Spoqa Han Sans Neo';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 30px;
+  align-items: center;
+  letter-spacing: 0.02em;
+  color: #111322;
+  width: 120px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-all;
+  @media (max-width: 767px) {
+    display: flex;
+    font-size: 18px;
+    line-height: 22px;
+    width: 147px;
+  }
+}
+.badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  gap: 5px;
+  margin: 0 0 0 auto;
+  width: 159px;
+  height: 36px;
+  background: var(--yellow5);
+  border-radius: 20px;
+
+  font-family: 'Spoqa Han Sans Neo';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 18px;
+  text-align: center;
+  color: #ffffff;
+
+  @media (max-width: 1199px) {
+    width: 168px;
+    height: 36px;
+  }
+  @media (max-width: 767px) {
+    display: flex;
+    font-size: 12px;
+    line-height: 16px;
+    color: var(--yellow5);
+    width: 150px;
+    height: 18px;
+    margin: 0;
+    background-color: transparent;
+    font-weight: 400;
+    padding: 5px 0;
+    justify-content: flex-start;
+  }
+}
+.increaseRate {
+  max-width: 140px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-all;
+  @media (max-width: 767px) {
+    max-width: 110px;
+
+    justify-content: flex-start;
+    margin: 0;
+  }
+}
+.yellow5 {
+  background: var(--yellow5);
+  @media (max-width: 767px) {
+    color: var(--yellow5);
+    background-color: transparent;
+  }
+}
+
+.yellow4 {
+  background: var(--yellow4);
+  @media (max-width: 767px) {
+    color: var(--yellow4);
+    background-color: transparent;
+  }
+}
+
+.yellow3 {
+  background: var(--yellow3);
+  @media (max-width: 767px) {
+    color: var(--yellow3);
+    background-color: transparent;
+  }
+}
+
+.hidden {
+  display: none;
+}
+.arrow {
+  @media (max-width: 767px) {
+    display: none;
+  }
+}
+.yellowArrow {
+  display: none !important;
+  @media (max-width: 767px) {
+    display: flex !important;
+  }
+}
+.closedOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-size: 24px;
+  font-weight: bold;
+  z-index: 1;
+}
+
+.closedText {
+  color: #cbc9cf;
+}
+
+.closedImage {
+  filter: blur(3px);
+}

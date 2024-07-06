@@ -1,0 +1,31 @@
+.searchBar {
+  flex-grow: 1;
+
+  input {
+    width: 100%;
+    padding: 0.5rem 1rem;
+    background-color: #f2f2f3;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+
+    font-family: Spoqa Han Sans Neo;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 22px;
+    text-align: left;
+    color: #111322;
+
+    transition: border-color 0.3s ease;
+
+    &:focus {
+      outline: none;
+      border-color: var(--yellow5);
+      box-shadow: 0 0 0 2px rgba(252, 196, 25, 0.2);
+    }
+    &:hover {
+      outline: none;
+      border-color: var(--yellow5);
+      box-shadow: 0 0 0 2px rgba(252, 196, 25, 0.2);
+    }
+  }
+}

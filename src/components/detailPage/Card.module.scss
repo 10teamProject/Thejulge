@@ -1,0 +1,201 @@
+.card_container {
+  border: 1px solid #e5e4e7;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  gap: 12px;
+  width: 312px;
+  height: 349px;
+  @media (max-width: 768px) {
+    padding: 12px;
+    width: 171px;
+    height: 261px;
+    gap: 10px;
+  }
+}
+
+.img_box {
+  position: relative;
+  width: 280px;
+  height: 160px;
+  @media (max-width: 768px) {
+    width: 147px;
+    height: 84px;
+  }
+}
+
+.img_closed {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-size: 24px;
+  font-weight: bold;
+  border-radius: 12px;
+  z-index: 10;
+  @media (max-width: 768px) {
+    font-size: 14px;
+  }
+}
+
+.card_img {
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+.card_img_closed {
+  filter: blur(3px);
+}
+
+.shop_info {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  @media (max-width: 768px) {
+    gap: 12px;
+  }
+}
+
+.card_closed {
+  color: #cbc9cf;
+}
+
+.shop_info_box {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.shop_name {
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 25px;
+  @media (max-width: 768px) {
+    font-size: 16px;
+    line-height: 20px;
+  }
+}
+
+.workAt {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 22px;
+  @media (max-width: 768px) {
+    font-size: 12px;
+    line-height: 16px;
+  }
+}
+
+.card_img {
+  position: relative;
+}
+
+.address {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 22px;
+  @media (max-width: 768px) {
+    font-size: 12px;
+    line-height: 16px;
+  }
+}
+.pay_box {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .hover_pay {
+    position: absolute;
+    top: 40px;
+    display: none;
+    background-color: rgba(240, 240, 240, 0.9);
+    border-radius: 5px;
+    color: #000000;
+    z-index: 99999px;
+    padding: 5px;
+    font-size: 15px;
+
+    @media (max-width: 768px) {
+      font-size: 13px;
+    }
+  }
+
+  &:hover .hover_pay {
+    display: block;
+  }
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+.hourlPay {
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 30px;
+  max-width: 120px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  @media (max-width: 768px) {
+    font-size: 18px;
+    line-height: 22px;
+  }
+}
+
+.increaseRate {
+  background-color: #ffd43b;
+  border-radius: 20px;
+  padding: 12px;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 17px;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+
+  @media (max-width: 768px) {
+    background-color: initial;
+    color: #ffd43b;
+    padding: initial;
+  }
+}
+
+.hidden {
+  display: none;
+}
+
+.badge {
+  max-width: 100px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.arrow {
+  display: flex;
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+.yellowArrow {
+  display: none;
+  @media (max-width: 768px) {
+    display: flex;
+  }
+}

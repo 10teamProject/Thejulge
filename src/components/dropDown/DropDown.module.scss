@@ -1,0 +1,99 @@
+.input {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  background-color: #fff;
+  border-radius: 6px;
+  cursor: pointer;
+  border: 1px solid var(--gray30);
+  font-size: 13px;
+  line-height: 22px;
+}
+
+.input:hover,
+.input:focus {
+  border-color: #ffe854;
+}
+
+.placeholder {
+  color: grey;
+}
+
+.arrow {
+  transform: rotate(180deg);
+  transition: transform 0.2s ease;
+}
+
+.opened .arrow {
+  transform: rotate(0);
+}
+
+.options {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  left: 0;
+  z-index: 1;
+  overflow-y: scroll;
+  background-color: var(--white);
+  border-radius: 6px;
+  transform: scaleY(0);
+  transform-origin: top center;
+  transition: transform 0.2s ease-in-out;
+  border: 1px solid var(--gray20);
+  box-shadow: 0px 4px 25px 0px #0000001a;
+  height: 230px;
+  text-align: center;
+}
+
+.options {
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--yellow4);
+    border-radius: 10px;
+  }
+
+  &::-webkit-scrollbar-button {
+    display: none;
+  }
+}
+
+.opened .options {
+  transform: scaleY(1);
+}
+
+.option {
+  padding: 10px 15px;
+  cursor: pointer;
+}
+
+.option:not(:last-child) {
+  border-bottom: 1px solid var(--gray20);
+}
+
+.option:first-child {
+  padding-top: 15px;
+}
+
+.option:last-child {
+  padding-bottom: 15px;
+}
+
+.option.selected,
+.option:hover {
+  background-color: #fff3bf;
+}
+
+.errorMessage {
+  color: red;
+  font-size: 12px;
+}

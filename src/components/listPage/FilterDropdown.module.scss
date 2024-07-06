@@ -1,0 +1,238 @@
+.filterContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 24px 20px;
+  gap: 10px;
+  z-index: 2;
+  position: absolute;
+  top: 130%;
+  right: 0;
+  width: 390px;
+  background: #ffffff;
+  border: 1px solid #e5e4e7;
+  box-shadow: 0px 2px 8px rgba(120, 116, 134, 0.25);
+  border-radius: 10px;
+
+  font-family: 'Spoqa Han Sans Neo';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 25px;
+  color: #111322;
+  @media (max-width: 767px) {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow-y: auto;
+    gap: 10px;
+    margin-bottom: 15px;
+    overflow: auto;
+  }
+}
+.fliterTop {
+  position: relative;
+  display: flex;
+  width: 350px;
+  margin-bottom: 14px;
+  gap: 10px;
+  align-items: center;
+  @media (max-width: 767px) {
+    margin: 0 auto 14px auto;
+  }
+}
+.xImage {
+  margin: 0 0 0 auto;
+}
+.filterName {
+  font-family: 'Spoqa Han Sans Neo';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 26px;
+  color: #111322;
+  @media (max-width: 767px) {
+    width: 350px;
+    margin: 0 auto;
+  }
+}
+.filterLocation {
+  width: 350px;
+  height: 258px;
+  background: #ffffff;
+  border: 1px solid #e5e4e7;
+  border-radius: 6px;
+  overflow: auto;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  padding: 10px;
+  @media (max-width: 767px) {
+    min-height: 258px;
+    width: 350px;
+    margin: 0 auto;
+  }
+}
+.locationOption {
+  text-align: center;
+  cursor: pointer;
+  font-family: 'Spoqa Han Sans Neo';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 22px;
+  color: #111322;
+}
+
+.selectedTags {
+  margin-top: 20px;
+  @media (max-width: 767px) {
+    width: 350px;
+    margin: 20px auto 0;
+  }
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  margin: 3px;
+  justify-content: center;
+  align-items: center;
+  padding: 6px 10px;
+  gap: 4px;
+  background: #fff9db;
+  border-radius: 20px;
+
+  font-family: 'Spoqa Han Sans Neo';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 18px;
+  color: var(--yellow5);
+}
+
+.tagClose {
+  cursor: pointer;
+  font-weight: bold;
+  margin-left: 2px;
+  font-size: 20px;
+}
+
+.line {
+  width: 350px;
+  height: 2px;
+  background: #f2f2f3;
+  margin: 10px 0 10px;
+  @media (max-width: 767px) {
+    width: 350px;
+    margin: 20px auto 0;
+  }
+}
+.filterDate {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 350px;
+  min-height: 58px;
+  cursor: pointer;
+
+  &:focus {
+    outline: none;
+    border-color: var(--yellow5);
+  }
+
+  &::placeholder {
+    color: #999;
+  }
+  @media (max-width: 767px) {
+    margin: 20px auto 0;
+  }
+}
+.filterPrice {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  gap: 10px;
+  width: 169px;
+  height: 58px;
+  background: #ffffff;
+  border: 1px solid #cbc9cf;
+  border-radius: 6px;
+
+  font-family: 'Spoqa Han Sans Neo';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 26px;
+  color: #111322;
+
+  &:focus {
+    border: 1px solid var(--yellow5);
+    outline: none;
+  }
+  &::placeholder {
+    font-size: 16px;
+    line-height: 26px;
+  }
+}
+.filterPriceText {
+  font-family: 'Spoqa Han Sans Neo';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 26px;
+  color: #111322;
+  position: absolute;
+  left: 140px;
+}
+.filterBottom {
+  display: flex;
+  gap: 10px;
+  @media (max-width: 767px) {
+    width: 350px;
+    margin: 20px auto 0;
+  }
+}
+.buttonReset {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  width: 82px;
+  height: 48px;
+  background: #ffffff;
+  border: 1px solid var(--yellow5);
+  border-radius: 6px;
+
+  font-family: 'Spoqa Han Sans Neo';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 20px;
+  color: var(--yellow5);
+  cursor: pointer;
+}
+.submit {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  width: 260px;
+  height: 48px;
+  background: var(--yellow5);
+  border-radius: 6px;
+  border: none;
+
+  font-family: 'Spoqa Han Sans Neo';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 20px;
+  color: #ffffff;
+  cursor: pointer;
+}

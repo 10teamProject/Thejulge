@@ -1,0 +1,122 @@
+.header {
+  width: 100%;
+  padding: 25px 0;
+  border-bottom: 1px solid #eee;
+}
+.customFont {
+  font-family: 'Bagel Fat One', cursive;
+  font-size: 30px;
+  color: var(--yellow5);
+  text-decoration: none;
+}
+.headerContainer {
+  width: 100%;
+  max-width: 1200px;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 32px;
+  background-color: #fff;
+}
+
+.logo {
+  font-family: '@/public/assets/fonts/BagelFatOne-Regular.ttf';
+}
+
+.searchBar {
+  flex-grow: 1;
+  margin: 0 2rem;
+
+  input {
+    width: 90%;
+    padding: 0.5rem 1rem;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+
+    font-family: Spoqa Han Sans Neo;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 22px;
+    text-align: left;
+    color: #a4a1aa;
+
+    transition: border-color 0.3s ease;
+
+    &:focus {
+      outline: none;
+      border-color: var(--yellow5);
+      box-shadow: 0 0 0 2px rgba(252, 196, 25, 0.2);
+    }
+    &:hover {
+      outline: none;
+      border-color: var(--yellow5);
+      box-shadow: 0 0 0 2px rgba(252, 196, 25, 0.2);
+    }
+  }
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  a,
+  button {
+    text-decoration: none;
+    font-family: Spoqa Han Sans Neo;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 20px;
+    text-align: right;
+    color: #111322;
+
+    &:hover {
+      color: var(--yellow5);
+    }
+  }
+}
+
+.logoutButton,
+.navButton {
+  background: none;
+  border: none;
+  color: #333;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+}
+
+.logoutContainer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
+}
+
+.iconContainer {
+  margin-top: 2px;
+}
+
+@media (max-width: 767px) {
+  .header {
+    padding: 15px 0;
+    min-width: 375px;
+  }
+
+  .headerContainer {
+    flex-wrap: wrap;
+    padding: 0 20px;
+  }
+
+  .searchBar {
+    width: 100%;
+    order: 3;
+    margin: 0 auto;
+    margin-top: 20px;
+    input {
+      width: 100%;
+    }
+  }
+}

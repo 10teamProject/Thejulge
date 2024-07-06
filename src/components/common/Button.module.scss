@@ -1,0 +1,63 @@
+.button {
+  // 기본 버튼 스타일
+  height: 48px;
+  background-color: var(--yellow4);
+  color: white;
+  padding: 0 24px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 700;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: var(--yellow5);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  &.full {
+    width: 100%;
+  }
+
+  &.large {
+    width: 350px;
+  }
+
+  &.medium {
+    width: 108px;
+  }
+
+  &.small {
+    width: 82px;
+  }
+
+  &.borderStyle {
+    background-color: #fff;
+    border: 1px solid var(--yellow4);
+    color: var(--yellow5);
+
+    &:hover {
+      background-color: #fff8dc;
+    }
+  }
+
+  &.left {
+    margin-right: auto;
+  }
+
+  &.center {
+    margin: auto;
+  }
+
+  &.right {
+    margin-left: auto;
+  }
+}

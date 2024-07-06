@@ -1,0 +1,134 @@
+.containerWrapper {
+  background-color: var(--gray5);
+  position: relative;
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 60px 32px;
+}
+
+.title {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 32px;
+}
+
+.inputWrapper {
+  margin-bottom: 24px;
+}
+
+.label {
+  display: block;
+  margin-bottom: 5px;
+  line-height: 26px;
+}
+
+.formInner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas:
+    'storeName category'
+    'address address'
+    'pay pay'
+    'storeImage storeImage'
+    'storeInfo storeInfo';
+  gap: 10px;
+}
+
+.storeName {
+  grid-area: storeName;
+}
+
+.category {
+  grid-area: category;
+}
+
+.address {
+  grid-area: address;
+}
+
+.pay {
+  grid-area: pay;
+  grid-column: span 1;
+  position: relative;
+
+  .won {
+    position: absolute;
+    right: 15px;
+    top: 53px;
+    pointer-events: none;
+  }
+}
+
+.storeImage {
+  grid-area: storeImage;
+  width: 49.5%;
+}
+
+.storeInfo {
+  grid-area: storeInfo;
+}
+
+.closeImg {
+  position: absolute;
+  right: 32px;
+  top: 60px;
+  cursor: pointer;
+}
+
+.imageWrapper {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+.imageEditCover {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 10px;
+  color: var(--white);
+  background-color: rgba(0, 0, 0, 0.5);
+  width: 100%;
+  height: 276px;
+  pointer-events: none;
+}
+
+@media (max-width: 767px) {
+  .container {
+    padding: 40px 12px;
+  }
+
+  .title {
+    font-size: 20px;
+    margin-bottom: 24px;
+  }
+
+  .inputWrapper {
+    margin-bottom: 20px;
+  }
+
+  .formInner {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .storeImage {
+    width: 100%;
+  }
+
+  .closeImg {
+    position: absolute;
+    right: 12px;
+    top: 40px;
+  }
+}

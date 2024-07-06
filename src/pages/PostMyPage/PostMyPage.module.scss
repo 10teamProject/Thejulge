@@ -1,0 +1,254 @@
+@import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css);
+
+.main {
+  height: 100vh;
+  display: flex;
+  justify-content: center; 
+  background-color: #FAFAFA;
+}
+
+// 내 프로필
+
+.postContainer {
+  // border: 1px solid red;
+  width: 964px;
+  height: 449px;
+  margin-top: 60px;
+}
+
+// input 제목 스타일 공통
+.profileTitle {
+  font-family: 'Spoqa Han Sans Neo', sans-serif;
+  font-weight: 700;
+  font-size: 28px;
+  line-height: 33.6px;
+  margin-bottom: 24px;
+}
+
+
+// 이름, 연락처 input 부분
+.formInput {
+  display: flex;
+  width: 964px;
+  height: 449px;
+  // border: 1px solid rgb(255, 0, 238);
+  flex-wrap: wrap;
+}
+
+.formarray {
+  display: flex;
+}
+
+.inputSize {
+  width: 308px;
+  height: 92px;
+  margin-right: 20px;
+}
+
+.inputFont {
+  font-family: 'Spoqa Han Sans Neo', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 26px;
+  color: #111322;
+  color: #111322;
+}
+
+.input {
+  width: 308px;
+  height: 58px;
+  border: 1px solid #CBC9CF;
+  border-radius: 6px;
+  margin-top: 8px;
+  color: #111322;
+  font-family: 'Spoqa Han Sans Neo', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 26px;
+  padding-left : 20px;
+
+   &::placeholder {
+    color: #A4A1A4;
+   }
+}
+
+.input:focus {
+  outline: none;
+}
+
+// 선호 지역
+.selectStyle {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  width: 308px;
+  height: 58px;
+  border-radius: 6px;
+  background-color: #FFFFFF;
+  border: 1px solid #CBC9CF;
+  margin-top: 8px;
+  cursor: pointer;
+  text-align: left;
+  padding: 16px 20px;
+  font-family: 'Spoqa Han Sans Neo', sans-serif;
+  background-color: #FFFFFF;
+  border: 1px solid #CBC9CF;
+  margin-top: 8px;
+  cursor: pointer;
+  text-align: left;
+  padding: 16px 20px;
+  font-family: 'Spoqa Han Sans Neo', sans-serif;
+  color: #A4A1A4;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 26px;
+}
+
+.options {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background-color: #FFFFFF;
+  border: 1px solid #CBC9CF;
+  border-radius: 6px;
+  z-index: 1;
+  max-height: 237px;
+  overflow-y: auto;
+  width: 308px;
+  margin-top: 8px;
+  box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.2);
+}
+
+.options.show {
+  display: block;
+}
+
+.option {
+  font-family: 'Spoqa Han Sans Neo', sans-serif;
+  color: #111322;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 26px;
+  text-align: center;
+  padding: 10px;
+  box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.2);
+}
+
+.options.show {
+  display: block;
+}
+
+.option {
+  font-family: 'Spoqa Han Sans Neo', sans-serif;
+  color: #111322;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 26px;
+  text-align: center;
+  padding: 10px;
+  cursor: pointer;
+  border-bottom: 1px solid #E5E4E7;
+}
+
+.option:hover {
+  background-color: #f0f0f0;
+}
+
+// 스크롤바 디자인
+.options::-webkit-scrollbar {
+  width: 4px; // 스크롤바 너비
+}
+
+.options::-webkit-scrollbar-track {
+  background-color: var(--yellow3); // 스크롤바 배경
+}
+
+.options::-webkit-scrollbar-thumb {
+  background-color: #ffb700; // 스크롤바 색상
+  border-radius: 12px 12px 12px 12px;   // 스크롤바 모서리
+  min-height: 50px; // 스크롤바 최소 높이
+}
+.options::-webkit-scrollbar-thumb:hover {
+  background-color: #ff9100; // 스크롤바 hover 색상
+  border-bottom: 1px solid #E5E4E7;
+}
+
+.option:hover {
+  background-color: #f0f0f0;
+}
+
+// 스크롤바 디자인
+.options::-webkit-scrollbar {
+  width: 4px; // 스크롤바 너비
+}
+
+.options::-webkit-scrollbar-track {
+  background-color: var(--yellow3); // 스크롤바 배경
+}
+
+.options::-webkit-scrollbar-thumb {
+  background-color: #ffb700; // 스크롤바 색상
+  border-radius: 12px 12px 12px 12px;   // 스크롤바 모서리
+  min-height: 50px; // 스크롤바 최소 높이
+}
+.options::-webkit-scrollbar-thumb:hover {
+  background-color: #ff9100; // 스크롤바 hover 색상
+}
+
+// 소개 input 부분
+.introduceBox {
+  width: 964px;
+  height: 187px;
+}
+
+.inputBoard {
+  font-family: 'Spoqa Han Sans Neo', sans-serif;
+  width: 964px;
+  height: 153px;
+  border-radius: 5px;
+  border-color: #CBC9CF;
+  color: #111322;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 26px;
+  margin-top: 8px;
+  padding-left : 20px;
+  padding-top: 16px;
+
+  &::placeholder {
+    color: #A4A1A4;
+   }
+}
+
+.inputBoard:focus {
+ outline: none;
+}
+
+
+// 등록하기 버튼
+.button {
+  width: 346px;
+  height: 47px;
+  border-radius: 6px;
+  background-color: var(--yellow4);
+  margin: 0 auto;
+  border: none;
+  cursor: pointer;
+    span {
+      width: 125px;
+      height: 20px;
+      font-family: 'Spoqa Han Sans Neo', sans-serif;
+      font-weight: 700;
+      font-size: 16px;
+      line-height: 20px;
+      text-align: center;
+      color: #FFFFFF;
+}
+}
+
+

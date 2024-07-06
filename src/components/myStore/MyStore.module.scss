@@ -1,0 +1,191 @@
+.card {
+  background-color: #fff9db;
+  border-radius: 10px;
+  overflow: hidden;
+  min-height: 358px;
+  display: flex;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 60px;
+}
+
+.imageContainer {
+  flex: 0 0 50%;
+  max-width: 50%;
+  padding: 24px;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  max-width: 539px;
+  max-height: 308px;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+.content {
+  flex: 1;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+}
+
+.category {
+  color: var(--yellow5);
+  font-weight: bold;
+}
+
+.storeName {
+  font-family:
+    Spoqa Han Sans Neo,
+    sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 33.6px;
+  letter-spacing: 0.02em;
+  text-align: left;
+  margin: 10px 0;
+}
+
+.location {
+  display: flex;
+  align-items: center;
+  color: #666;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.icon {
+  width: 16px;
+  height: 16px;
+  margin-right: 5px;
+}
+
+.description {
+  margin-top: 10px;
+  margin-bottom: 20px;
+  flex-grow: 1;
+  font-family:
+    Spoqa Han Sans Neo,
+    sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 26px;
+  text-align: left;
+}
+
+.buttonContainer {
+  display: flex;
+  gap: 10px;
+}
+
+.editButton,
+.shareButton {
+  width: 140px;
+  height: 48px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  flex: 1;
+  font-family:
+    Spoqa Han Sans Neo,
+    sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 25px;
+  text-align: center;
+}
+
+.editButton {
+  background-color: white;
+  color: var(--yellow5);
+  border: 1px solid var(--yellow5);
+}
+
+.shareButton {
+  background-color: var(--yellow5);
+  color: white;
+}
+
+/* Tablet: 768px 이상 ~ 1199px 이하 */
+@media (max-width: 1199px) {
+  .card {
+    flex-direction: column;
+    max-width: 680px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .imageContainer {
+    max-width: 680px;
+    padding: 20px 20px 0;
+  }
+
+  .image {
+    max-width: 680px;
+    height: auto;
+  }
+
+  .content {
+    padding: 20px;
+  }
+
+  .buttonContainer {
+    margin-top: 20px;
+  }
+}
+
+/* Mobile: 375px 이상 ~ 767px 이하 */
+@media (max-width: 767px) {
+  .card {
+    min-width: 330px;
+    padding: 12px;
+    margin-bottom: 40px;
+  }
+
+  .imageContainer {
+    padding: 0 0 16px;
+  }
+
+  .image {
+    max-height: 177.71px;
+    border-radius: 8px;
+  }
+
+  .content {
+    padding: 0;
+  }
+
+  .category {
+    font-size: 14px;
+  }
+
+  .storeName {
+    font-size: 20px;
+    line-height: 1.2;
+    margin: 8px 0;
+  }
+
+  .location {
+    font-size: 14px;
+  }
+
+  .description {
+    font-size: 14px;
+    line-height: 1.4;
+    margin-bottom: 16px;
+    color: #666;
+  }
+
+  .buttonContainer {
+    gap: 8px;
+  }
+
+  .editButton,
+  .shareButton {
+    height: 40px;
+    font-size: 14px;
+    border-radius: 8px;
+  }
+}
