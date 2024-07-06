@@ -67,10 +67,12 @@ export default function StoreRegister({
 
   // 주소 변경 핸들러
   const handleAddressChange = (value: string) => {
-    const updatedValues = { ...formValues, address1: value };
-    setFormValues(updatedValues);
+    setFormValues((prev) => ({
+      ...prev,
+      address1: value,
+    }));
 
-    const errors = validateForm(updatedValues);
+    const errors = validateForm({ ...formValues, address1: value });
     setFormErrors((prev) => ({
       ...prev,
       address1: errors.address1 || '',
@@ -78,10 +80,12 @@ export default function StoreRegister({
   };
 
   const handleDetailAddressChange = (value: string) => {
-    const updatedValues = { ...formValues, address2: value };
-    setFormValues(updatedValues);
+    setFormValues((prev) => ({
+      ...prev,
+      address2: value,
+    }));
 
-    const errors = validateForm(updatedValues);
+    const errors = validateForm({ ...formValues, address2: value });
     setFormErrors((prev) => ({
       ...prev,
       address2: errors.address2 || '',
