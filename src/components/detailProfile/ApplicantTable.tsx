@@ -13,32 +13,49 @@ interface ApplicantTableProps {
   user_id: string;
 }
 
-// 예시로 취소된 상태 추가
-type ApplicationStatus = 'accepted' | 'rejected' | 'canceled';
+type ApplicationStatus = 'pending' | 'accepted' | 'rejected' | 'canceled';
+
+interface Shop {
+  item: {
+    name: string;
+  };
+}
+
+interface Notice {
+  item: {
+    startsAt: string;
+    workhour: number;
+    hourlyPay: number;
+  };
+}
 
 interface Application {
-  id: string;
-  status: ApplicationStatus;
-  createdAt: string;
+  item: {
+    id: string;
+    status: ApplicationStatus;
+    createdAt: string;
+    shop: Shop;
+    notice: Notice;
+  };
 }
 
 interface ApiResponse {
-  item: Application;
-  links: [];
+  items: Application[];
+  count: number;
 }
 
 const ApplicantTable: React.FC<ApplicantTableProps> = ({ user_id }) => {
-  const [currentPage, setCurrentPage] = useState(1); // 페이지는 1부터 시작
+  const [currentPage, setCurrentPage] = useState(1);
   const [list, setList] = useState<Application[]>([]);
   const [totalPages, setTotalPages] = useState(0);
   const rowPerPage = 5;
 
-  const loadList = async (pageNumber: number) => {
+  const loadList = async (pageNumber: number): Promise<ApiResponse> => {
     const token = Cookies.get('token');
 
-    const { data } = await fetchAPI().get(`/users/${user_id}/applications`, {
+    const { data } = await fetchAPI().get<ApiResponse>(`/users/${user_id}/applications`, {
       params: {
-        offset: (pageNumber - 1) * rowPerPage, // 페이지 번호에 따라 오프셋 계산
+        offset: (pageNumber - 1) * rowPerPage,
         limit: rowPerPage,
       },
       headers: {
@@ -53,7 +70,7 @@ const ApplicantTable: React.FC<ApplicantTableProps> = ({ user_id }) => {
     try {
       const res = await loadList(page);
 
-      setCurrentPage(page); // 현재 페이지 설정
+      setCurrentPage(page);
       // 취소된 데이터를 제외한 리스트 설정
       const filteredList = res.items.filter((item) => item.item.status !== 'canceled');
       setList(filteredList);
@@ -86,7 +103,7 @@ const ApplicantTable: React.FC<ApplicantTableProps> = ({ user_id }) => {
     return `${formattedStart} ~ ${formattedEnd} (${duration})`;
   };
 
-  const getStatusImage = (status: string) => {
+  const getStatusImage = (status: ApplicationStatus) => {
     switch (status) {
       case 'pending':
         return pendingImage.src;
