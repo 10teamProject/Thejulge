@@ -1,12 +1,11 @@
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
-
 import DetailCard from '../../components/detailProfile/Detailcard';
 import RenderingMyPage from '../../components/detailProfile/RenderingMyPage';
 import { instance } from '../api/AxiosInstance';
 import styles from './MyPage.module.scss';
-import LoadingSpinner from '../../components/common/Spinner'; //로딩 스피너 수정
+import LoadingSpinner from '../../components/common/Spinner';
 
 function MyPage() {
   const [userInfo, setUserInfo] = useState({
@@ -15,11 +14,8 @@ function MyPage() {
     phone: '',
     address: '',
     bio: '',
-    notice_id: '',
   });
-
   const [loading, setLoading] = useState(true);
-
   const router = useRouter();
 
   useEffect(() => {
@@ -30,7 +26,6 @@ function MyPage() {
         setLoading(false);
         return;
       }
-
       try {
         const userId = JSON.parse(sessionStorage.getItem('user') || '{}').id;
         if (!userId) {
@@ -38,7 +33,6 @@ function MyPage() {
           setLoading(false);
           return;
         }
-
         const response = await instance.get(`/users/${userId}`, {
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -54,7 +48,6 @@ function MyPage() {
         setLoading(false);
       }
     };
-
     fetchUserInfo();
   }, []);
 
@@ -63,7 +56,7 @@ function MyPage() {
   };
 
   if (loading) {
-    return <LoadingSpinner />; // 로딩 중일 때 스피너 띄우기
+    return <LoadingSpinner />;
   }
 
   return (
@@ -83,7 +76,6 @@ function MyPage() {
           address={userInfo.address}
           bio={userInfo.bio}
           user_id={userInfo.user_id}
-          notice_id={userInfo.notice_id}
         />
       )}
     </main>
