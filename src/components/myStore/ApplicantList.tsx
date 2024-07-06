@@ -2,8 +2,8 @@ import { Pagination } from '@/components/common/PageNation';
 import LoadingSpinner from '@/components/common/Spinner';
 import { useApplicants } from '@/hooks/useApplicants';
 
-import { ApplicantRow } from '../detailProfile/ApplicantRow';
 import styles from './ApplicantList.module.scss';
+import { ApplicantRow } from './ApplicantRow';
 
 interface ApplicantTableProps {
   shop_id: string;
