@@ -8,6 +8,7 @@ import ApplicantTable from './ApplicantTable';
 import fetchAPI from '@/pages/api/AxiosInstance';
 import Cookies from 'js-cookie';
 import styles from './RenderingMyPage.module.scss';
+import LoadingSpinner from '@/components/common/Spinner';
 
 interface Props {
   name?: string;
@@ -20,16 +21,24 @@ interface Props {
 function RenderingMyPage({ name, phone, address, bio, user_id }: Props) {
   const router = useRouter();
   const [hasData, setHasData] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const checkData = async () => {
-    const token = Cookies.get('token');
-    const { data } = await fetchAPI().get(`/users/${user_id}/applications`, {
-      params: { limit: 1 },
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    setHasData(data.count > 0);
+    setIsLoading(true);
+    try {
+      const token = Cookies.get('token');
+      const { data } = await fetchAPI().get(`/users/${user_id}/applications`, {
+        params: { limit: 1 },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setHasData(data.count > 0);
+    } catch (error) {
+      console.error('Error checking data:', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -47,8 +56,12 @@ function RenderingMyPage({ name, phone, address, bio, user_id }: Props) {
     router.push('/listPage');
   };
 
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
+
   return (
-    <div className='renderingPage'>
+    <div className="renderingPage">
       <div className={styles.profileWrap}>
         <div className={styles.informationWrap}>
           <h1 className={styles.profileTitle}>내 프로필</h1>
@@ -57,7 +70,7 @@ function RenderingMyPage({ name, phone, address, bio, user_id }: Props) {
               <div className={styles.titleWrap}>
                 <h4 className={styles.nameProfile}>이름</h4>
                 <p className={styles.userName}>{name}</p>
-                
+
                 <div className={styles.informationFlex}>
                   <Image
                     src={phoneIcon}
@@ -67,7 +80,7 @@ function RenderingMyPage({ name, phone, address, bio, user_id }: Props) {
                   />
                   <p className={styles.information}>{phone}</p>
                 </div>
-                
+
                 <div className={styles.informationFlex}>
                   <Image
                     src={locationIcon}
@@ -77,11 +90,13 @@ function RenderingMyPage({ name, phone, address, bio, user_id }: Props) {
                   />
                   <p className={styles.information}>선호 지역: {address}</p>
                 </div>
-                
+
                 <p className={`${styles.information} ${styles.bio}`}>{bio}</p>
               </div>
               <div className={styles.buttonWrap}>
-                <button className={styles.button} onClick={PostPageMove}>편집하기</button>
+                <button className={styles.button} onClick={PostPageMove}>
+                  편집하기
+                </button>
               </div>
             </div>
           </div>
