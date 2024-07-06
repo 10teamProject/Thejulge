@@ -13,9 +13,23 @@ interface ApplicantTableProps {
   user_id: string;
 }
 
+// 예시로 취소된 상태 추가
+type ApplicationStatus = 'accepted' | 'rejected' | 'canceled';
+
+interface Application {
+  id: string;
+  status: ApplicationStatus;
+  createdAt: string;
+}
+
+interface ApiResponse {
+  item: Application;
+  links: [];
+}
+
 const ApplicantTable: React.FC<ApplicantTableProps> = ({ user_id }) => {
   const [currentPage, setCurrentPage] = useState(1); // 페이지는 1부터 시작
-  const [list, setList] = useState([]);
+  const [list, setList] = useState<Application[]>([]);
   const [totalPages, setTotalPages] = useState(0);
   const rowPerPage = 5;
 
@@ -40,7 +54,9 @@ const ApplicantTable: React.FC<ApplicantTableProps> = ({ user_id }) => {
       const res = await loadList(page);
 
       setCurrentPage(page); // 현재 페이지 설정
-      setList(res.items);
+      // 취소된 데이터를 제외한 리스트 설정
+      const filteredList = res.items.filter((item) => item.item.status !== 'canceled');
+      setList(filteredList);
       setTotalPages(Math.ceil(res.count / rowPerPage));
     } catch (error) {
       console.error('Error fetching applicants:', error);
