@@ -1,4 +1,3 @@
-
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
@@ -7,6 +6,7 @@ import DetailCard from '../../components/detailProfile/Detailcard';
 import RenderingMyPage from '../../components/detailProfile/RenderingMyPage';
 import { instance } from '../api/AxiosInstance';
 import styles from './MyPage.module.scss';
+import LoadingSpinner from '../../components/common/Spinner'; // 로딩 스피너 컴포넌트를 추가합니다.
 
 function MyPage() {
   const [userInfo, setUserInfo] = useState({
@@ -18,6 +18,8 @@ function MyPage() {
     notice_id: '',
   });
 
+  const [loading, setLoading] = useState(true);
+
   const router = useRouter();
 
   useEffect(() => {
@@ -25,6 +27,7 @@ function MyPage() {
       const token = Cookies.get('token');
       if (!token) {
         console.error('토큰이 없습니다.');
+        setLoading(false);
         return;
       }
 
@@ -32,6 +35,7 @@ function MyPage() {
         const userId = JSON.parse(sessionStorage.getItem('user') || '{}').id;
         if (!userId) {
           console.error('사용자 ID를 찾을 수 없습니다.');
+          setLoading(false);
           return;
         }
 
@@ -44,18 +48,23 @@ function MyPage() {
           ...response.data.item,
           user_id: userId, 
         });
+        setLoading(false);
       } catch (error) {
         console.error('사용자 정보를 가져오는 데 실패했습니다:', error);
+        setLoading(false);
       }
     };
 
     fetchUserInfo();
   }, []);
 
-  // 데이터가 있으면 RenderingMyPage 렌더링
   const isUserInfoEmpty = () => {
     return !userInfo.name && !userInfo.phone && !userInfo.address && !userInfo.bio;
   };
+
+  if (loading) {
+    return <LoadingSpinner />; // 로딩 중일 때 스피너 띄우기
+  }
 
   return (
     <main className={styles.main}>
