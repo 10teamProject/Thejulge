@@ -109,7 +109,7 @@ const UserNotification: React.FC = () => {
 
       const intervalId = setInterval(() => {
         fetchAlerts();
-      }, 10000);
+      }, 300);
 
       return () => clearInterval(intervalId);
     }
